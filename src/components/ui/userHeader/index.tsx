@@ -1,17 +1,24 @@
 import React from "react"
 import Image from "next/image"
 import twitterIcon from "@/assets/home/twitterIcon.svg"
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
+
 export interface userInfoType {
   username: string
   avatar: string
   followers: number
 }
 
+const userInfo = {
+  username: "username",
+  avatar: defaultHeaderIcon,
+  followers: 100,
+}
 interface UserHeaderProps {
-  userInfo: userInfoType
+  userInfo1?: userInfoType
 }
 
-const UserHeader: React.FC<UserHeaderProps> = ({ userInfo }) => {
+const UserHeader: React.FC<UserHeaderProps> = ({ userInfo1 }) => {
   return (
     <div className="flex items-center">
       <Image

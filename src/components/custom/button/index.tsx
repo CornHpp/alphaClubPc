@@ -1,7 +1,7 @@
 import React from "react"
 
 interface ButtonProps {
-  text: string
+  text: string | React.ReactNode
   width?: string
   height?: string
   border?: string
@@ -12,6 +12,9 @@ interface ButtonProps {
   active?: boolean
   children?: React.ReactNode
   buttonClick: () => void
+  hideBottomBackground?: boolean
+  onMouseEnter?: () => void
+  onMouseLeave?: () => void
 }
 
 const Button: React.FC<ButtonProps> = (props) => {
@@ -27,10 +30,17 @@ const Button: React.FC<ButtonProps> = (props) => {
     active,
     color,
     children,
+    hideBottomBackground,
+    onMouseEnter,
+    onMouseLeave,
   } = props
 
   return (
-    <div className="relative">
+    <div
+      className="relative"
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
       <div
         className="absolute z-[9]"
         style={{
@@ -40,6 +50,7 @@ const Button: React.FC<ButtonProps> = (props) => {
           height: height,
           borderRadius: borderRadius,
           background: "#0D0D0D",
+          display: hideBottomBackground ? "none" : "block",
         }}
       ></div>
       <div

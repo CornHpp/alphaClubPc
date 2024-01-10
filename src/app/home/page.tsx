@@ -3,13 +3,16 @@ import React from "react"
 import Image from "next/image"
 import LeftNav from "@/components/ui/leftNav"
 import Header from "@/components/ui/header"
-import homeBackground from "@/assets/home/homeBg.svg"
 import starIcon from "@/assets/home/star.svg"
 import Tabs from "@/components/custom/tabs"
 import Card from "@/components/ui/card"
 import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
-
-const homeBg = "/homeBg.svg"
+import Button from "@/components/custom/button"
+import createIcon from "@/assets/home/create.svg"
+import BuyPopupView from "@/components/ui/buyPopup"
+import SellPopipView from "@/components/ui/sellPopup"
+import CreateEventPopupView from "@/components/ui/createEventPopup"
+import ChooseSpeakerPopup from "@/components/ui/chooseSpeakerPopup"
 
 const tabsList = [
   {
@@ -28,6 +31,12 @@ const tabsList = [
 const Home: React.FC = () => {
   const [tabsActive, setTabsActive] = React.useState(0)
 
+  const [showPopupBuy, setShowPopupBuy] = React.useState(false)
+  const [showPopupSell, setShowPopupSell] = React.useState(false)
+  const [showPopupCreateEvent, setShowPopupCreateEvent] = React.useState(false)
+  const [showPopupChooseSpeaker, setShowPopupChooseSpeaker] =
+    React.useState(false)
+
   const [cardList, setCardList] = React.useState([
     {
       userInfo: {
@@ -36,70 +45,17 @@ const Home: React.FC = () => {
         followers: 100,
       },
     },
-    {
-      userInfo: {
-        username: "username",
-        avatar: defaultHeaderIcon,
-        followers: 100,
-      },
-    },
-    {
-      userInfo: {
-        username: "username",
-        avatar: defaultHeaderIcon,
-        followers: 100,
-      },
-    },
-    {
-      userInfo: {
-        username: "username",
-        avatar: defaultHeaderIcon,
-        followers: 100,
-      },
-    },
-    {
-      userInfo: {
-        username: "username",
-        avatar: defaultHeaderIcon,
-        followers: 100,
-      },
-    },
-    {
-      userInfo: {
-        username: "username",
-        avatar: defaultHeaderIcon,
-        followers: 100,
-      },
-    },
-    {
-      userInfo: {
-        username: "username",
-        avatar: defaultHeaderIcon,
-        followers: 100,
-      },
-    },
-    {
-      userInfo: {
-        username: "username",
-        avatar: defaultHeaderIcon,
-        followers: 100,
-      },
-    },
-    {
-      userInfo: {
-        username: "username",
-        avatar: defaultHeaderIcon,
-        followers: 100,
-      },
-    },
-    {
-      userInfo: {
-        username: "username",
-        avatar: defaultHeaderIcon,
-        followers: 100,
-      },
-    },
   ])
+
+  const clickBuy = () => {
+    console.log("buy")
+    setShowPopupBuy(true)
+  }
+
+  const clickSell = () => {
+    console.log("sell")
+    setShowPopupSell(true)
+  }
   return (
     <div className="flex px-[16px]  relative pb-[16px]">
       <LeftNav></LeftNav>
@@ -144,25 +100,69 @@ const Home: React.FC = () => {
             {cardList.map((item, index) => {
               return (
                 <div key={index + "r"}>
-                  <Card item={item}></Card>
+                  <Card
+                    onClickBuy={clickBuy}
+                    onClickSell={() => {
+                      clickSell()
+                    }}
+                    item={item}
+                  ></Card>
                 </div>
               )
             })}
           </div>
         </div>
       </div>
-      <div className="absolute top-0 left-0 w-[100%] h-[868px] px-[16px] py-[16px] z-[-1]">
-        {/* <Image src={homeBackground} alt="" className="w-[100%]"></Image> */}
-        {/* <div
-          style={{
-            backgroundImage: `url(${homeBg})`,
-            backgroundSize: "100% 100%", // 设置宽度和高度为100%
-            backgroundRepeat: "no-repeat",
-            width: "100%",
-            height: "868px",
+      <div className="flex fixed bottom-[40px] right-[55px]">
+        <Button
+          active={false}
+          width="146px"
+          height="58px"
+          text={"Create Event"}
+          normalBackGround="#00FC6E"
+          borderRadius="28px"
+          border="2px solid #0D0D0D"
+          buttonClick={() => {
+            setShowPopupCreateEvent(true)
           }}
-        ></div> */}
+        >
+          <Image
+            src={createIcon}
+            alt=""
+            width={24}
+            height={24}
+            className="w-[24px] h-[24px]"
+          ></Image>
+        </Button>
       </div>
+
+      <BuyPopupView
+        showPopupBuy={showPopupBuy}
+        setShowPopupBuy={setShowPopupBuy}
+      ></BuyPopupView>
+
+      <SellPopipView
+        showPopupBuy={showPopupSell}
+        setShowPopupBuy={setShowPopupSell}
+      ></SellPopipView>
+
+      <CreateEventPopupView
+        showPopupBuy={showPopupCreateEvent}
+        setShowPopupBuy={setShowPopupCreateEvent}
+        onClickSelectCoHost={() => {
+          setShowPopupCreateEvent(false)
+          setShowPopupChooseSpeaker(true)
+        }}
+      ></CreateEventPopupView>
+
+      <ChooseSpeakerPopup
+        onClickBack={() => {
+          setShowPopupChooseSpeaker(false)
+          setShowPopupCreateEvent(true)
+        }}
+        showPopupBuy={showPopupChooseSpeaker}
+        setShowPopupBuy={setShowPopupChooseSpeaker}
+      ></ChooseSpeakerPopup>
     </div>
   )
 }

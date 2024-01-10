@@ -12,12 +12,12 @@ type CardType = {
 
 interface CardProps {
   item: CardType
+  onClickBuy: () => void
+  onClickSell: () => void
 }
 
-const Card: React.FC<CardProps> = ({ item }) => {
-  const clickSell = () => {
-    console.log("clickSell")
-  }
+const Card: React.FC<CardProps> = ({ item, onClickBuy, onClickSell }) => {
+  const [hideButtonBg, setHideButtonBg] = React.useState(false)
 
   return (
     <div className="rounded-[16px] border-[2px] border-[#0D0D0D] border-solid w-[355px] h-[355px] mr-[24px] mb-[24px]">
@@ -27,7 +27,7 @@ const Card: React.FC<CardProps> = ({ item }) => {
           borderBottom: "2px solid #0D0D0D",
         }}
       >
-        <UserHeader userInfo={item?.userInfo}></UserHeader>
+        <UserHeader></UserHeader>
       </div>
 
       <Carousel></Carousel>
@@ -65,17 +65,24 @@ const Card: React.FC<CardProps> = ({ item }) => {
         </div>
       </div>
 
-      <div className="flex items-center px-[16px] w-full justify-between">
+      <div className="flex items-center px-[16px] w-full justify-between h-[44px]">
         <Button
           active={false}
           width="154px"
-          height="44px"
+          height={hideButtonBg ? "46px" : "44px"}
           text={"Sell"}
           background="#fff"
           borderRadius="24px"
           border="2px solid #0D0D0D"
+          hideBottomBackground={hideButtonBg}
+          onMouseEnter={() => {
+            setHideButtonBg(true)
+          }}
           buttonClick={() => {
-            clickSell()
+            onClickSell()
+          }}
+          onMouseLeave={() => {
+            setHideButtonBg(false)
           }}
         ></Button>
         <Button
@@ -89,7 +96,7 @@ const Card: React.FC<CardProps> = ({ item }) => {
           normalBackGround="#0D0D0D"
           color="#fff"
           buttonClick={() => {
-            clickSell()
+            onClickBuy()
           }}
         ></Button>
       </div>

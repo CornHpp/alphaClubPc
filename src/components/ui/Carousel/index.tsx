@@ -20,11 +20,22 @@ const CarouselView: React.FC<CarouselProps> = () => {
     }
   }
 
+  const contentStyle: React.CSSProperties = {
+    margin: 0,
+    height: "160px",
+    color: "#fff",
+    lineHeight: "160px",
+    textAlign: "center",
+    background: "#364d79",
+  }
   const [showDanmu, setShowDanmu] = React.useState(true)
+  const onChange1 = (currentSlide: number) => {
+    console.log(currentSlide)
+  }
 
   return (
     <div className="w-full px-[16px] py-[16px] ">
-      <div className="border-[2px] border-[#0D0D0D] border-solid overflow-hidden rounded-[10px]">
+      <div className="border-[2px] border-[#0D0D0D] border-solid overflow-hidden rounded-[10px] w-full h-[85px]">
         <Carousel ref={carouseRef} dots={false}>
           <div className="w-full rounded-[10px] bg-[#D8FCD1] h-[85px] px-[10px] py-[10px]">
             <Live></Live>

@@ -1,0 +1,18 @@
+.ant-switch.ant-switch-checked {
+  @apply bg-[#0D0D0D] !important;
+}
+
+.ant-switch {
+  @apply bg-[#E9E9E9] border-[2px] border-[#0D0D0D] border-solid w-[60px] h-[32px] !important;
+}
+.ant-switch-handle {
+  @apply border-[2px] border-[#0D0D0D] border-solid  w-[24px] h-[24px] rounded-[50%] !important;
+}
+.ant-switch-handle::before {
+  @apply rounded-[50%] !important;
+}
+
+.ant-switch-checked .ant-switch-handle {
+  @apply !important;
+  inset-inline-start: calc(100% - 25px) !important;
+}

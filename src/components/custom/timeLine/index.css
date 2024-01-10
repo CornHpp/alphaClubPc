@@ -1,0 +1,3 @@
+.ant-tooltip-inner {
+  @apply py-[3px] leading-[20px] min-h-[28px] !important;
+}
