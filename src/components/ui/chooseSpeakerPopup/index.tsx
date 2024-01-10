@@ -72,13 +72,13 @@ const ChooseSpeakerPopup: React.FC<Props> = ({
       </div>
       <div className="text-[14px] font-medium">Twitter related users</div>
 
-      <div className="h-[224px] w-[397px] overflow-y-scroll ml-[-16px] relative ">
+      <div className="h-[224px] w-[397px] overflow-y-scroll ml-[-16px] relative openScroll">
         {searchPeopleList.map((item, index) => {
           const isSelectIndex = selectedPersons.indexOf(index)
           return (
             <div
               key={index + "1"}
-              className="w-[397px] flex justify-between  pl-[16px] pr-[18px] items-center h-[56px] cursor-pointer "
+              className="w-[397px] flex justify-between  pl-[16px] pr-[18px] items-center h-[56px] cursor-pointer hover:bg-[#F3F3F3]"
               style={{
                 background: isSelectIndex != -1 ? "#D8FCD1" : "",
               }}

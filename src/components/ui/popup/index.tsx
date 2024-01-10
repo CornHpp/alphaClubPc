@@ -55,7 +55,7 @@ const PopupView: React.FC<PopupProps> = (props) => {
               ></Image>
             </div>
 
-            <div className="px-[16px] pt-[16px]">{children}</div>
+            <div className="px-[16px] pt-[16px] relative">{children}</div>
           </div>
         </div>
       )}
