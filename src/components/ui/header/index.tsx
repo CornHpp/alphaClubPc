@@ -14,7 +14,7 @@ interface Props {
 
 const Header: React.FC<Props> = () => {
   return (
-    <div className="h-[90px] pl-[19px] pr-[55px] flex items-center justify-between">
+    <div className="h-[90px]  pr-[55px] flex items-center justify-between flex-shrink-0">
       <Search></Search>
       <div className="flex items-center">
         {iconLists.map((item, index) => {

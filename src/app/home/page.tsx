@@ -36,50 +36,119 @@ const Home: React.FC = () => {
         followers: 100,
       },
     },
+    {
+      userInfo: {
+        username: "username",
+        avatar: defaultHeaderIcon,
+        followers: 100,
+      },
+    },
+    {
+      userInfo: {
+        username: "username",
+        avatar: defaultHeaderIcon,
+        followers: 100,
+      },
+    },
+    {
+      userInfo: {
+        username: "username",
+        avatar: defaultHeaderIcon,
+        followers: 100,
+      },
+    },
+    {
+      userInfo: {
+        username: "username",
+        avatar: defaultHeaderIcon,
+        followers: 100,
+      },
+    },
+    {
+      userInfo: {
+        username: "username",
+        avatar: defaultHeaderIcon,
+        followers: 100,
+      },
+    },
+    {
+      userInfo: {
+        username: "username",
+        avatar: defaultHeaderIcon,
+        followers: 100,
+      },
+    },
+    {
+      userInfo: {
+        username: "username",
+        avatar: defaultHeaderIcon,
+        followers: 100,
+      },
+    },
+    {
+      userInfo: {
+        username: "username",
+        avatar: defaultHeaderIcon,
+        followers: 100,
+      },
+    },
+    {
+      userInfo: {
+        username: "username",
+        avatar: defaultHeaderIcon,
+        followers: 100,
+      },
+    },
   ])
   return (
-    <div className="flex px-[16px] py-[16px] relative">
+    <div className="flex px-[16px]  relative pb-[16px]">
       <LeftNav></LeftNav>
 
-      <div
-        className="flex-1 flex flex-col "
-        style={{
-          height: "calc(100vh - 32px)",
-        }}
-      >
+      <div className="flex-1 flex flex-col " style={{}}>
         <Header></Header>
-
-        <div className=" flex pt-[18px] h-[76px]">
-          <div className="text-[32px] font-bold mr-[3px]">
-            Pick Clubs To Join In!
-          </div>
-          <Image
-            src={starIcon}
-            alt=""
-            width={29}
-            height={26}
-            className="w-[29px] h-[26[x]"
-          ></Image>
-        </div>
-
-        <div className="pt-[4px] h-[36px]">
-          <Tabs
-            tabList={tabsList}
-            activeIndex={tabsActive}
-            tabClick={(val) => {
-              setTabsActive(val)
-            }}
-          ></Tabs>
-        </div>
-
-        <div className="pt-[16px] flex flex-wrap flex-1 overflow-y-scroll">
-          {cardList.map((item, index) => {
-            return (
-              <div key={index + "r"}>
-                <Card item={item}></Card>
+        <div
+          className="flex flex-col border-[2px] border-[#0D0D0D] border-solid "
+          style={{
+            borderLeft: "none",
+            borderRadius: "0 16px 16px 0",
+            height: "calc(100vh - 106px)",
+            background: "linear-gradient(180deg, #F0EBE8 0%, #ECECEC 100%)",
+          }}
+        >
+          <div className=" flex pt-[18px] h-[76px]">
+            <div className="flex items-center">
+              <div className="text-[32px] font-bold mr-[3px]">
+                Pick Clubs To Join In!
               </div>
-            )
-          })}
+              <Image
+                src={starIcon}
+                alt=""
+                width={29}
+                height={26}
+                className="w-[29px] h-[26px]"
+              ></Image>
+            </div>
+          </div>
+
+          <div className="pt-[4px]  pb-[16px]">
+            <Tabs
+              tabList={tabsList}
+              activeIndex={tabsActive}
+              tabClick={(val) => {
+                setTabsActive(val)
+              }}
+            ></Tabs>
+          </div>
+
+          <div className="flex flex-wrap flex-1 overflow-y-scroll">
+            {cardList.map((item, index) => {
+              return (
+                <div key={index + "r"}>
+                  <Card item={item}></Card>
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
       <div className="absolute top-0 left-0 w-[100%] h-[868px] px-[16px] py-[16px] z-[-1]">

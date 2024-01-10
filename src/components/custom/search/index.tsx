@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState } from "react"
-import searchIcon from "@/assets/home/searchIcon.png"
+import searchIcon from "@/assets/home/searchIcon.svg"
 import Image from "next/image"
 
 interface Props {

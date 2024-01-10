@@ -1,0 +1,27 @@
+.scrollLeft {
+  white-space: nowrap; /* 保持内容在一行 */
+  animation: scrollLe 15s linear infinite; /* 定义动画 */
+}
+@keyframes scrollLe {
+  0% {
+    transform: translateX(0); /* 开始时位于原位置 */
+  }
+  100% {
+    transform: translateX(
+      calc(-100% - 8px)
+    ); /* 移动至50%的位置，即第二个内容块的开始处 */
+  }
+}
+
+.scrollRight {
+  white-space: nowrap; /* 保持内容在一行 */
+  animation: scrollri 15s linear infinite; /* 定义动画 */
+}
+@keyframes scrollri {
+  0% {
+    transform: translateX(calc(-100% - 8px)); /* 开始时位于原位置 */
+  }
+  100% {
+    transform: translateX(0);
+  }
+}

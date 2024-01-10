@@ -7,6 +7,8 @@ interface ButtonProps {
   border?: string
   borderRadius?: string
   background?: string
+  normalBackGround?: string
+  color?: string
   active?: boolean
   children?: React.ReactNode
   buttonClick: () => void
@@ -21,7 +23,9 @@ const Button: React.FC<ButtonProps> = (props) => {
     border,
     buttonClick,
     background,
+    normalBackGround = "#fff",
     active,
+    color,
     children,
   } = props
 
@@ -46,7 +50,8 @@ const Button: React.FC<ButtonProps> = (props) => {
           height: height,
           border: border,
           borderRadius: borderRadius,
-          background: active ? background : "#fff",
+          background: active ? background : normalBackGround,
+          color: color,
         }}
       >
         {children && <div className="mr-[2px]">{children}</div>}
