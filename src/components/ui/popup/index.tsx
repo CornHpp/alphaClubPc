@@ -1,15 +1,16 @@
-import React, { Children } from "react"
-import UserHeader from "../userHeader"
-import Image from "next/image"
-import closeIcon from "@/assets/popup/close.svg"
+import React, { Children } from "react";
+import UserHeader from "../userHeader";
+import Image from "next/image";
+import closeIcon from "@/assets/popup/close.svg";
 
 interface PopupProps {
-  handleOk?: () => void
-  handleCancel?: () => void
-  width?: number
-  showPopup?: boolean
-  children?: React.ReactNode
-  titleText?: string | React.ReactNode
+  handleOk?: () => void;
+  handleCancel?: () => void;
+  width?: number;
+  showPopup?: boolean;
+  children?: React.ReactNode;
+  titleText?: string | React.ReactNode;
+  showCloseImage?: boolean;
 }
 
 const PopupView: React.FC<PopupProps> = (props) => {
@@ -20,7 +21,8 @@ const PopupView: React.FC<PopupProps> = (props) => {
     showPopup,
     children,
     titleText,
-  } = props
+    showCloseImage = true,
+  } = props;
   return (
     <>
       {showPopup && (
@@ -45,14 +47,18 @@ const PopupView: React.FC<PopupProps> = (props) => {
             >
               {titleText ? titleText : <UserHeader></UserHeader>}
 
-              <Image
-                src={closeIcon}
-                onClick={handleCancel}
-                alt=""
-                width={38}
-                height={37}
-                className="cursor-pointer"
-              ></Image>
+              {showCloseImage ? (
+                <Image
+                  src={closeIcon}
+                  onClick={handleCancel}
+                  alt=""
+                  width={38}
+                  height={37}
+                  className="cursor-pointer"
+                ></Image>
+              ) : (
+                <> </>
+              )}
             </div>
 
             <div className="px-[16px] pt-[16px] relative">{children}</div>
@@ -60,7 +66,7 @@ const PopupView: React.FC<PopupProps> = (props) => {
         </div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default PopupView
+export default PopupView;

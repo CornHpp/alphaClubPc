@@ -1,18 +1,19 @@
-"use client"
-import React from "react"
-import Image from "next/image"
-import LeftNav from "@/components/ui/leftNav"
-import Header from "@/components/ui/header"
-import starIcon from "@/assets/home/star.svg"
-import Tabs from "@/components/custom/tabs"
-import Card from "@/components/ui/card"
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
-import Button from "@/components/custom/button"
-import createIcon from "@/assets/home/create.svg"
-import BuyPopupView from "@/components/ui/buyPopup"
-import SellPopipView from "@/components/ui/sellPopup"
-import CreateEventPopupView from "@/components/ui/createEventPopup"
-import ChooseSpeakerPopup from "@/components/ui/chooseSpeakerPopup"
+"use client";
+import React from "react";
+import Image from "next/image";
+import LeftNav from "@/components/ui/leftNav";
+import Header from "@/components/ui/header";
+import starIcon from "@/assets/home/star.svg";
+import Tabs from "@/components/custom/tabs";
+import Card from "@/components/ui/card";
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
+import Button from "@/components/custom/button";
+import createIcon from "@/assets/home/create.svg";
+import BuyPopupView from "@/components/ui/buyPopup";
+import SellPopipView from "@/components/ui/sellPopup";
+import CreateEventPopupView from "@/components/ui/createEventPopup";
+import ChooseSpeakerPopup from "@/components/ui/chooseSpeakerPopup";
+import ChooseTimePopup from "@/components/ui/chooseTimePopup";
 
 const tabsList = [
   {
@@ -27,15 +28,16 @@ const tabsList = [
     text: "Tab3",
     img: "",
   },
-]
+];
 const Home: React.FC = () => {
-  const [tabsActive, setTabsActive] = React.useState(0)
+  const [tabsActive, setTabsActive] = React.useState(0);
 
-  const [showPopupBuy, setShowPopupBuy] = React.useState(false)
-  const [showPopupSell, setShowPopupSell] = React.useState(false)
-  const [showPopupCreateEvent, setShowPopupCreateEvent] = React.useState(false)
+  const [showPopupBuy, setShowPopupBuy] = React.useState(false);
+  const [showPopupSell, setShowPopupSell] = React.useState(false);
+  const [showPopupCreateEvent, setShowPopupCreateEvent] = React.useState(false);
   const [showPopupChooseSpeaker, setShowPopupChooseSpeaker] =
-    React.useState(false)
+    React.useState(false);
+  const [showPopupChooseTime, setShowPopupChooseTime] = React.useState(false);
 
   const [cardList, setCardList] = React.useState([
     {
@@ -45,17 +47,17 @@ const Home: React.FC = () => {
         followers: 100,
       },
     },
-  ])
+  ]);
 
   const clickBuy = () => {
-    console.log("buy")
-    setShowPopupBuy(true)
-  }
+    console.log("buy");
+    setShowPopupBuy(true);
+  };
 
   const clickSell = () => {
-    console.log("sell")
-    setShowPopupSell(true)
-  }
+    console.log("sell");
+    setShowPopupSell(true);
+  };
   return (
     <div className="flex px-[16px]  relative pb-[16px]">
       <LeftNav></LeftNav>
@@ -91,7 +93,7 @@ const Home: React.FC = () => {
               tabList={tabsList}
               activeIndex={tabsActive}
               tabClick={(val) => {
-                setTabsActive(val)
+                setTabsActive(val);
               }}
             ></Tabs>
           </div>
@@ -103,12 +105,12 @@ const Home: React.FC = () => {
                   <Card
                     onClickBuy={clickBuy}
                     onClickSell={() => {
-                      clickSell()
+                      clickSell();
                     }}
                     item={item}
                   ></Card>
                 </div>
-              )
+              );
             })}
           </div>
         </div>
@@ -123,7 +125,7 @@ const Home: React.FC = () => {
           borderRadius="28px"
           border="2px solid #0D0D0D"
           buttonClick={() => {
-            setShowPopupCreateEvent(true)
+            setShowPopupCreateEvent(true);
           }}
         >
           <Image
@@ -149,22 +151,34 @@ const Home: React.FC = () => {
       <CreateEventPopupView
         showPopupBuy={showPopupCreateEvent}
         setShowPopupBuy={setShowPopupCreateEvent}
+        onClickSchedule={() => {
+          setShowPopupCreateEvent(false);
+          setShowPopupChooseTime(true);
+        }}
         onClickSelectCoHost={() => {
-          setShowPopupCreateEvent(false)
-          setShowPopupChooseSpeaker(true)
+          setShowPopupCreateEvent(false);
+          setShowPopupChooseSpeaker(true);
         }}
       ></CreateEventPopupView>
 
       <ChooseSpeakerPopup
         onClickBack={() => {
-          setShowPopupChooseSpeaker(false)
-          setShowPopupCreateEvent(true)
+          setShowPopupChooseSpeaker(false);
+          setShowPopupCreateEvent(true);
         }}
         showPopupBuy={showPopupChooseSpeaker}
         setShowPopupBuy={setShowPopupChooseSpeaker}
       ></ChooseSpeakerPopup>
-    </div>
-  )
-}
 
-export default Home
+      <ChooseTimePopup
+        showPopupBuy={showPopupChooseTime}
+        setShowPopupBuy={setShowPopupChooseTime}
+        onClickBack={() => {
+          console.log("back");
+        }}
+      ></ChooseTimePopup>
+    </div>
+  );
+};
+
+export default Home;
