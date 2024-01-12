@@ -1,20 +1,20 @@
-import React from "react"
+import React from "react";
 
 interface listType {
-  text: string
-  img: string
+  text: string;
+  img: string;
 }
 interface TabsProps {
-  tabList: listType[]
-  tabClick: (index: number) => void
-  activeIndex: number
+  tabList: listType[];
+  tabClick: (index: number) => void;
+  activeIndex: number;
 }
 
 const Tabs: React.FC<TabsProps> = (props) => {
-  const { tabList, tabClick, activeIndex } = props
+  const { tabList, tabClick, activeIndex } = props;
   const handleClickTabs = (index: number) => {
-    tabClick(index)
-  }
+    tabClick(index);
+  };
   return (
     <div className="flex items-center">
       {tabList.map((item, index) => {
@@ -22,7 +22,7 @@ const Tabs: React.FC<TabsProps> = (props) => {
           <div
             key={index + "f"}
             onClick={() => {
-              handleClickTabs(index)
+              handleClickTabs(index);
             }}
             className="w-[68px] h-[28px] border-[2px] rounded-[16px] text-[16px] font-medium flex items-center justify-center mr-[4px] cursor-pointer"
             style={{
@@ -33,10 +33,10 @@ const Tabs: React.FC<TabsProps> = (props) => {
           >
             {item.text}
           </div>
-        )
+        );
       })}
     </div>
-  )
-}
+  );
+};
 
-export default Tabs
+export default Tabs;

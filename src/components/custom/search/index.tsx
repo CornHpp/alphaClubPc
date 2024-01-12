@@ -1,15 +1,16 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import searchIcon from "@/assets/home/searchIcon.svg"
-import Image from "next/image"
+import React, { useState } from "react";
+import searchIcon from "@/assets/home/searchIcon.svg";
+import Image from "next/image";
 
 interface Props {
   // Add your component props here
-  rightNode?: React.ReactNode
-  width?: number
-  height?: number
-  placeholder?: string
+  rightNode?: React.ReactNode;
+  width?: number;
+  height?: number;
+  placeholder?: string;
+  leftNode?: React.ReactNode;
 }
 
 const Search: React.FC<Props> = (props) => {
@@ -18,17 +19,25 @@ const Search: React.FC<Props> = (props) => {
     width = 300,
     height = 44,
     placeholder = "Search Whatever You Like",
-  } = props
-  const [search, setSearch] = useState("")
+    leftNode,
+  } = props;
+  const [search, setSearch] = useState("");
   return (
     <div className=" relative">
+      <div
+        className="absolute left-[5px] cursor-pointer
+          top-1/2 transform -translate-y-1/2"
+      >
+        {leftNode && leftNode}
+      </div>
       <input
         value={search}
         style={{
           width: width + "px",
           height: height + "px",
+          paddingLeft: leftNode ? "51px" : "16px",
         }}
-        className="w-[300px] h-[44px] rounded-[24px]  pl-[16px] pr-[44px] border-[#0D0D0D] border-solid border-[2px]
+        className="w-[300px] h-[44px] rounded-[24px]  pr-[44px] border-[#0D0D0D] border-solid border-[2px]
         focus:shadow-[0px_0px_16px_#00FC6E]
         "
         placeholder={placeholder}
@@ -53,12 +62,12 @@ const Search: React.FC<Props> = (props) => {
           top-1/2 transform -translate-y-1/2
           "
           onClick={() => {
-            console.log(search)
+            console.log(search);
           }}
         ></Image>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default Search
+export default Search;

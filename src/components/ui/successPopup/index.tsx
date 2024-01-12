@@ -4,9 +4,11 @@ import Image from "next/image";
 import Button from "@/components/custom/button";
 import BackIcon from "@/assets/popup/back.svg";
 import type { DatePickerProps } from "antd";
+import celebrateIcon from "@/assets/popup/celebrate.svg";
 
 import "./index.css";
 import CalendarView from "@/components/custom/calendar";
+import twitterIcon from "@/assets/popup/twitterIcon.svg";
 interface Props {
   // Define your component props here
   showPopupBuy: boolean;
@@ -15,23 +17,13 @@ interface Props {
   onClickConfirm: () => void;
 }
 
-const ChooseTimePopup: React.FC<Props> = ({
+const SuccessPopup: React.FC<Props> = ({
   setShowPopupBuy,
   showPopupBuy,
   onClickBack,
   onClickConfirm,
 }) => {
   const [selectedPrice, setSelectedPrice] = React.useState(0);
-
-  const [hideButtonBg, setHideButtonBg] = React.useState(false);
-
-  const [searchPeopleList, setSearchPeopleList] = React.useState([
-    {},
-    {},
-    {},
-    {},
-    {},
-  ]);
 
   const [selectedPersons, setSelectedPerson] = useState<number[]>([1]);
 
@@ -42,7 +34,6 @@ const ChooseTimePopup: React.FC<Props> = ({
   return (
     <PopupView
       width={400}
-      showCloseImage={false}
       showPopup={showPopupBuy}
       handleCancel={() => {
         setShowPopupBuy(false);
@@ -56,36 +47,39 @@ const ChooseTimePopup: React.FC<Props> = ({
           }}
         >
           <Image
-            src={BackIcon}
+            src={celebrateIcon}
             alt=""
-            width={20}
-            height={20}
-            className="mr-[6px]"
+            width={32}
+            height={32}
+            className="mr-[4px]"
           ></Image>
-          Event Schedule
+          Successful
         </div>
       }
     >
-      <div className="flex justify-center mt-[2px]">
-        <CalendarView></CalendarView>
+      <div className="">
+        The event has been created, notify more people so they know about it and
+        participate!
       </div>
 
-      <div className="mt-[32px]">
+      <div className="mt-[16px]">
         <Button
-          hideBottomBackground={true}
           active={false}
-          width="368px"
-          height="50px"
-          text={"Confirm"}
-          color={selectedPersons.length ? "#fff" : "#949694"}
-          normalBackGround={selectedPersons.length ? "#0D0D0D" : "#E9E9E9"}
-          borderRadius="27px"
-          border="none"
-          buttonClick={onClickConfirm}
-        ></Button>
+          width="362px"
+          height={"50px"}
+          text={"Twitter"}
+          background="#fff"
+          borderRadius="24px"
+          border="2px solid #0D0D0D"
+          onMouseEnter={() => {}}
+          buttonClick={() => {}}
+          onMouseLeave={() => {}}
+        >
+          <Image src={twitterIcon} alt="" width={20} height={20}></Image>
+        </Button>
       </div>
     </PopupView>
   );
 };
 
-export default ChooseTimePopup;
+export default SuccessPopup;

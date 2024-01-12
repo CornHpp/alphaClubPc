@@ -14,6 +14,8 @@ import SellPopipView from "@/components/ui/sellPopup";
 import CreateEventPopupView from "@/components/ui/createEventPopup";
 import ChooseSpeakerPopup from "@/components/ui/chooseSpeakerPopup";
 import ChooseTimePopup from "@/components/ui/chooseTimePopup";
+import SuccessPopup from "@/components/ui/successPopup";
+import UseProfileView from "@/components/ui/useProfile";
 
 const tabsList = [
   {
@@ -38,6 +40,7 @@ const Home: React.FC = () => {
   const [showPopupChooseSpeaker, setShowPopupChooseSpeaker] =
     React.useState(false);
   const [showPopupChooseTime, setShowPopupChooseTime] = React.useState(false);
+  const [showPopupSuccess, setShowPopupSuccess] = React.useState(false);
 
   const [cardList, setCardList] = React.useState([
     {
@@ -73,46 +76,50 @@ const Home: React.FC = () => {
             background: "linear-gradient(180deg, #F0EBE8 0%, #ECECEC 100%)",
           }}
         >
-          <div className=" flex pt-[18px] h-[76px]">
-            <div className="flex items-center">
-              <div className="text-[32px] font-bold mr-[3px]">
-                Pick Clubs To Join In!
-              </div>
-              <Image
-                src={starIcon}
-                alt=""
-                width={29}
-                height={26}
-                className="w-[29px] h-[26px]"
-              ></Image>
-            </div>
-          </div>
-
-          <div className="pt-[4px]  pb-[16px]">
-            <Tabs
-              tabList={tabsList}
-              activeIndex={tabsActive}
-              tabClick={(val) => {
-                setTabsActive(val);
-              }}
-            ></Tabs>
-          </div>
-
-          <div className="flex flex-wrap flex-1 overflow-y-scroll">
-            {cardList.map((item, index) => {
-              return (
-                <div key={index + "r"}>
-                  <Card
-                    onClickBuy={clickBuy}
-                    onClickSell={() => {
-                      clickSell();
-                    }}
-                    item={item}
-                  ></Card>
+          {/* <div className="">
+            <div className=" flex pt-[18px] h-[76px]">
+              <div className="flex items-center">
+                <div className="text-[32px] font-bold mr-[3px]">
+                  Pick Clubs To Join In!
                 </div>
-              );
-            })}
-          </div>
+                <Image
+                  src={starIcon}
+                  alt=""
+                  width={29}
+                  height={26}
+                  className="w-[29px] h-[26px]"
+                ></Image>
+              </div>
+            </div>
+
+            <div className="pt-[4px]  pb-[16px]">
+              <Tabs
+                tabList={tabsList}
+                activeIndex={tabsActive}
+                tabClick={(val) => {
+                  setTabsActive(val);
+                }}
+              ></Tabs>
+            </div>
+
+            <div className="flex flex-wrap flex-1 overflow-y-scroll">
+              {cardList.map((item, index) => {
+                return (
+                  <div key={index + "r"}>
+                    <Card
+                      onClickBuy={clickBuy}
+                      onClickSell={() => {
+                        clickSell();
+                      }}
+                      item={item}
+                    ></Card>
+                  </div>
+                );
+              })}
+            </div>
+          </div> */}
+
+          <UseProfileView></UseProfileView>
         </div>
       </div>
       <div className="flex fixed bottom-[40px] right-[55px]">
@@ -171,12 +178,27 @@ const Home: React.FC = () => {
       ></ChooseSpeakerPopup>
 
       <ChooseTimePopup
+        onClickConfirm={() => {
+          setShowPopupChooseTime(false);
+          setShowPopupSuccess(true);
+        }}
         showPopupBuy={showPopupChooseTime}
         setShowPopupBuy={setShowPopupChooseTime}
         onClickBack={() => {
           console.log("back");
         }}
       ></ChooseTimePopup>
+
+      <SuccessPopup
+        onClickConfirm={() => {
+          console.log("confirm");
+        }}
+        showPopupBuy={showPopupSuccess}
+        setShowPopupBuy={setShowPopupSuccess}
+        onClickBack={() => {
+          console.log("back");
+        }}
+      ></SuccessPopup>
     </div>
   );
 };

@@ -1,12 +1,12 @@
-"use client"
-import React from "react"
-import Search from "@/components/custom/search"
-import total from "@/assets/home/total.svg"
-import holdings from "@/assets/home/holdings.svg"
-import balance from "@/assets/home/balance.svg"
-import earn from "@/assets/home/earn.svg"
-import point from "@/assets/home/point.svg"
-import Image from "next/image"
+"use client";
+import React from "react";
+import Search from "@/components/custom/search";
+import total from "@/assets/home/total.svg";
+import holdings from "@/assets/home/holdings.svg";
+import balance from "@/assets/home/balance.svg";
+import earn from "@/assets/home/earn.svg";
+import point from "@/assets/home/point.svg";
+import Image from "next/image";
 
 interface Props {
   // Define your component's props here
@@ -14,7 +14,7 @@ interface Props {
 
 const Header: React.FC<Props> = () => {
   return (
-    <div className="h-[90px]  pr-[55px] flex items-center justify-between flex-shrink-0">
+    <div className="h-[90px]  pr-[7px] flex items-center justify-between flex-shrink-0">
       <Search></Search>
       <div className="flex items-center">
         {iconLists.map((item, index) => {
@@ -37,14 +37,14 @@ const Header: React.FC<Props> = () => {
                 </div>
               </div>
             </div>
-          )
+          );
         })}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
 
 const iconLists = [
   {
@@ -75,4 +75,4 @@ const iconLists = [
     text: "point",
     value: "635",
   },
-]
+];

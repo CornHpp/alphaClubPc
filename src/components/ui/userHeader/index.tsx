@@ -1,24 +1,28 @@
-import React from "react"
-import Image from "next/image"
-import twitterIcon from "@/assets/home/twitterIcon.svg"
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
+import React from "react";
+import Image from "next/image";
+import twitterIcon from "@/assets/home/twitterIcon.svg";
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
 
 export interface userInfoType {
-  username: string
-  avatar: string
-  followers: number
+  username: string;
+  avatar: string;
+  followers: number;
 }
 
 const userInfo = {
   username: "username",
   avatar: defaultHeaderIcon,
   followers: 100,
-}
+};
 interface UserHeaderProps {
-  userInfo1?: userInfoType
+  userInfo1?: userInfoType;
+  nameMarginLeft?: string;
 }
 
-const UserHeader: React.FC<UserHeaderProps> = ({ userInfo1 }) => {
+const UserHeader: React.FC<UserHeaderProps> = ({
+  userInfo1,
+  nameMarginLeft,
+}) => {
   return (
     <div className="flex items-center">
       <Image
@@ -28,7 +32,12 @@ const UserHeader: React.FC<UserHeaderProps> = ({ userInfo1 }) => {
         width={44}
         height={44}
       ></Image>
-      <div className="ml-[6px]">
+      <div
+        className="ml-[6px]"
+        style={{
+          marginLeft: nameMarginLeft ? nameMarginLeft : "6px",
+        }}
+      >
         <div className=" font-semibold text-[20px]">
           {userInfo?.username}&apos; Club
         </div>
@@ -46,7 +55,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({ userInfo1 }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default UserHeader
+export default UserHeader;

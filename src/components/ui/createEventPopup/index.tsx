@@ -4,8 +4,7 @@ import Image from "next/image";
 import Button from "@/components/custom/button";
 import Search from "@/components/custom/search";
 import plusIcon from "@/assets/popup/plus.svg";
-import { Switch } from "antd";
-import "./index.css";
+import Switch from "@/components/custom/switch";
 interface Props {
   // Define your component props here
   showPopupBuy: boolean;
