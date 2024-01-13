@@ -8,17 +8,19 @@ import Button from "@/components/custom/button";
 
 interface ProfileCardProps {
   currentTab: number;
+  onClickEdit?: () => void;
+  onClickAccept?: () => void;
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = (props) => {
-  const { currentTab } = props;
+  const { currentTab, onClickEdit, onClickAccept } = props;
 
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
   return (
-    <div className="w-full border-[#0D0D0D] border-solid border-[2px] p-[12px] rounded-[10px]">
+    <div className="min-w-[323px] border-[#0D0D0D] border-solid border-[2px] p-[10px] rounded-[10px]">
       <div className="flex items-center justify-between">
-        <div className="flex items-center">
-          <div className="py-[2px] px-[8px] border-[#0D0D0D] border-solid border-[1px] rounded-[10px] flex items-center">
+        <div className="flex items-center font-medium">
+          <div className="py-[2px] px-[8px] border-[#0D0D0D] border-solid border-[1px] rounded-[10px] flex items-center ">
             <Image src={bellIcon} alt="" width={12} height={12}></Image>
             <div className="text-[11px] ml-[3px]">Begins at 10:20 am</div>
           </div>
@@ -28,7 +30,17 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
             <div className="text-[11px] ml-[3px]">EVENT</div>
           </div>
         </div>
-        <Image src={editIcon} alt="" width={16} height={16}></Image>
+        <Image
+          src={editIcon}
+          alt=""
+          className=" cursor-pointer"
+          width={16}
+          height={16}
+          onClick={() => {
+            console.log("click");
+            onClickEdit && onClickEdit();
+          }}
+        ></Image>
       </div>
 
       <div className="font-semibold text-[18px] mt-[2px]">
@@ -44,9 +56,9 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
           <Button
             hideBottomBackground={true}
             active={false}
-            width="303px"
+            width="301px"
             height="36px"
-            text={"Confirm"}
+            text={"Let's Roll"}
             color={"#fff"}
             normalBackGround={"#0D0D0D"}
             borderRadius="27px"
@@ -61,7 +73,7 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
           <Button
             hideBottomBackground={true}
             active={false}
-            width="303px"
+            width="301px"
             height="36px"
             text={"Confirm"}
             color={"#fff"}
@@ -74,15 +86,16 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
           ></Button>
         </div>
       ) : (
-        <div className="mt-[12px] flex">
+        <div className="mt-[12px] flex h-[36px]">
           <Button
             active={false}
             width="116px"
             height={hideButtonBg ? "36px" : "34px"}
-            text={"Sell"}
+            text={"No"}
             background="#fff"
             borderRadius="24px"
             border="2px solid #0D0D0D"
+            color="#E42222"
             hideBottomBackground={hideButtonBg}
             onMouseEnter={() => {
               setHideButtonBg(true);
@@ -97,13 +110,15 @@ const ProfileCard: React.FC<ProfileCardProps> = (props) => {
               active={false}
               width="177px"
               height="34px"
-              text={"buy"}
+              text={"Accept"}
               background="#0D0D0D"
               borderRadius="24px"
               border="2px solid #0D0D0D"
               normalBackGround="#0D0D0D"
               color="#fff"
-              buttonClick={() => {}}
+              buttonClick={() => {
+                onClickAccept && onClickAccept();
+              }}
             ></Button>
           </div>
         </div>

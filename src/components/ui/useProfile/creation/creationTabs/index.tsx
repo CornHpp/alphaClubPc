@@ -15,16 +15,17 @@ const lists = [
 interface tabsProps {
   currentTab: number;
   setCurrentTab: (currentTab: number) => void;
+  tabList?: Array<any>;
 }
 const CreationTabs: React.FC<tabsProps> = (props) => {
-  const { currentTab, setCurrentTab } = props as tabsProps;
+  const { currentTab, setCurrentTab, tabList = lists } = props as tabsProps;
   return (
     <div className="flex">
-      {lists.map((item, index) => {
+      {tabList.map((item, index) => {
         return (
           <div
             key={index + "q"}
-            className="mr-[4px] text-[12px] py-[3px] px-[10px]  rounded-[16px] cursor-pointer flex items-center justify-center"
+            className="mr-[4px] text-[12px] py-[3px] px-[10px] font-medium  rounded-[16px] cursor-pointer flex items-center justify-center"
             style={{
               fontWeight: index === currentTab ? "600" : "500",
               border:

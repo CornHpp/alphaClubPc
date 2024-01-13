@@ -1,25 +1,25 @@
-import React from "react"
-import PopupView from "../popup"
-import ETHIcon from "@/assets/popup/ETH.svg"
-import Image from "next/image"
-import Button from "@/components/custom/button"
-import Search from "@/components/custom/search"
-import TimeLine from "@/components/custom/timeLine"
+import React from "react";
+import PopupView from "../popup";
+import ETHIcon from "@/assets/popup/ETH.svg";
+import Image from "next/image";
+import Button from "@/components/custom/button";
+import Search from "@/components/custom/search";
+import TimeLine from "@/components/custom/timeLine";
 
 interface Props {
   // Define your component props here
-  showPopupBuy: boolean
-  setShowPopupBuy: (showPopupBuy: boolean) => void
+  showPopupBuy: boolean;
+  setShowPopupBuy: (showPopupBuy: boolean) => void;
 }
 
 const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
-  const [selectedPrice, setSelectedPrice] = React.useState(0)
+  const [selectedPrice, setSelectedPrice] = React.useState(0);
   return (
     <PopupView
       showPopup={showPopupBuy}
       handleCancel={() => {
-        setShowPopupBuy(false)
-        setSelectedPrice(0)
+        setShowPopupBuy(false);
+        setSelectedPrice(0);
       }}
     >
       <div className="">
@@ -32,8 +32,8 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
         <div className="mt-[16px]">
           <TimeLine
             onSelectPrice={(val) => {
-              console.log(val)
-              setSelectedPrice(val)
+              console.log(val);
+              setSelectedPrice(val);
             }}
           ></TimeLine>
         </div>
@@ -41,8 +41,8 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
         <div className="mt-[12px]">
           <Search
             width={323}
-            height={50}
-            placeholder="min 0.001"
+            height={54}
+            placeholder="Key Number"
             rightNode={
               <div
                 className="text-[16px] font-medium
@@ -92,13 +92,13 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
             borderRadius="27px"
             border="none"
             buttonClick={() => {
-              console.log("click")
+              console.log("click");
             }}
           ></Button>
         </div>
       </div>
     </PopupView>
-  )
-}
+  );
+};
 
-export default SellPopupView
+export default SellPopupView;

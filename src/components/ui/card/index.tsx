@@ -1,38 +1,51 @@
-import React from "react"
-import UserHeader from "@/components/ui/userHeader"
-import { userInfoType } from "@/components/ui/userHeader"
-import Image from "next/image"
-import handLoveSign from "@/assets/home/handLoveSign.svg"
-import ethereum from "@/assets/home/ethereum.svg"
-import Button from "@/components/custom/button"
-import Carousel from "@/components/ui/Carousel"
+import React from "react";
+import UserHeader from "@/components/ui/userHeader";
+import { userInfoType } from "@/components/ui/userHeader";
+import Image from "next/image";
+import handLoveSign from "@/assets/home/handLoveSign.svg";
+import ethereum from "@/assets/home/ethereum.svg";
+import Button from "@/components/custom/button";
+import Carousel from "@/components/ui/Carousel";
+import rightArrow from "@/assets/home/rightArrow.svg";
+import { useRouter } from "next/navigation";
 type CardType = {
-  userInfo: userInfoType
-}
+  userInfo: userInfoType;
+};
 
 interface CardProps {
-  item: CardType
-  onClickBuy: () => void
-  onClickSell: () => void
+  item: CardType;
+  onClickBuy: () => void;
+  onClickSell: () => void;
 }
 
 const Card: React.FC<CardProps> = ({ item, onClickBuy, onClickSell }) => {
-  const [hideButtonBg, setHideButtonBg] = React.useState(false)
+  const [hideButtonBg, setHideButtonBg] = React.useState(false);
+  const router = useRouter();
 
   return (
-    <div className="rounded-[16px] border-[2px] border-[#0D0D0D] border-solid w-[355px] h-[355px] mr-[24px] mb-[24px]">
+    <div className="rounded-[16px] border-[2px] border-[#0D0D0D] border-solid w-[355px] h-[355px] mr-[24px] mb-[24px] bg-[#fff]">
       <div
-        className="h-[80px] flex items-center pl-[16px]"
+        className="h-[80px] flex items-center pl-[16px] w-full justify-between cursor-pointer"
         style={{
           borderBottom: "2px solid #0D0D0D",
         }}
+        onClick={() => {
+          router.push("/profile");
+        }}
       >
         <UserHeader></UserHeader>
+        <Image
+          src={rightArrow}
+          alt=""
+          width={16}
+          height={16}
+          className="mr-[16px]"
+        ></Image>
       </div>
 
       <Carousel></Carousel>
 
-      <div className="my-[16px] mx-[16px] flex items-center">
+      <div className="mb-[16px] mx-[16px] flex items-center">
         <div className="">
           <div className="text-[14px] text-[#404140] font-medium">Holders</div>
           <div className="flex items-center mt-[6px]">
@@ -76,13 +89,13 @@ const Card: React.FC<CardProps> = ({ item, onClickBuy, onClickSell }) => {
           border="2px solid #0D0D0D"
           hideBottomBackground={hideButtonBg}
           onMouseEnter={() => {
-            setHideButtonBg(true)
+            setHideButtonBg(true);
           }}
           buttonClick={() => {
-            onClickSell()
+            onClickSell();
           }}
           onMouseLeave={() => {
-            setHideButtonBg(false)
+            setHideButtonBg(false);
           }}
         ></Button>
         <Button
@@ -96,12 +109,12 @@ const Card: React.FC<CardProps> = ({ item, onClickBuy, onClickSell }) => {
           normalBackGround="#0D0D0D"
           color="#fff"
           buttonClick={() => {
-            onClickBuy()
+            onClickBuy();
           }}
         ></Button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Card
+export default Card;

@@ -10,7 +10,7 @@ const HoldCard: React.FC<HoldCardProps> = () => {
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
   return (
-    <div className="border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[12px]">
+    <div className="border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[10px]">
       <UserHeader></UserHeader>
 
       <div className="flex items-center mt-[12px]">
@@ -47,10 +47,10 @@ const HoldCard: React.FC<HoldCardProps> = () => {
         </div>
       </div>
 
-      <div className="flex items-center px-[16px] w-full justify-between h-[44px] mt-[12px]">
+      <div className="flex items-center  w-full justify-between h-[36px]  mt-[12px]">
         <Button
           active={false}
-          width="147px"
+          width="140px"
           height={hideButtonBg ? "36px" : "34px"}
           text={"Sell"}
           background="#fff"
@@ -69,7 +69,7 @@ const HoldCard: React.FC<HoldCardProps> = () => {
         ></Button>
         <Button
           active={false}
-          width="147px"
+          width="140px"
           height="36px"
           text={"buy"}
           background="#0D0D0D"

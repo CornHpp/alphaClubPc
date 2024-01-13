@@ -1,5 +1,5 @@
 .scrollLeft {
-  white-space: nowrap; /* 保持内容在一行 */
+  white-space: nowrap;
   animation: scrollLe 15s linear infinite; /* 定义动画 */
 }
 @keyframes scrollLe {

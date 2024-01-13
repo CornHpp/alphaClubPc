@@ -18,7 +18,11 @@ const UserInfoView: React.FC<Props> = (props) => {
   const { onOpenDepositPopup, onOpenWithdrawPopup, onOpenExportWalletPopup } =
     props;
 
-  const [hideButtonBg, setHideButtonBg] = React.useState(false);
+  const [widthDrawHideButtonBg, setWidthDrawHideButtonBg] =
+    React.useState(false);
+
+  const [exportWalletHideButtonBg, setExportWalletHideButtonBg] =
+    React.useState(false);
 
   return (
     <div className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid  bg-[#D8FCD1]">
@@ -46,7 +50,7 @@ const UserInfoView: React.FC<Props> = (props) => {
 
       <div className="pt-[12px] pl-[14px] flex items-center bg-white">
         <div className=""></div>
-        <div className="w-[110px]">
+        <div className="w-[114px]">
           <div className="text-[14px] text-[#404140] font-medium">Holders</div>
           <div className="flex items-center mt-[2px]">
             <Image src={handLoveSign} alt="" width={18} height={18}></Image>
@@ -116,20 +120,20 @@ const UserInfoView: React.FC<Props> = (props) => {
           <Button
             active={false}
             width="154px"
-            height={hideButtonBg ? "48px" : "46px"}
+            height={widthDrawHideButtonBg ? "48px" : "46px"}
             text={"Withdraw"}
             background="#fff"
             borderRadius="24px"
             border="2px solid #0D0D0D"
-            hideBottomBackground={hideButtonBg}
+            hideBottomBackground={widthDrawHideButtonBg}
             onMouseEnter={() => {
-              setHideButtonBg(true);
+              setWidthDrawHideButtonBg(true);
             }}
             buttonClick={() => {
               onOpenWithdrawPopup();
             }}
             onMouseLeave={() => {
-              setHideButtonBg(false);
+              setWidthDrawHideButtonBg(false);
             }}
           ></Button>
 
@@ -137,20 +141,20 @@ const UserInfoView: React.FC<Props> = (props) => {
             <Button
               active={false}
               width="154px"
-              height={hideButtonBg ? "48px" : "46px"}
+              height={exportWalletHideButtonBg ? "48px" : "46px"}
               text={"Export wallet"}
               background="#fff"
               borderRadius="24px"
               border="2px solid #0D0D0D"
-              hideBottomBackground={hideButtonBg}
+              hideBottomBackground={exportWalletHideButtonBg}
               onMouseEnter={() => {
-                setHideButtonBg(true);
+                setExportWalletHideButtonBg(true);
               }}
               buttonClick={() => {
                 onOpenExportWalletPopup();
               }}
               onMouseLeave={() => {
-                setHideButtonBg(false);
+                setExportWalletHideButtonBg(false);
               }}
             ></Button>
           </div>

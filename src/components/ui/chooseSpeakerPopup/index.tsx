@@ -1,20 +1,21 @@
-import React, { useState } from "react"
-import PopupView from "../popup"
-import Image from "next/image"
-import Button from "@/components/custom/button"
-import Search from "@/components/custom/search"
-import plusIcon from "@/assets/popup/plus.svg"
-import BackIcon from "@/assets/popup/back.svg"
-import { Switch } from "antd"
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
-import rightIcon from "@/assets/popup/right.svg"
+import React, { useState } from "react";
+import PopupView from "../popup";
+import Image from "next/image";
+import Button from "@/components/custom/button";
+import Search from "@/components/custom/search";
+import plusIcon from "@/assets/popup/plus.svg";
+import BackIcon from "@/assets/popup/back.svg";
+import { Switch } from "antd";
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
+import rightIcon from "@/assets/popup/right.svg";
 
-import "./index.css"
+import "./index.css";
+import PersonHeadImg from "../createEventPopup/personHeadImg";
 interface Props {
   // Define your component props here
-  showPopupBuy: boolean
-  setShowPopupBuy: (showPopupBuy: boolean) => void
-  onClickBack: () => void
+  showPopupBuy: boolean;
+  setShowPopupBuy: (showPopupBuy: boolean) => void;
+  onClickBack: () => void;
 }
 
 const ChooseSpeakerPopup: React.FC<Props> = ({
@@ -22,9 +23,9 @@ const ChooseSpeakerPopup: React.FC<Props> = ({
   showPopupBuy,
   onClickBack,
 }) => {
-  const [selectedPrice, setSelectedPrice] = React.useState(0)
+  const [selectedPrice, setSelectedPrice] = React.useState(0);
 
-  const [hideButtonBg, setHideButtonBg] = React.useState(false)
+  const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
   const [searchPeopleList, setSearchPeopleList] = React.useState([
     {},
@@ -32,23 +33,28 @@ const ChooseSpeakerPopup: React.FC<Props> = ({
     {},
     {},
     {},
-  ])
+    {},
+    {},
+    {},
+    {},
+    {},
+  ]);
 
-  const [selectedPersons, setSelectedPerson] = useState<number[]>([1])
+  const [selectedPersons, setSelectedPerson] = useState<number[]>([1]);
 
   return (
     <PopupView
       width={400}
       showPopup={showPopupBuy}
       handleCancel={() => {
-        setShowPopupBuy(false)
-        setSelectedPrice(0)
+        setShowPopupBuy(false);
+        setSelectedPrice(0);
       }}
       titleText={
         <div
           className="flex items-center cursor-pointer"
           onClick={() => {
-            onClickBack()
+            onClickBack();
           }}
         >
           <Image
@@ -74,7 +80,7 @@ const ChooseSpeakerPopup: React.FC<Props> = ({
 
       <div className="h-[224px] w-[397px] overflow-y-scroll ml-[-16px] relative openScroll">
         {searchPeopleList.map((item, index) => {
-          const isSelectIndex = selectedPersons.indexOf(index)
+          const isSelectIndex = selectedPersons.indexOf(index);
           return (
             <div
               key={index + "1"}
@@ -84,11 +90,11 @@ const ChooseSpeakerPopup: React.FC<Props> = ({
               }}
               onClick={() => {
                 if (isSelectIndex != -1) {
-                  selectedPersons.splice(isSelectIndex, 1)
-                  setSelectedPerson([...selectedPersons])
-                  return
+                  selectedPersons.splice(isSelectIndex, 1);
+                  setSelectedPerson([...selectedPersons]);
+                  return;
                 }
-                setSelectedPerson([...selectedPersons, index])
+                setSelectedPerson([...selectedPersons, index]);
               }}
             >
               <div className="flex items-center">
@@ -111,8 +117,25 @@ const ChooseSpeakerPopup: React.FC<Props> = ({
                 ></Image>
               )}
             </div>
-          )
+          );
         })}
+      </div>
+
+      <div className="my-[16px]">
+        <div className="text-[14px] font-medium w-full flex items-center justify-between">
+          <div>Selected Users</div>
+          <div>3/10</div>
+        </div>
+
+        <div className="mt-[4px] flex items-center w-full flex-wrap">
+          {selectedPersons.map((item, index) => {
+            return (
+              <div key={index + "a"} className="mt-[8px]">
+                <PersonHeadImg></PersonHeadImg>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
       <div className="mt-[24px]">
@@ -127,12 +150,12 @@ const ChooseSpeakerPopup: React.FC<Props> = ({
           borderRadius="27px"
           border="none"
           buttonClick={() => {
-            console.log("click")
+            console.log("click");
           }}
         ></Button>
       </div>
     </PopupView>
-  )
-}
+  );
+};
 
-export default ChooseSpeakerPopup
+export default ChooseSpeakerPopup;

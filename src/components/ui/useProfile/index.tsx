@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import UserInfoView from "./userInfo";
 import CreationvView from "./creation";
@@ -25,8 +26,7 @@ const UseProfileView: React.FC<Props> = () => {
   const [showPopupWithdraw, setShowPopupWithdraw] = React.useState(false);
   const [showPopupExportWallet, setShowPopupExportWallet] =
     React.useState(false);
-  const [showPopupAcceptCoHost, setShowPopupAcceptCoHost] =
-    React.useState(false);
+
   return (
     <div className="mt-[24px] w-full">
       <div className=" flex w-full justify-between pr-[39px] items-center">
@@ -79,8 +79,7 @@ const UseProfileView: React.FC<Props> = () => {
         <div className="mr-[24px]">
           <UserInfoView
             onOpenExportWalletPopup={() => {
-              // setShowPopupExportWallet(true);
-              setShowPopupAcceptCoHost(true);
+              setShowPopupExportWallet(true);
             }}
             onOpenWithdrawPopup={() => {
               setShowPopupWithdraw(true);
@@ -154,17 +153,6 @@ const UseProfileView: React.FC<Props> = () => {
           console.log("onClickSchedule");
         }}
       ></ExportWalletPopop>
-
-      <AcceptCoHostPopup
-        showPopup={showPopupAcceptCoHost}
-        setShowPopup={setShowPopupAcceptCoHost}
-        onClickSelectCoHost={() => {
-          console.log("onClickSelectCoHost");
-        }}
-        onClickSchedule={() => {
-          console.log("onClickSchedule");
-        }}
-      ></AcceptCoHostPopup>
     </div>
   );
 };

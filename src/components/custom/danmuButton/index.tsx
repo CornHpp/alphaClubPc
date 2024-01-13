@@ -1,16 +1,16 @@
-import React from "react"
-import Image from "next/image"
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
+import React from "react";
+import Image from "next/image";
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
 
 interface DanmuButtonProps {
-  text?: string
-  onClick?: () => void
+  text?: string;
+  onClick?: () => void;
 }
 const userInfo = {
   username: "username",
   avatar: defaultHeaderIcon,
   followers: 100,
-}
+};
 
 const DanmuButton: React.FC<DanmuButtonProps> = ({ text, onClick }) => {
   return (
@@ -40,7 +40,7 @@ const DanmuButton: React.FC<DanmuButtonProps> = ({ text, onClick }) => {
         <div className="text-[14px] font-semibold text-[#005A0E]">0.42ETH</div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default DanmuButton
+export default DanmuButton;

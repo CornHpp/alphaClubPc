@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import localFont from "next/font/local";
+import AppLayout from "./appLayout";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -46,7 +47,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${Poppins.className}`}>{children}</body>
+      <body className={`${Poppins.className}`}>
+        <AppLayout> {children}</AppLayout>
+      </body>
     </html>
   );
 }

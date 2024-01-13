@@ -17,20 +17,27 @@ const userInfo = {
 interface UserHeaderProps {
   userInfo1?: userInfoType;
   nameMarginLeft?: string;
+  headerWidth?: number;
+  titleSize?: string;
 }
 
 const UserHeader: React.FC<UserHeaderProps> = ({
   userInfo1,
   nameMarginLeft,
+  headerWidth = 44,
+  titleSize = "20px",
 }) => {
   return (
     <div className="flex items-center">
       <Image
         src={userInfo?.avatar}
         alt=""
-        className="w-[44px] h-[44px]"
-        width={44}
-        height={44}
+        style={{
+          width: headerWidth + "px",
+          height: headerWidth + "px",
+        }}
+        width={headerWidth}
+        height={headerWidth}
       ></Image>
       <div
         className="ml-[6px]"
@@ -38,7 +45,12 @@ const UserHeader: React.FC<UserHeaderProps> = ({
           marginLeft: nameMarginLeft ? nameMarginLeft : "6px",
         }}
       >
-        <div className=" font-semibold text-[20px]">
+        <div
+          className=" font-semibold text-[20px]"
+          style={{
+            fontSize: titleSize,
+          }}
+        >
           {userInfo?.username}&apos; Club
         </div>
         <div className="flex items-center text-[12px] text-[#404140]">

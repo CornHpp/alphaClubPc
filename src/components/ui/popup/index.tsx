@@ -2,6 +2,7 @@ import React, { Children } from "react";
 import UserHeader from "../userHeader";
 import Image from "next/image";
 import closeIcon from "@/assets/popup/close.svg";
+import closeHover from "@/assets/popup/closeHover.svg";
 
 interface PopupProps {
   handleOk?: () => void;
@@ -23,6 +24,8 @@ const PopupView: React.FC<PopupProps> = (props) => {
     titleText,
     showCloseImage = true,
   } = props;
+
+  const [hoverCloseImage, setHoverCloseImage] = React.useState(false);
   return (
     <>
       {showPopup && (
@@ -48,14 +51,38 @@ const PopupView: React.FC<PopupProps> = (props) => {
               {titleText ? titleText : <UserHeader></UserHeader>}
 
               {showCloseImage ? (
-                <Image
-                  src={closeIcon}
-                  onClick={handleCancel}
-                  alt=""
-                  width={38}
-                  height={37}
-                  className="cursor-pointer"
-                ></Image>
+                <>
+                  {hoverCloseImage ? (
+                    <Image
+                      src={closeHover}
+                      alt=""
+                      width={38}
+                      height={37}
+                      className="cursor-pointer"
+                      onMouseEnter={() => {
+                        setHoverCloseImage(true);
+                      }}
+                      onClick={handleCancel}
+                      onMouseLeave={() => {
+                        setHoverCloseImage(false);
+                      }}
+                    ></Image>
+                  ) : (
+                    <Image
+                      src={closeIcon}
+                      alt=""
+                      width={38}
+                      height={37}
+                      className="cursor-pointer"
+                      onMouseEnter={() => {
+                        setHoverCloseImage(true);
+                      }}
+                      onMouseLeave={() => {
+                        setHoverCloseImage(false);
+                      }}
+                    ></Image>
+                  )}
+                </>
               ) : (
                 <> </>
               )}
