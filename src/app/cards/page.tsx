@@ -10,6 +10,15 @@ import Image from "next/image";
 import loveWhiteIcon from "@/assets/cards/loveWhiteIcon.svg";
 import loveBlackIcon from "@/assets/cards/loveBlackIcon.svg";
 import personAddIcon from "@/assets/cards/personAddIcon.svg";
+import champion from "@/assets/cards/champion.svg";
+import secondPlace from "@/assets/cards/secondplace.svg";
+import thirdWinner from "@/assets/cards/thirdWinner.svg";
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
+import personIcon from "@/assets/cards/personIcon.svg";
+import handLoveSign from "@/assets/home/handLoveSign.svg";
+import ETHIcon from "@/assets/popup/ETH.svg";
+
+import twitterIcon from "@/assets/home/twitterIcon.svg";
 
 interface Props {
   // Define your props here
@@ -17,7 +26,7 @@ interface Props {
 
 const Page: React.FC<Props> = () => {
   const [currentTab, setCurrentTab] = React.useState(0);
-
+  const [list, setList] = React.useState([1, 2, 3]);
   return (
     <div className="mt-[24px] w-full">
       <div className=" flex w-full justify-between pr-[39px] items-center">
@@ -40,7 +49,118 @@ const Page: React.FC<Props> = () => {
               "linear-gradient(128deg, #FDFFF4 0%, #F5FFF2 47%, #FFFEE2 100%)",
           }}
         >
-          <div className="Top Clubs">111</div>
+          <div className="p-[14px]">
+            <div className="text-[20px] font-bold">Top Clubs</div>
+
+            <div className="flex items-end">
+              {list.map((item, index) => {
+                return (
+                  <div className="mr-[8px] relative">
+                    <Image
+                      src={
+                        index == 0
+                          ? secondPlace
+                          : index == 1
+                          ? champion
+                          : thirdWinner
+                      }
+                      alt=""
+                      width={173}
+                      height={index == 1 ? 229 : 200}
+                    ></Image>
+                    <div className="absolute left-0 top-0 w-full h-full">
+                      <div className="mt-[32px] ml-[8px] flex items-end">
+                        <Image
+                          src={defaultHeaderIcon}
+                          alt=""
+                          width={51}
+                          height={51}
+                          className="w-[51px] h-[51px]"
+                        ></Image>
+                        <div className="text-[16px] font-bold">Jim</div>
+                      </div>
+
+                      <div className="pt-[6px]  flex items-center ml-[6px]">
+                        <div className="">
+                          <div className="flex items-center text-[12px] text-[#404140]">
+                            <Image
+                              src={twitterIcon}
+                              className="w-[12px] h-[12px]"
+                              alt=""
+                              width={12}
+                              height={12}
+                            ></Image>
+                            <div className="ml-[2px] text-[12px] font-medium">
+                              @Dekid
+                            </div>
+                          </div>
+                          <div className="text-[14px] font-semibold">
+                            @Gooy10
+                          </div>
+                        </div>
+                        <div className="w-[2px] h-[12px] ml-[12px] mr-[8px] bg-[#0D0D0D] rounded-[2px]"></div>
+
+                        <div className="">
+                          <div className="flex items-center text-[12px] text-[#404140]">
+                            <Image
+                              src={personIcon}
+                              className="w-[12px] h-[12px]"
+                              alt=""
+                              width={12}
+                              height={12}
+                            ></Image>
+                            <div className="ml-[2px] text-[11px] font-medium text-[#404140]">
+                              Followers
+                            </div>
+                          </div>
+                          <div className="text-[14px] font-semibold">1.5K</div>
+                        </div>
+                      </div>
+
+                      <div className=" w-full pt-[10px] px-[6px]  ">
+                        <div className="border-[#0D0D0D] border-[2px]  h-[50px] border-solid rounded-[8px] flex flex-col items-center justify-center ">
+                          <div className="flex font-semibold mb-[-2px] items-center">
+                            <Image
+                              src={ETHIcon}
+                              alt=""
+                              width={16}
+                              height={16}
+                              className="w-[16px] h-[16px] mr-[2px]"
+                            ></Image>
+                            104 ETH
+                          </div>
+                          <div className="flex items-center">
+                            <Image
+                              src={handLoveSign}
+                              alt=""
+                              className="w-[12px] h-[12px]"
+                              width={12}
+                              height={12}
+                            ></Image>
+                            <div className="text-[#404140]  ml-[2px] text-[12px]">
+                              Holder:242
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+
+              {/* <div className="mr-[8px]">
+                <Image src={champion} alt="" width={173} height={229}></Image>
+              </div>
+              <div>
+                <Image
+                  src={thirdWinner}
+                  alt=""
+                  width={173}
+                  height={200}
+                ></Image>
+              </div> */}
+            </div>
+          </div>
 
           <div className="rankOrder p-[12px] bg-[#fff]  rounded-[12px] w-[563px] ml-[-2px] border-[2px] border-[#0D0D0D] border-solid">
             <div className="flex">

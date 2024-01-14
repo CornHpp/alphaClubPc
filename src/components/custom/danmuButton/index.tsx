@@ -19,7 +19,7 @@ const DanmuButton: React.FC<DanmuButtonProps> = ({ text, onClick }) => {
       bg-[#C0FFD2]
      flex-shrink-0
      min-w-min
- 
+    w-[159px]
       "
       style={{
         flexBasis: "auto",

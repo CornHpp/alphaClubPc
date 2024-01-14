@@ -6,6 +6,7 @@ import logo from "@/assets/home/logo.svg";
 import Button from "@/components/custom/button";
 import smallHouse from "@/assets/home/smallHouse.svg";
 import key from "@/assets/home/key.svg";
+import airdropIcon from "@/assets/home/airdropIcon.svg";
 import leftBg from "@/assets/home/leftBG.svg";
 import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
 import twitterIcon from "@/assets/home/twitterIcon.svg";
@@ -25,6 +26,11 @@ const buttonLists = [
     img: key,
     text: "Cards",
     router: "/cards",
+  },
+  {
+    img: airdropIcon,
+    text: "Airdrop",
+    router: "/airdrop",
   },
 ];
 
