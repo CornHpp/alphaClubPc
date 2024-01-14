@@ -17,7 +17,7 @@ import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
 import personIcon from "@/assets/cards/personIcon.svg";
 import handLoveSign from "@/assets/home/handLoveSign.svg";
 import ETHIcon from "@/assets/popup/ETH.svg";
-
+import CustomScrollbar from "@/components/custom/scroll";
 import twitterIcon from "@/assets/home/twitterIcon.svg";
 
 interface Props {
@@ -26,7 +26,10 @@ interface Props {
 
 const Page: React.FC<Props> = () => {
   const [currentTab, setCurrentTab] = React.useState(0);
-  const [list, setList] = React.useState([1, 2, 3]);
+  const [list, setList] = React.useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+  const [paimingList, setPaimingList] = React.useState([1, 2, 3]);
+  const [scrollItemClientHeight, setScrollItemClientHeight] =
+    React.useState<number>(0);
   return (
     <div className="mt-[24px] w-full">
       <div className=" flex w-full justify-between pr-[39px] items-center">
@@ -41,9 +44,9 @@ const Page: React.FC<Props> = () => {
         </div>
       </div>
 
-      <div className="mt-[24px] flex ">
+      <div className="mt-[24px] flex">
         <div
-          className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] h-[596px] w-[563px] mr-[24px]"
+          className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] h-[596px] w-[563px] mr-[24px] flex-col flex"
           style={{
             background:
               "linear-gradient(128deg, #FDFFF4 0%, #F5FFF2 47%, #FFFEE2 100%)",
@@ -52,10 +55,16 @@ const Page: React.FC<Props> = () => {
           <div className="p-[14px]">
             <div className="text-[20px] font-bold">Top Clubs</div>
 
-            <div className="flex items-end">
-              {list.map((item, index) => {
+            <div className="flex items-end justify-between">
+              {paimingList.map((item, index) => {
                 return (
-                  <div className="mr-[8px] relative">
+                  <div
+                    className=" relative"
+                    key={index + "w"}
+                    style={{
+                      marginRight: index == 2 ? "0px" : "8px",
+                    }}
+                  >
                     <Image
                       src={
                         index == 0
@@ -69,7 +78,12 @@ const Page: React.FC<Props> = () => {
                       height={index == 1 ? 229 : 200}
                     ></Image>
                     <div className="absolute left-0 top-0 w-full h-full">
-                      <div className="mt-[32px] ml-[8px] flex items-end">
+                      <div
+                        className="mt-[32px] ml-[8px] flex items-end"
+                        style={{
+                          marginTop: index == 1 ? "48px" : "32px",
+                        }}
+                      >
                         <Image
                           src={defaultHeaderIcon}
                           alt=""
@@ -147,34 +161,47 @@ const Page: React.FC<Props> = () => {
                   </div>
                 );
               })}
-
-              {/* <div className="mr-[8px]">
-                <Image src={champion} alt="" width={173} height={229}></Image>
-              </div>
-              <div>
-                <Image
-                  src={thirdWinner}
-                  alt=""
-                  width={173}
-                  height={200}
-                ></Image>
-              </div> */}
             </div>
           </div>
 
-          <div className="rankOrder p-[12px] bg-[#fff]  rounded-[12px] w-[563px] ml-[-2px] border-[2px] border-[#0D0D0D] border-solid">
-            <div className="flex">
-              <div className="w-[43px] flex items-center italic text-[20px]">
-                <div className="">
-                  4<span className="text-[12px]">th</span>
-                </div>
+          <div className=" py-[12px] pl-[12px] bg-[#fff]  rounded-[12px] w-[563px] ml-[-2px] border-[2px] border-[#0D0D0D] border-solid flex-1 mb-[-2px]">
+            <CustomScrollbar
+              distanceClientHeight={
+                // todo:这里得到滚动到最底部的方法，scrollItemClientHeight为每个滚动元素的高度，16为每个marginbottom，list.length为滚动元素的个数，16为最后一个item元素之间的间距
+                (scrollItemClientHeight + 16) * list.length - 16 - 332
+              }
+              onloadMore={() => {
+                console.log("loadmore");
+              }}
+            >
+              <div className="h-[332px]">
+                {list.map((item, index) => {
+                  var scrollItemId = document.getElementById("scrollItemId");
+                  if (!scrollItemClientHeight) {
+                    setScrollItemClientHeight(scrollItemId?.clientHeight || 0);
+                  }
+                  return (
+                    <div
+                      id="scrollItemId"
+                      className="flex items-center mb-[16px] mr-[14px]"
+                      key={index + "q"}
+                    >
+                      <div className="w-[43px] flex items-center italic text-[20px]">
+                        <div className="">
+                          {index + 4}
+                          <span className="text-[12px]">th</span>
+                        </div>
+                      </div>
+                      <UserPrice></UserPrice>
+                    </div>
+                  );
+                })}
               </div>
-              <UserPrice></UserPrice>
-            </div>
+            </CustomScrollbar>
           </div>
         </div>
 
-        <div className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] h-[596px] w-[563px] px-[14px] pt-[14px] bg-[#fff]">
+        <div className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] h-[596px] w-[563px] px-[14px] pt-[14px] bg-[#fff] flex flex-col">
           <div className="text-[20px] font-bold">Twitter Friends</div>
 
           <div className="mt-[12px]">
@@ -191,38 +218,78 @@ const Page: React.FC<Props> = () => {
               ]}
             ></CreationTabs>
           </div>
-          <div className="mt-[16px] ">
-            <div className="flex items-center mb-[16px]">
-              <UserPrice></UserPrice>
-              <div className="ml-[32px]">
-                <Button
-                  hideBottomBackground={true}
-                  active={false}
-                  width="113px"
-                  height="40px"
-                  text={"0 Polls"}
-                  color={"#fff"}
-                  normalBackGround={"#0D0D0D"}
-                  borderRadius="27px"
-                  border="none"
-                  buttonClick={() => {
-                    console.log("click");
-                  }}
-                >
-                  <Image
-                    src={loveWhiteIcon}
-                    alt=""
-                    width={20}
-                    height={20}
-                  ></Image>
-                </Button>
-              </div>
-            </div>
+          <div className="mt-[16px] flex-1">
+            {list.map((item, index) => {
+              return (
+                <div className="flex items-center mb-[16px]" key={index + "r"}>
+                  <UserPrice></UserPrice>
+                  <div className="ml-[32px]">
+                    {index % 2 == 0 ? (
+                      <Button
+                        hideBottomBackground={true}
+                        active={false}
+                        width="113px"
+                        height="40px"
+                        text={"0 Polls"}
+                        color={"#fff"}
+                        normalBackGround={"#0D0D0D"}
+                        borderRadius="27px"
+                        border="none"
+                        buttonClick={() => {
+                          console.log("click");
+                        }}
+                      >
+                        <Image
+                          src={loveWhiteIcon}
+                          alt=""
+                          width={20}
+                          height={20}
+                        ></Image>
+                      </Button>
+                    ) : (
+                      <Button
+                        hideBottomBackground={true}
+                        active={false}
+                        width="113px"
+                        height="40px"
+                        text={"24 Polls"}
+                        color={"#0D0D0D"}
+                        normalBackGround={"#00FC6E"}
+                        borderRadius="27px"
+                        border="none"
+                        buttonClick={() => {
+                          console.log("click");
+                        }}
+                      >
+                        <Image
+                          src={loveBlackIcon}
+                          alt=""
+                          width={20}
+                          height={20}
+                        ></Image>
+                      </Button>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
     </div>
   );
+};
+
+const renderThumb = ({ ...props }) => {
+  //设置滚动条的样式
+  const thumbStyle = {
+    width: "8px",
+    backgroundColor: "#000000",
+    opacity: "0.2",
+    borderRadius: "6px",
+    right: "4px",
+  };
+  return <div style={{ ...thumbStyle }} {...props} />;
 };
 
 export default Page;

@@ -9,7 +9,18 @@ interface RollProps {
 }
 
 const Roll: React.FC<RollProps> = ({ leftOrRight, isCardsDanmu }) => {
-  const [danmuList, setDanmuList] = React.useState([{}, {}, {}, {}, {}]);
+  const [danmuList, setDanmuList] = React.useState([
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+    {},
+  ]);
 
   const [danmuLeft, setDanmuLeft] = React.useState<number>(0); // 弹幕的整体宽度
 
