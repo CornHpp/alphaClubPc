@@ -8,6 +8,8 @@ import Button from "@/components/custom/button";
 import Carousel from "@/components/ui/Carousel";
 import rightArrow from "@/assets/home/rightArrow.svg";
 import { useRouter } from "next/navigation";
+import EventPopup from "../eventPopup";
+import OpenIngEvent from "../openIngEvent";
 type CardType = {
   userInfo: userInfoType;
 };
@@ -16,10 +18,18 @@ interface CardProps {
   item: CardType;
   onClickBuy: () => void;
   onClickSell: () => void;
+  onOpeningEvent: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ item, onClickBuy, onClickSell }) => {
+const Card: React.FC<CardProps> = ({
+  item,
+  onClickBuy,
+  onClickSell,
+  onOpeningEvent,
+}) => {
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
+  const [showEventPopup, setShowEventPopup] = React.useState(false);
+
   const router = useRouter();
 
   return (
@@ -43,7 +53,11 @@ const Card: React.FC<CardProps> = ({ item, onClickBuy, onClickSell }) => {
         ></Image>
       </div>
 
-      <Carousel></Carousel>
+      <Carousel
+        onOpenEventPopup={() => {
+          setShowEventPopup(true);
+        }}
+      ></Carousel>
 
       <div className="mb-[16px] mx-[16px] flex items-center">
         <div className="">
@@ -113,6 +127,19 @@ const Card: React.FC<CardProps> = ({ item, onClickBuy, onClickSell }) => {
           }}
         ></Button>
       </div>
+
+      <EventPopup
+        onClickConfirm={() => {
+          console.log("confirm");
+          onOpeningEvent();
+          setShowEventPopup(false);
+        }}
+        showPopupBuy={showEventPopup}
+        setShowPopupBuy={setShowEventPopup}
+        onClickBack={() => {
+          console.log("back");
+        }}
+      ></EventPopup>
     </div>
   );
 };

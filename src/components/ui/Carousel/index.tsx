@@ -1,24 +1,26 @@
-import React from "react"
-import { Carousel } from "antd"
+import React from "react";
+import { Carousel } from "antd";
 
-import Danmu from "./danmu"
-import Live from "./live"
-import CardBeginView from "./begin"
+import Danmu from "./danmu";
+import Live from "./live";
+import CardBeginView from "./begin";
 
 interface CarouselProps {
   // Define your props here
+  onOpenEventPopup: () => void;
 }
 
-const CarouselView: React.FC<CarouselProps> = () => {
-  const carouseRef = React.useRef(null)
-  const [currentSlide, setCurrentSlide] = React.useState(0)
+const CarouselView: React.FC<CarouselProps> = (props) => {
+  const { onOpenEventPopup } = props;
+  const carouseRef = React.useRef(null);
+  const [currentSlide, setCurrentSlide] = React.useState(0);
 
   const onChange = (val: number) => {
-    setCurrentSlide(val)
+    setCurrentSlide(val);
     if (val !== currentSlide) {
-      ;(carouseRef?.current as any).next()
+      (carouseRef?.current as any).next();
     }
-  }
+  };
 
   const contentStyle: React.CSSProperties = {
     margin: 0,
@@ -27,17 +29,23 @@ const CarouselView: React.FC<CarouselProps> = () => {
     lineHeight: "160px",
     textAlign: "center",
     background: "#364d79",
-  }
-  const [showDanmu, setShowDanmu] = React.useState(true)
+  };
+  const [showDanmu, setShowDanmu] = React.useState(true);
   const onChange1 = (currentSlide: number) => {
-    console.log(currentSlide)
-  }
+    console.log(currentSlide);
+  };
 
   return (
     <div className="w-full px-[16px] py-[16px] ">
       <div className="border-[2px] border-[#0D0D0D] border-solid overflow-hidden rounded-[10px] w-full h-[85px]">
         <Carousel ref={carouseRef} dots={false}>
-          <div className="w-full rounded-[10px] bg-[#D8FCD1] h-[85px] px-[10px] py-[10px]">
+          <div
+            className="w-full rounded-[10px] bg-[#D8FCD1] h-[85px] px-[10px] py-[10px] cursor-pointer"
+            onClick={() => {
+              console.log("click");
+              onOpenEventPopup();
+            }}
+          >
             <Live></Live>
           </div>
           {!showDanmu ? (
@@ -72,18 +80,18 @@ const CarouselView: React.FC<CarouselProps> = () => {
         ></div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 interface ButtonProps {
-  onClick?: () => void
-  text?: string
-  background?: string
-  children?: React.ReactNode
+  onClick?: () => void;
+  text?: string;
+  background?: string;
+  children?: React.ReactNode;
 }
 
 export const SmallButton: React.FC<ButtonProps> = (props) => {
-  const { onClick, text, background, children } = props
+  const { onClick, text, background, children } = props;
   return (
     <div
       className="h-[16px] border-[1px] px-[8px] border-[#0D0D0D] text-[11px] rounded-[8px] flex items-center justify-center font-medium"
@@ -93,7 +101,7 @@ export const SmallButton: React.FC<ButtonProps> = (props) => {
     >
       {children} {text}
     </div>
-  )
-}
+  );
+};
 
-export default CarouselView
+export default CarouselView;

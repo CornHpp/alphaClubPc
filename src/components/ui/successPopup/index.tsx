@@ -6,7 +6,6 @@ import BackIcon from "@/assets/popup/back.svg";
 import type { DatePickerProps } from "antd";
 import celebrateIcon from "@/assets/popup/celebrate.svg";
 
-import "./index.css";
 import CalendarView from "@/components/custom/calendar";
 import twitterIcon from "@/assets/popup/twitterIcon.svg";
 interface Props {

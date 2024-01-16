@@ -1,0 +1,8 @@
+.custom-theme .os-scrollbar-handle {
+  width: 6px !important;
+  background: #fbf5f2;
+  border-radius: 3px;
+  height: 24px !important;
+  background: #0d0d0d;
+  right: 4px !important;
+}

@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import searchIcon from "@/assets/home/searchIcon.svg";
 import Image from "next/image";
-
+import "./index.css";
 interface Props {
   // Add your component props here
   rightNode?: React.ReactNode;
@@ -11,6 +11,9 @@ interface Props {
   height?: number;
   placeholder?: string;
   leftNode?: React.ReactNode;
+  paddingLeft?: string;
+  borderRadius?: string;
+  boxShadow?: string;
 }
 
 const Search: React.FC<Props> = (props) => {
@@ -20,6 +23,9 @@ const Search: React.FC<Props> = (props) => {
     height = 44,
     placeholder = "Search Whatever You Like",
     leftNode,
+    paddingLeft,
+    borderRadius,
+    boxShadow,
   } = props;
   const [search, setSearch] = useState("");
   return (
@@ -35,11 +41,12 @@ const Search: React.FC<Props> = (props) => {
         style={{
           width: width + "px",
           height: height + "px",
-          paddingLeft: leftNode ? "51px" : "16px",
+          paddingLeft: paddingLeft ? paddingLeft : leftNode ? "51px" : "16px",
+          paddingRight: paddingLeft ? "40px" : "44px",
+          borderRadius: borderRadius ? borderRadius : "24px",
         }}
-        className="w-[300px] h-[44px] rounded-[24px]  pr-[44px] border-[#0D0D0D] border-solid border-[2px]
-        focus:shadow-[0px_0px_16px_#00FC6E]
-        "
+        className={`w-[300px] h-[44px] rounded-[24px]   border-[#0D0D0D] border-solid border-[2px]
+        ${boxShadow ? "boxShadow" : "focus:shadow-[0px_0px_16px_#00FC6E]"}`}
         placeholder={placeholder}
         onChange={(e) => setSearch(e.target.value)}
       ></input>

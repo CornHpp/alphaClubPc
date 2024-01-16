@@ -19,6 +19,7 @@ import handLoveSign from "@/assets/home/handLoveSign.svg";
 import ETHIcon from "@/assets/popup/ETH.svg";
 import CustomScrollbar from "@/components/custom/scroll";
 import twitterIcon from "@/assets/home/twitterIcon.svg";
+import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll";
 
 interface Props {
   // Define your props here
@@ -44,9 +45,9 @@ const Page: React.FC<Props> = () => {
         </div>
       </div>
 
-      <div className="mt-[24px] flex">
+      <div className="flex">
         <div
-          className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] h-[596px] w-[563px] mr-[24px] flex-col flex"
+          className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] h-[600px] w-[563px] mr-[24px] flex-col flex overflow-hidden"
           style={{
             background:
               "linear-gradient(128deg, #FDFFF4 0%, #F5FFF2 47%, #FFFEE2 100%)",
@@ -164,44 +165,40 @@ const Page: React.FC<Props> = () => {
             </div>
           </div>
 
-          <div className=" py-[12px] pl-[12px] bg-[#fff]  rounded-[12px] w-[563px] ml-[-2px] border-[2px] border-[#0D0D0D] border-solid flex-1 mb-[-2px]">
-            <CustomScrollbar
-              distanceClientHeight={
-                // todo:这里得到滚动到最底部的方法，scrollItemClientHeight为每个滚动元素的高度，16为每个marginbottom，list.length为滚动元素的个数，16为最后一个item元素之间的间距
-                (scrollItemClientHeight + 16) * list.length - 16 - 332
-              }
-              onloadMore={() => {
-                console.log("loadmore");
+          <div className="box-border pl-[12px] bg-[#fff]  rounded-[12px] w-[563px] ml-[-2px] border-[2px] border-[#0D0D0D] border-solid flex-1 mb-[-2px]">
+            <InfinietScrollbar
+              hasMore={false}
+              onLoadMore={() => {
+                return new Promise((resolve) => {
+                  setTimeout(() => {
+                    resolve();
+                  }, 1000);
+                });
               }}
+              distanceClientHeight={336}
             >
-              <div className="h-[332px]">
-                {list.map((item, index) => {
-                  var scrollItemId = document.getElementById("scrollItemId");
-                  if (!scrollItemClientHeight) {
-                    setScrollItemClientHeight(scrollItemId?.clientHeight || 0);
-                  }
-                  return (
-                    <div
-                      id="scrollItemId"
-                      className="flex items-center mb-[16px] mr-[14px]"
-                      key={index + "q"}
-                    >
-                      <div className="w-[43px] flex items-center italic text-[20px]">
-                        <div className="">
-                          {index + 4}
-                          <span className="text-[12px]">th</span>
-                        </div>
+              {list.map((item, index) => {
+                return (
+                  <div
+                    id="scrollItemId"
+                    className="flex items-center mt-[16px] mr-[14px]"
+                    key={index + "q"}
+                  >
+                    <div className="w-[43px] flex items-center italic text-[20px]">
+                      <div className="">
+                        {index + 4}
+                        <span className="text-[12px]">th</span>
                       </div>
-                      <UserPrice></UserPrice>
                     </div>
-                  );
-                })}
-              </div>
-            </CustomScrollbar>
+                    <UserPrice></UserPrice>
+                  </div>
+                );
+              })}
+            </InfinietScrollbar>
           </div>
         </div>
 
-        <div className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] h-[596px] w-[563px] px-[14px] pt-[14px] bg-[#fff] flex flex-col">
+        <div className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] h-[600px] w-[563px] pl-[14px] pt-[14px] bg-[#fff] flex flex-col">
           <div className="text-[20px] font-bold">Twitter Friends</div>
 
           <div className="mt-[12px]">
@@ -219,60 +216,77 @@ const Page: React.FC<Props> = () => {
             ></CreationTabs>
           </div>
           <div className="mt-[16px] flex-1">
-            {list.map((item, index) => {
-              return (
-                <div className="flex items-center mb-[16px]" key={index + "r"}>
-                  <UserPrice></UserPrice>
-                  <div className="ml-[32px]">
-                    {index % 2 == 0 ? (
-                      <Button
-                        hideBottomBackground={true}
-                        active={false}
-                        width="113px"
-                        height="40px"
-                        text={"0 Polls"}
-                        color={"#fff"}
-                        normalBackGround={"#0D0D0D"}
-                        borderRadius="27px"
-                        border="none"
-                        buttonClick={() => {
-                          console.log("click");
-                        }}
-                      >
-                        <Image
-                          src={loveWhiteIcon}
-                          alt=""
-                          width={20}
-                          height={20}
-                        ></Image>
-                      </Button>
-                    ) : (
-                      <Button
-                        hideBottomBackground={true}
-                        active={false}
-                        width="113px"
-                        height="40px"
-                        text={"24 Polls"}
-                        color={"#0D0D0D"}
-                        normalBackGround={"#00FC6E"}
-                        borderRadius="27px"
-                        border="none"
-                        buttonClick={() => {
-                          console.log("click");
-                        }}
-                      >
-                        <Image
-                          src={loveBlackIcon}
-                          alt=""
-                          width={20}
-                          height={20}
-                        ></Image>
-                      </Button>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
+            <InfinietScrollbar
+              hasMore={false}
+              distanceClientHeight={498}
+              onLoadMore={() => {
+                return new Promise((resolve) => {
+                  setTimeout(() => {
+                    resolve();
+                  }, 1000);
+                });
+              }}
+            >
+              <div>
+                {list.map((item, index) => {
+                  return (
+                    <div
+                      className="flex items-center mb-[16px] pr-[16px]"
+                      key={index + "r"}
+                    >
+                      <UserPrice></UserPrice>
+                      <div className="ml-[32px]">
+                        {index % 2 == 0 ? (
+                          <Button
+                            hideBottomBackground={true}
+                            active={false}
+                            width="113px"
+                            height="40px"
+                            text={"0 Polls"}
+                            color={"#fff"}
+                            normalBackGround={"#0D0D0D"}
+                            borderRadius="27px"
+                            border="none"
+                            buttonClick={() => {
+                              console.log("click");
+                            }}
+                          >
+                            <Image
+                              src={loveWhiteIcon}
+                              alt=""
+                              width={20}
+                              height={20}
+                            ></Image>
+                          </Button>
+                        ) : (
+                          <Button
+                            hideBottomBackground={true}
+                            active={false}
+                            width="113px"
+                            height="40px"
+                            text={"24 Polls"}
+                            color={"#0D0D0D"}
+                            normalBackGround={"#00FC6E"}
+                            borderRadius="27px"
+                            border="none"
+                            buttonClick={() => {
+                              console.log("click");
+                            }}
+                          >
+                            <Image
+                              src={loveBlackIcon}
+                              alt=""
+                              width={20}
+                              height={20}
+                            ></Image>
+                          </Button>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </InfinietScrollbar>
           </div>
         </div>
       </div>

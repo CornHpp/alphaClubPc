@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   OverlayScrollbarsComponent,
   OverlayScrollbarsComponentRef,
@@ -9,8 +10,9 @@ import "overlayscrollbars/overlayscrollbars.css";
 import React, { useEffect, useRef } from "react";
 import { OverlayScrollbars } from "overlayscrollbars";
 
+import { InfiniteScroll } from "antd-mobile";
 interface ScrollProps {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
   distanceClientHeight: number;
@@ -23,6 +25,10 @@ const CustomScrollbar: React.FC<ScrollProps> = ({
   distanceClientHeight,
   onloadMore,
 }) => {
+  const [hasMore, setHasMore] = useState(true);
+  async function loadMore() {
+    setHasMore(false);
+  }
   console.log(distanceClientHeight);
   const osRef = useRef<OverlayScrollbarsComponentRef>(null);
   const currentRef = osRef?.current;
@@ -47,7 +53,9 @@ const CustomScrollbar: React.FC<ScrollProps> = ({
         scroll: (val) => activateEvent(val),
       }}
     >
-      {children}
+      <>
+        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+      </>
     </OverlayScrollbarsComponent>
   );
 };

@@ -1,0 +1,25 @@
+.custom-spin {
+  animation: spin 5s linear infinite; /* 调整旋转速度的关键是在这里 */
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.scrollRight {
+  white-space: nowrap; /* 保持内容在一行 */
+  animation: scrollri 15s linear infinite; /* 定义动画 */
+}
+@keyframes scrollri {
+  0% {
+    transform: translateX(calc(-100% - 8px)); /* 开始时位于原位置 */
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
