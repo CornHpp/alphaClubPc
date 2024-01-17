@@ -14,10 +14,14 @@ interface Props {
   paddingLeft?: string;
   borderRadius?: string;
   boxShadow?: string;
+  value?: string;
+  onChange: (val: string) => void;
 }
 
 const Search: React.FC<Props> = (props) => {
   const {
+    value,
+    onChange,
     rightNode,
     width = 300,
     height = 44,
@@ -37,7 +41,7 @@ const Search: React.FC<Props> = (props) => {
         {leftNode && leftNode}
       </div>
       <input
-        value={search}
+        value={value}
         style={{
           width: width + "px",
           height: height + "px",
@@ -48,7 +52,7 @@ const Search: React.FC<Props> = (props) => {
         className={`w-[300px] h-[44px] rounded-[24px]   border-[#0D0D0D] border-solid border-[2px]
         ${boxShadow ? "boxShadow" : "focus:shadow-[0px_0px_16px_#00FC6E]"}`}
         placeholder={placeholder}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
       ></input>
       {rightNode ? (
         <div

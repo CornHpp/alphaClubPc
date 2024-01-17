@@ -9,9 +9,11 @@ import Image from "next/image";
 import leftArrow from "@/assets/popup/leftArrow.svg";
 import rightArrow from "@/assets/popup/rightArrow.svg";
 import { Calendar } from "@/components/shadcn/ui/calendar";
+import timeIcon from "@/assets/popup/time.svg";
 import dateIcon from "@/assets/popup/date.svg";
 
 import { Select } from "antd";
+import { formatDate } from "@/lib/util/index";
 
 dayjs.extend(dayLocaleData);
 
@@ -22,6 +24,7 @@ const App: React.FC = () => {
   const [date, setDate] = React.useState<Date | undefined>(new Date());
 
   const [timeList, setTimeList] = React.useState<any[]>([]);
+  const [time, setTime] = React.useState(formatDate(new Date(), "yyyy/MM/dd"));
 
   useEffect(() => {
     const list = generateTimeArray();
@@ -35,9 +38,6 @@ const App: React.FC = () => {
     setTimeList(lists);
   }, []);
 
-  // 示例用法
-  const timeArray = generateTimeArray();
-
   return (
     <div className="w-full">
       <Calendar
@@ -45,6 +45,11 @@ const App: React.FC = () => {
         selected={date}
         onSelect={setDate}
         className="w-full"
+        onDayClick={(value) => {
+          console.log(value);
+          const val = formatDate(value, "yyyy/MM/dd");
+          setTime(val);
+        }}
       />
 
       <div className="mt-[32px] text-[14px] font-medium text-[#404140]">
@@ -60,16 +65,18 @@ const App: React.FC = () => {
             height={15}
             className="mr-[4px]"
           ></Image>
-          <span className="text-[16px] font-medium">2024/01/23</span>
+          <span className="text-[16px] font-medium mt-[2px]">{time}</span>
         </div>
         <div className="ml-[8px] time">
-          <Select
-            defaultValue="lucy"
-            getPopupContainer={(triggerNode) => triggerNode.parentNode}
-            style={{ width: 105, height: 50, borderRadius: "27px" }}
-            onChange={() => {}}
-            options={timeList}
-          />
+          {timeList.length && (
+            <Select
+              defaultValue={timeList[0]?.value}
+              getPopupContainer={(triggerNode) => triggerNode.parentNode}
+              style={{ width: 105, height: 50, borderRadius: "27px" }}
+              onChange={() => {}}
+              options={timeList}
+            />
+          )}
         </div>
         <div className="ml-[8px] time">
           <Select

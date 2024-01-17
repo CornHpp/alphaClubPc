@@ -54,7 +54,9 @@ const UserInfoView: React.FC<Props> = (props) => {
           <div className="text-[14px] text-[#404140] font-medium">Holders</div>
           <div className="flex items-center mt-[2px]">
             <Image src={handLoveSign} alt="" width={18} height={18}></Image>
-            <div className="text-[#0D0D0D] font-semibold ml-[2px]">242</div>
+            <div className="text-[#0D0D0D] font-semibold ml-[2px] text-[18px]">
+              242
+            </div>
           </div>
         </div>
         <div className="w-[2px] h-[12px] mx-[16px] bg-[#0D0D0D] rounded-[2px]"></div>
@@ -65,7 +67,9 @@ const UserInfoView: React.FC<Props> = (props) => {
           </div>
           <div className="flex items-center mt-[6px]">
             <Image src={ethereum} alt="" width={18} height={18}></Image>
-            <div className="text-[#0D0D0D] font-semibold ml-[2px]">242</div>
+            <div className="text-[#0D0D0D] font-semibold ml-[2px] text-[18px]">
+              0.074 eTH
+            </div>
           </div>
         </div>
       </div>

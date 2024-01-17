@@ -1,0 +1,9 @@
+<svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Calendar">
+<g id="Vector">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 16V14H18.5V6H16.5V4H14.5V2H6.5V4H4.5V6H2.5V14H4.5V16H6.5V18H14.5V16H16.5ZM14.5 4V6H16.5V14H14.5V16H6.5V14H4.5V6H6.5V4H14.5Z" fill="#0D0D0D"/>
+<path d="M16.5 14V16H14.5M16.5 14H18.5V6H16.5M16.5 14V6M16.5 14H14.5V16M16.5 6V4H14.5M16.5 6H14.5V4M14.5 4V2H6.5V4M14.5 4H6.5M6.5 4H4.5V6M6.5 4V6H4.5M4.5 6H2.5V14H4.5M4.5 6V14M4.5 14V16H6.5M4.5 14H6.5V16M6.5 16V18H14.5V16M6.5 16H14.5" stroke="#0D0D0D" stroke-width="0.2"/>
+</g>
+<path id="Union" fill-rule="evenodd" clip-rule="evenodd" d="M11.1625 7.34375H9.5625V9.74414V11.3438V11.3441H12.5625V9.74414H11.1625V7.34375Z" fill="#0D0D0D"/>
+</g>
+</svg>

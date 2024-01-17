@@ -175,6 +175,8 @@ const Home: React.FC = () => {
         setShowPopupBuy={setShowPopupChooseTime}
         onClickBack={() => {
           console.log("back");
+          setShowPopupChooseTime(false);
+          setShowPopupCreateEvent(true);
         }}
       ></ChooseTimePopup>
 

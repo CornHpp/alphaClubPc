@@ -1,19 +1,15 @@
-import { Tooltip } from "antd"
-import React, { useEffect } from "react"
-import "./index.css"
+import { Tooltip } from "antd";
+import React, { useEffect } from "react";
+import "./index.css";
 
 interface TimeLineProps {
   // Add your props here
-  onSelectPrice?: (val: number) => void
+  onSelectPrice: (val: number) => void;
 }
 
 const TimeLine: React.FC<TimeLineProps> = (props) => {
-  const { onSelectPrice } = props
-  const [currentStep, setCurrentStep] = React.useState(0)
-
-  useEffect(() => {
-    onSelectPrice && onSelectPrice(currentStep)
-  }, [currentStep, onSelectPrice])
+  const { onSelectPrice } = props;
+  const [currentStep, setCurrentStep] = React.useState(0);
 
   return (
     <div className="w-[327px] h-[64px] flex justify-between relative cursor-pointer items-center">
@@ -36,7 +32,8 @@ const TimeLine: React.FC<TimeLineProps> = (props) => {
           active={currentStep == 0}
           percent={0}
           onCricleClick={() => {
-            setCurrentStep(0)
+            setCurrentStep(0);
+            onSelectPrice(0);
           }}
         ></Cricle>
         <div className="text-[12px] leading-[18px] mt-[2px] font-medium">0</div>
@@ -47,7 +44,8 @@ const TimeLine: React.FC<TimeLineProps> = (props) => {
           active={currentStep == 1}
           percent={25}
           onCricleClick={() => {
-            setCurrentStep(1)
+            onSelectPrice(0.25);
+            setCurrentStep(1);
           }}
         ></Cricle>
       </div>
@@ -58,7 +56,9 @@ const TimeLine: React.FC<TimeLineProps> = (props) => {
           active={currentStep == 2}
           percent={50}
           onCricleClick={() => {
-            setCurrentStep(2)
+            onSelectPrice(0.5);
+
+            setCurrentStep(2);
           }}
         ></Cricle>
       </div>
@@ -68,7 +68,9 @@ const TimeLine: React.FC<TimeLineProps> = (props) => {
           includeActive={currentStep >= 3}
           active={currentStep == 3}
           onCricleClick={() => {
-            setCurrentStep(3)
+            onSelectPrice(0.75);
+
+            setCurrentStep(3);
           }}
           percent={75}
         ></Cricle>
@@ -79,7 +81,9 @@ const TimeLine: React.FC<TimeLineProps> = (props) => {
           includeActive={currentStep >= 4}
           active={currentStep == 4}
           onCricleClick={() => {
-            setCurrentStep(4)
+            onSelectPrice(1);
+
+            setCurrentStep(4);
           }}
           percent={100}
         ></Cricle>
@@ -88,14 +92,14 @@ const TimeLine: React.FC<TimeLineProps> = (props) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 interface CricleProps {
-  active: boolean
-  includeActive?: boolean
-  percent?: number
-  onCricleClick?: () => void
+  active: boolean;
+  includeActive?: boolean;
+  percent?: number;
+  onCricleClick?: () => void;
 }
 
 export const Cricle: React.FC<CricleProps> = ({
@@ -128,7 +132,7 @@ export const Cricle: React.FC<CricleProps> = ({
         ></div>
       )}
     </>
-  )
-}
+  );
+};
 
-export default TimeLine
+export default TimeLine;

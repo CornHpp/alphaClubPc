@@ -4,9 +4,11 @@ import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
 import trashIcon from "@/assets/popup/trashIcon.svg";
 interface PersonHeadImgProps {
   // Define your props here
+  onClickDelete: () => void;
 }
 
-const PersonHeadImg: React.FC<PersonHeadImgProps> = () => {
+const PersonHeadImg: React.FC<PersonHeadImgProps> = (props) => {
+  const { onClickDelete } = props;
   // Implement your component logic here
   const [isMouseOver, setIsMouseOver] = React.useState(false);
 
@@ -34,6 +36,9 @@ const PersonHeadImg: React.FC<PersonHeadImgProps> = () => {
           className="absolute left-0 top-0 w-full h-full items-center flex justify-center bg-[] rounded-[50%] cursor-pointer"
           style={{
             background: "rgba(13, 13, 13, 0.6)",
+          }}
+          onClick={() => {
+            onClickDelete();
           }}
         >
           <Image src={trashIcon} alt="" width={16} height={16}></Image>

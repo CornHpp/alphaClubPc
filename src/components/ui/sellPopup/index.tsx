@@ -13,13 +13,14 @@ interface Props {
 }
 
 const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
-  const [selectedPrice, setSelectedPrice] = React.useState(0);
+  const [balance, setBalance] = React.useState(1.23);
+
+  const [value, setValue] = React.useState("");
   return (
     <PopupView
       showPopup={showPopupBuy}
       handleCancel={() => {
         setShowPopupBuy(false);
-        setSelectedPrice(0);
       }}
     >
       <div className="">
@@ -32,8 +33,7 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
         <div className="mt-[16px]">
           <TimeLine
             onSelectPrice={(val) => {
-              console.log(val);
-              setSelectedPrice(val);
+              setValue(val * balance + "");
             }}
           ></TimeLine>
         </div>
@@ -43,6 +43,11 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
             width={323}
             height={54}
             placeholder="Key Number"
+            value={value}
+            onChange={(val) => {
+              console.log(val);
+              setValue(val);
+            }}
             rightNode={
               <div
                 className="text-[16px] font-medium
@@ -54,6 +59,9 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
               flex items-center justify-center
               mr-[-5px]
             "
+                onClick={() => {
+                  setValue(balance.toString());
+                }}
               >
                 Max
               </div>
@@ -63,7 +71,7 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
 
         <div className="mt-[8px] text-[#404140] text-[16px] w-full text-center">
           My Balance:{" "}
-          <span className="font-medium text-[#0D0D0D]">1.23 Key</span>
+          <span className="font-medium text-[#0D0D0D]">{balance} Key</span>
         </div>
 
         <div className="mt-[24px]">
@@ -77,7 +85,7 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
                 <div className="text-[18px] text-[#949694] leading-[24px]">
                   Buy
                 </div>
-                {selectedPrice ? (
+                {value ? (
                   <div className="text-[12px] text-[#00FC6E] leading-[16px]">
                     2.51 ETH ($2800.3)
                   </div>
@@ -88,7 +96,7 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
                 )}
               </div>
             }
-            normalBackGround={selectedPrice ? "#0D0D0D" : "#E9E9E9"}
+            normalBackGround={value ? "#0D0D0D" : "#E9E9E9"}
             borderRadius="27px"
             border="none"
             buttonClick={() => {

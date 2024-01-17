@@ -8,7 +8,7 @@ import BackIcon from "@/assets/popup/back.svg";
 import { Switch } from "antd";
 import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
 import rightIcon from "@/assets/popup/right.svg";
-
+import searchPopupIcon from "@/assets/popup/searchPopupIcon.svg";
 import "./index.css";
 import PersonHeadImg from "../createEventPopup/personHeadImg";
 interface Props {
@@ -26,6 +26,8 @@ const ChooseSpeakerPopup: React.FC<Props> = ({
   const [selectedPrice, setSelectedPrice] = React.useState(0);
 
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
+
+  const [value, setValue] = React.useState("");
 
   const [searchPeopleList, setSearchPeopleList] = React.useState([
     {},
@@ -70,15 +72,31 @@ const ChooseSpeakerPopup: React.FC<Props> = ({
     >
       <div className="mb-[16px]">
         <Search
+          value={value}
+          onChange={(val) => {
+            setValue(val);
+          }}
           rightNode={true}
+          paddingLeft={"38px"}
+          leftNode={
+            <>
+              <Image
+                className="ml-[9px] w-[20px] h-[20px]"
+                src={searchPopupIcon}
+                alt=""
+                width={20}
+                height={20}
+              ></Image>
+            </>
+          }
           width={364}
           height={50}
-          placeholder="min 0.001"
+          placeholder="Search Users"
         ></Search>
       </div>
       <div className="text-[14px] font-medium">Twitter related users</div>
 
-      <div className="h-[224px] w-[397px] overflow-y-scroll ml-[-16px] relative openScroll">
+      <div className="h-[224px] w-[396px] overflow-y-scroll ml-[-16px] relative openScroll">
         {searchPeopleList.map((item, index) => {
           const isSelectIndex = selectedPersons.indexOf(index);
           return (
@@ -131,7 +149,15 @@ const ChooseSpeakerPopup: React.FC<Props> = ({
           {selectedPersons.map((item, index) => {
             return (
               <div key={index + "a"} className="mt-[8px]">
-                <PersonHeadImg></PersonHeadImg>
+                <PersonHeadImg
+                  onClickDelete={() => {
+                    setSelectedPerson((prev) => {
+                      const newSelectedCoHost = [...prev];
+                      newSelectedCoHost.splice(index, 1);
+                      return newSelectedCoHost;
+                    });
+                  }}
+                ></PersonHeadImg>
               </div>
             );
           })}

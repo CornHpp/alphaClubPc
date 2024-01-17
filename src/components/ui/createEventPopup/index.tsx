@@ -29,6 +29,7 @@ const CreateEventPopupView: React.FC<Props> = ({
   isEdit = false,
 }) => {
   const [selectedPrice, setSelectedPrice] = React.useState(0);
+  const [value, setValue] = React.useState("");
   const [selectedCoHost, setSelectedCoHost] = React.useState([
     {
       isShowDelete: false,
@@ -60,6 +61,10 @@ const CreateEventPopupView: React.FC<Props> = ({
 
         <div className="mt-[12px]">
           <Search
+            value={value}
+            onChange={(val) => {
+              setValue(val);
+            }}
             rightNode={true}
             width={364}
             height={50}
@@ -87,7 +92,17 @@ const CreateEventPopupView: React.FC<Props> = ({
             ></Image>
           </div>
           {selectedCoHost.map((item, index) => {
-            return <PersonHeadImg></PersonHeadImg>;
+            return (
+              <PersonHeadImg
+                onClickDelete={() => {
+                  setSelectedCoHost((prev) => {
+                    const newSelectedCoHost = [...prev];
+                    newSelectedCoHost.splice(index, 1);
+                    return newSelectedCoHost;
+                  });
+                }}
+              ></PersonHeadImg>
+            );
           })}
         </div>
       </div>
@@ -139,7 +154,9 @@ const CreateEventPopupView: React.FC<Props> = ({
             setHideButtonBg(false);
           }}
         >
-          <Image src={redDelete} alt="" width={16} height={16}></Image>
+          {isEdit && (
+            <Image src={redDelete} alt="" width={16} height={16}></Image>
+          )}
         </Button>
         <Button
           active={false}

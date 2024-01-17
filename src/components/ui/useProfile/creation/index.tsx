@@ -41,7 +41,14 @@ const CreationvView: React.FC<Props> = () => {
     <div className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid h-[684px] px-[16px] py-[16px] bg-white">
       <div className="w-full flex items-center text-[#0D0D0D] justify-between font-semibold">
         <div className="text-[20px] ">Creation</div>
-        <div className=" w-[117px] h-[30px] border-[#0D0D0D] border-solid border-[2px] bg-[#00FC6E] items-center flex justify-center text-[12px] rounded-[17px]">
+        <div
+          className=" w-[117px] h-[30px] border-[#0D0D0D] border-solid border-[2px] bg-[#00FC6E] items-center flex justify-center text-[12px] rounded-[17px]
+          cursor-pointer
+          "
+          onClick={() => {
+            setShowPopupCreateEvent(true);
+          }}
+        >
           <Image src={PlusCricleIcon} alt="" width={18} height={18}></Image>
           Create Event
         </div>

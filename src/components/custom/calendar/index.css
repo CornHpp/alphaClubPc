@@ -6,7 +6,7 @@
   border: 2px solid #0d0d0d !important;
   border-radius: 50px;
   color: #0d0d0d;
-  font-family: var(--font-Poppins), sans-serif;
+  font-family: "__Poppins_fcbe81", "__Poppins_Fallback_fcbe81";
   font-size: 16px;
   font-weight: 500;
 }

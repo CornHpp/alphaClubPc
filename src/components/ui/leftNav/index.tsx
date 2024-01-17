@@ -94,6 +94,7 @@ const LeftNav: React.FC<LeftNavProps> = () => {
                   <Button
                     active={buttonActive === index ? true : false}
                     width="146px"
+                    fontSize="20px"
                     height="58px"
                     text={item.text}
                     background="linear-gradient(180deg, #DFDFDF 0%, #F5F5F5 100%)"

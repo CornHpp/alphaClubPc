@@ -1,20 +1,21 @@
-import React from "react"
+import React from "react";
 
 interface ButtonProps {
-  text: string | React.ReactNode
-  width?: string
-  height?: string
-  border?: string
-  borderRadius?: string
-  background?: string
-  normalBackGround?: string
-  color?: string
-  active?: boolean
-  children?: React.ReactNode
-  buttonClick: () => void
-  hideBottomBackground?: boolean
-  onMouseEnter?: () => void
-  onMouseLeave?: () => void
+  text: string | React.ReactNode;
+  width?: string;
+  height?: string;
+  border?: string;
+  borderRadius?: string;
+  background?: string;
+  normalBackGround?: string;
+  color?: string;
+  active?: boolean;
+  children?: React.ReactNode;
+  fontSize: string;
+  buttonClick: () => void;
+  hideBottomBackground?: boolean;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 const Button: React.FC<ButtonProps> = (props) => {
@@ -27,13 +28,14 @@ const Button: React.FC<ButtonProps> = (props) => {
     buttonClick,
     background,
     normalBackGround = "#fff",
+    fontSize,
     active,
     color,
     children,
     hideBottomBackground,
     onMouseEnter,
     onMouseLeave,
-  } = props
+  } = props;
 
   return (
     <div
@@ -70,6 +72,7 @@ const Button: React.FC<ButtonProps> = (props) => {
           className="relative z-11"
           style={{
             fontWeight: active ? "700" : "600",
+            fontSize: fontSize || "16px",
           }}
         >
           {text}
@@ -79,7 +82,7 @@ const Button: React.FC<ButtonProps> = (props) => {
         </span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Button
+export default Button;
