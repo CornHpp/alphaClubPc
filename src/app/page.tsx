@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import Login from "@/app/login/page"
+import Home from "@/app/home/page";
 
 export default function Page() {
-  return <Login />
+  return <Home></Home>;
 }

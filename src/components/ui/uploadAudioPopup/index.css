@@ -1,0 +1,18 @@
+.ant-input {
+  background: none;
+}
+.ant-input:focus-within,
+.ant-input-affix-wrapper:focus-within {
+  border-color: #0d0d0d !important;
+  box-shadow: none;
+  background: none;
+}
+.ant-input:hover,
+.ant-input-affix-wrapper:hover {
+  border-color: #0d0d0d !important;
+  box-shadow: none;
+}
+.ant-input-data-count {
+  bottom: 0 !important;
+  right: 16px !important;
+}

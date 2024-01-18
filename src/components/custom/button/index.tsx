@@ -11,7 +11,7 @@ interface ButtonProps {
   color?: string;
   active?: boolean;
   children?: React.ReactNode;
-  fontSize: string;
+  fontSize?: string;
   buttonClick: () => void;
   hideBottomBackground?: boolean;
   onMouseEnter?: () => void;

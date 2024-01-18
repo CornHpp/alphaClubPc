@@ -5,6 +5,7 @@ import starIcon from "@/assets/home/star.svg";
 import Tabs from "@/components/custom/tabs";
 import Card from "@/components/ui/card";
 import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
+import plusIcon from "@/assets/home/plusIcon.svg";
 import BuyPopupView from "@/components/ui/buyPopup";
 import SellPopipView from "@/components/ui/sellPopup";
 import CreateEventPopupView from "@/components/ui/createEventPopup";
@@ -14,9 +15,13 @@ import SuccessPopup from "@/components/ui/successPopup";
 import UseProfileView from "@/components/ui/useProfile";
 import Button from "@/components/custom/button";
 import createIcon from "@/assets/home/create.svg";
+import microphoneIcon from "@/assets/home/microphoneIcon.svg";
+import cloudUploadIcon from "@/assets/home/cloudUploadIcon.svg";
 import EventPopup from "@/components/ui/eventPopup";
 import OpenIngEvent from "@/components/ui/openIngEvent";
 import InviteSpeakPopup from "@/components/ui/inviteSpeakerPopup";
+import ChooseVoiceNotePopup from "@/components/ui/createVoiceNotePopup";
+import UploadAudioPopup from "@/components/ui/uploadAudioPopup";
 
 const tabsList = [
   {
@@ -46,6 +51,10 @@ const Home: React.FC = () => {
   const [showOpenIngEvent, setShowOpenIngEvent] = React.useState(false);
   const [showPopupInviteSpeak, setShowPopupInviteSpeak] = React.useState(false);
 
+  const [showCreatVoiceNote, setShowCreatVoiceNote] = React.useState(false);
+  const [showCreatVoiceNotePopup, setShowCreatVoiceNotePopup] =
+    React.useState(false);
+  const [showUploadAudioPopup, setShowUploadAudioPopup] = React.useState(false);
   const [cardList, setCardList] = React.useState([
     {
       userInfo: {
@@ -111,27 +120,65 @@ const Home: React.FC = () => {
         })}
       </div>
 
-      <div className="flex fixed bottom-[40px] right-[55px]">
+      <div className="flex fixed bottom-[40px] right-[55px] ">
         <Button
           active={false}
-          width="146px"
+          width="123px"
           height="58px"
-          text={"Create Event"}
-          normalBackGround="#00FC6E"
+          text={"Create"}
+          normalBackGround="#0D0D0D"
+          color="#fff"
           borderRadius="28px"
           border="2px solid #0D0D0D"
           buttonClick={() => {
-            setShowPopupCreateEvent(true);
+            setShowCreatVoiceNote(true);
           }}
         >
           <Image
-            src={createIcon}
+            src={plusIcon}
             alt=""
             width={24}
             height={24}
             className="w-[24px] h-[24px]"
           ></Image>
         </Button>
+
+        {showCreatVoiceNote && (
+          <div className="absolute right-0 bottom-[70px] w-[178px] h-[108px] border-[2px] border-solid border-[#0D0D0D] rounded-[12px] p-[10px] bg-[#fff] cursor-pointer">
+            <div
+              className="w-[154px] h-[40px] rounded-[8px] bg-[#00FC6E] flex items-center justify-center text-[#0D0D0D] font-semibold"
+              onClick={() => {
+                setShowCreatVoiceNote(false);
+                setShowCreatVoiceNotePopup(true);
+              }}
+            >
+              <Image
+                src={microphoneIcon}
+                alt=""
+                width={24}
+                height={24}
+                className="w-[24px] h-[24px] mr-[4px]"
+              ></Image>
+              Voice Note
+            </div>
+            <div
+              className="mt-[4px] w-[154px] h-[40px] rounded-[8px]  flex items-center justify-center text-[#0D0D0D] font-semibold"
+              onClick={() => {
+                setShowCreatVoiceNote(false);
+                setShowUploadAudioPopup(true);
+              }}
+            >
+              <Image
+                src={cloudUploadIcon}
+                alt=""
+                width={24}
+                height={24}
+                className="w-[24px] h-[24px] mr-[4px]"
+              ></Image>
+              Upload Audio
+            </div>
+          </div>
+        )}
       </div>
 
       <BuyPopupView
@@ -208,6 +255,29 @@ const Home: React.FC = () => {
           throw new Error("Function not implemented.");
         }}
       ></InviteSpeakPopup>
+
+      <ChooseVoiceNotePopup
+        showPopup={showCreatVoiceNotePopup}
+        setShowPopup={setShowCreatVoiceNotePopup}
+        onClickBack={() => {
+          setShowPopupInviteSpeak(false);
+        }}
+        onClickConfirm={function (): void {
+          throw new Error("Function not implemented.");
+        }}
+      ></ChooseVoiceNotePopup>
+      <UploadAudioPopup
+        showPopup={showUploadAudioPopup}
+        setShowPopup={setShowUploadAudioPopup}
+        onClickSchedule={() => {
+          setShowPopupCreateEvent(false);
+          setShowPopupChooseTime(true);
+        }}
+        onClickSelectCoHost={() => {
+          setShowPopupCreateEvent(false);
+          setShowPopupChooseSpeaker(true);
+        }}
+      ></UploadAudioPopup>
     </div>
   );
 };

@@ -5,20 +5,19 @@ import Header from "@/components/ui/header";
 import Login from "@/app/login/page";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
-  const [isLogin, setIsLogin] = React.useState(true);
+  const [isLogin, setIsLogin] = React.useState(0);
 
   useEffect(() => {
     if (localStorage.getItem("token")) {
-      setIsLogin(false);
+      setIsLogin(1);
     } else {
-      setIsLogin(true);
+      setIsLogin(2);
     }
   }, []);
   return (
     <>
-      {isLogin ? (
-        <Login></Login>
-      ) : (
+      {isLogin == 2 && <Login></Login>}
+      {isLogin == 1 && (
         <div className="flex px-[16px]  relative pb-[16px]">
           <LeftNav></LeftNav>
 
