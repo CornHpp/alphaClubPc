@@ -33,7 +33,7 @@ const Card: React.FC<CardProps> = ({
   const router = useRouter();
 
   return (
-    <div className="rounded-[16px] border-[2px] border-[#0D0D0D] border-solid w-[355px] h-[355px] mr-[24px] mb-[24px] bg-[#fff]">
+    <div className="rounded-[16px] border-[2px] border-[#0D0D0D] border-solid w-[359px] h-[391px] mr-[24px] mb-[24px] bg-[#fff]">
       <div
         className="h-[80px] flex items-center pl-[16px] w-full justify-between cursor-pointer"
         style={{

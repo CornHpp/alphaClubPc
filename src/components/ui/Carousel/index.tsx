@@ -4,6 +4,7 @@ import { Carousel } from "antd";
 import Danmu from "./danmu";
 import Live from "./live";
 import CardBeginView from "./begin";
+import AudioCard from "./audioCard";
 
 interface CarouselProps {
   // Define your props here
@@ -37,23 +38,23 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
 
   return (
     <div className="w-full px-[16px] py-[16px] ">
-      <div className="border-[2px] border-[#0D0D0D] border-solid overflow-hidden rounded-[10px] w-full h-[85px]">
+      <div className="border-[2px] border-[#0D0D0D] border-solid overflow-hidden rounded-[10px] w-full h-[129px]">
         <Carousel ref={carouseRef} dots={false}>
           <div
-            className="w-full rounded-[10px] bg-[#D8FCD1] h-[85px] px-[10px] py-[10px] cursor-pointer"
+            className="w-full rounded-[10px] bg-[#fff] h-[129px] px-[10px] py-[10px] cursor-pointer"
             onClick={() => {
               console.log("click");
               onOpenEventPopup();
             }}
           >
-            <Live></Live>
+            <AudioCard></AudioCard>
           </div>
           {!showDanmu ? (
-            <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[85px] block px-[10px] py-[10px]">
+            <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[129px] block px-[10px] py-[10px]">
               <CardBeginView></CardBeginView>
             </div>
           ) : (
-            <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[85px] block overflow-hidden">
+            <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[129px] block overflow-hidden">
               <Danmu></Danmu>
             </div>
           )}

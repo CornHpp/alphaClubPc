@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { ReactMic } from "react-mic";
 import Image from "next/image";
 import voicePlayIcon from "@/assets/home/voicePlayIcon.svg";
 import voicePlayIcon2 from "@/assets/popup/voicePlayIcon2.svg";

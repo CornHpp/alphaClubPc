@@ -1,0 +1,10 @@
+<svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="stopwatch" clip-path="url(#clip0_1312_2528)">
+<path id="Union" fill-rule="evenodd" clip-rule="evenodd" d="M3.59922 0V1.2L5.39922 1.2V2.4H3.59922V3.6H2.39922V4.8H1.19922V9.6H2.39922V10.8H3.59922V12H8.39922V10.8H9.59922V9.6H10.7992V4.8H9.59922V3.6H8.39922V2.4H6.59922V1.2H8.39922V0H3.59922ZM8.39922 3.6V4.8H9.59922V9.6H8.39922V10.8H3.59922V9.6H2.39922V4.8H3.59922V3.6H5.39922H6.59922H8.39922ZM5.43672 5.60635H6.39672V7.04663H7.23672V8.00663L5.43672 8.00663L5.43672 7.04663V5.60635Z" fill="#0D0D0D"/>
+</g>
+<defs>
+<clipPath id="clip0_1312_2528">
+<rect width="12" height="12" fill="white"/>
+</clipPath>
+</defs>
+</svg>

@@ -6,7 +6,6 @@ import BackIcon from "@/assets/popup/back.svg";
 import type { DatePickerProps } from "antd";
 import CalendarView from "@/components/custom/calendar";
 import Search from "@/components/custom/search";
-import Microphone from "@/components/custom/micrphone";
 import AudioEdit from "./audioEdit";
 
 interface Props {
