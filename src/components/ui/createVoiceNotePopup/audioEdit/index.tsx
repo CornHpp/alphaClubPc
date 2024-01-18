@@ -4,6 +4,7 @@ import Image from "next/image";
 import voicePlayIcon from "@/assets/home/voicePlayIcon.svg";
 import voicePlayIcon2 from "@/assets/popup/voicePlayIcon2.svg";
 import LoadAudio from "@/components/custom/loadAudio";
+import PressRecord from "../pressRecord";
 
 interface AudioEditProps {
   // Add props here
@@ -31,7 +32,7 @@ const AudioEdit: React.FC<AudioEditProps> = (props) => {
 
   return (
     <div>
-      <div className="mt-[16px] w-full h-[80px]">
+      {/* <div className="mt-[16px] w-full h-[80px]">
         <div className="relative w-[368px] h-[80px] bg-[#E9E9E9] rounded-[10px] ">
           {tempFile ? (
             <LoadAudio tempFileUrl={tempFile}></LoadAudio>
@@ -47,9 +48,11 @@ const AudioEdit: React.FC<AudioEditProps> = (props) => {
             />
           )}
         </div>
-      </div>
+      </div> */}
 
-      <div className="mt-[8px]  w-full h-[32px]">
+      <PressRecord></PressRecord>
+
+      {/* <div className="mt-[8px]  w-full h-[32px]">
         <div className="relative w-[368px] h-[32px] bg-[#E9E9E9] rounded-[6px]">
           <ReactMic
             record={record}
@@ -61,14 +64,9 @@ const AudioEdit: React.FC<AudioEditProps> = (props) => {
             backgroundColor="#E9E9E9"
           />
         </div>
-      </div>
+      </div> */}
 
-      <div className="mt-[4px] w-full justify-between flex text-[12px]">
-        <div>00:00:00</div>
-        <div>10:00:00</div>
-      </div>
-
-      {!record && (
+      {/* {!record && (
         <div
           onClick={() => {
             startRecording();
@@ -78,9 +76,9 @@ const AudioEdit: React.FC<AudioEditProps> = (props) => {
           <div className="w-[20px] h-[20px] border-[2px] border-solid border-[#0D0D0D]  bg-[#FF4141] rounded-[50%] mr-[2px]"></div>
           Recording
         </div>
-      )}
+      )} */}
 
-      {record && (
+      {/* {record && (
         <div
           onClick={() => {
             setRecord(false);
@@ -96,7 +94,7 @@ const AudioEdit: React.FC<AudioEditProps> = (props) => {
           ></Image>
           Pulse
         </div>
-      )}
+      )} */}
 
       {/* <div className="mt-[8px] mx-auto w-full flex justify-center">
         <Image

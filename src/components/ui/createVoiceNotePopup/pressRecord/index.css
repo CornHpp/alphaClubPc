@@ -1,0 +1,3 @@
+.disableRecordingAudio > div:first-child {
+  display: none;
+}
