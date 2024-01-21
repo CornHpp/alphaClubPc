@@ -13,7 +13,7 @@ interface Props {
   leftNode?: React.ReactNode;
   paddingLeft?: string;
   borderRadius?: string;
-  boxShadow?: string;
+  boxShadow?: string | boolean;
   value?: string;
   onChange: (val: string) => void;
 }

@@ -22,6 +22,7 @@ import OpenIngEvent from "@/components/ui/openIngEvent";
 import InviteSpeakPopup from "@/components/ui/inviteSpeakerPopup";
 import ChooseVoiceNotePopup from "@/components/ui/createVoiceNotePopup";
 import UploadAudioPopup from "@/components/ui/uploadAudioPopup";
+import AudioPlayer from "@/components/custom/audioPlayer";
 
 const tabsList = [
   {

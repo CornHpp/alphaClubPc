@@ -39,9 +39,6 @@ const Card: React.FC<CardProps> = ({
         style={{
           borderBottom: "2px solid #0D0D0D",
         }}
-        onClick={() => {
-          router.push("/profile");
-        }}
       >
         <UserHeader></UserHeader>
         <Image
@@ -55,7 +52,7 @@ const Card: React.FC<CardProps> = ({
 
       <Carousel
         onOpenEventPopup={() => {
-          setShowEventPopup(true);
+          // setShowEventPopup(true);
         }}
       ></Carousel>
 
@@ -131,7 +128,7 @@ const Card: React.FC<CardProps> = ({
       <EventPopup
         onClickConfirm={() => {
           console.log("confirm");
-          onOpeningEvent();
+          // onOpeningEvent();
           setShowEventPopup(false);
         }}
         showPopupBuy={showEventPopup}

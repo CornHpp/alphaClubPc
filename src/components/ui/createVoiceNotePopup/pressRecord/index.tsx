@@ -26,12 +26,16 @@ const PressRecord: React.FC = () => {
         container: "#mic",
         waveColor: "#949694",
         progressColor: "##FFFFB3",
+        url: "/demo.wav",
         barGap: 2,
         barRadius: 4,
         barWidth: 2,
         barHeight: 1,
         height: 76,
         dragToSeek: true,
+      });
+      wavesurfer.on("click", () => {
+        wavesurfer.play();
       });
 
       // Initialize the Record plugin

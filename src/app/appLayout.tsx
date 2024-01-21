@@ -3,21 +3,22 @@ import React, { useEffect } from "react";
 import LeftNav from "@/components/ui/leftNav";
 import Header from "@/components/ui/header";
 import Login from "@/app/login/page";
+import { usePathname } from "next/navigation";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   const [isLogin, setIsLogin] = React.useState(0);
+  const pathname = usePathname();
 
-  useEffect(() => {
-    if (localStorage.getItem("token")) {
-      setIsLogin(1);
-    } else {
-      setIsLogin(2);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (localStorage.getItem("token")) {
+  //     setIsLogin(1);
+  //   } else {
+  //     setIsLogin(2);
+  //   }
+  // }, []);
   return (
     <>
-      {isLogin == 2 && <Login></Login>}
-      {isLogin == 1 && (
+      {pathname != "/login" ? (
         <div className="flex px-[16px]  relative pb-[16px]">
           <LeftNav></LeftNav>
 
@@ -36,6 +37,8 @@ function AppLayout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </div>
+      ) : (
+        <div>{children}</div>
       )}
     </>
   );
