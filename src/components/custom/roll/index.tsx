@@ -6,22 +6,14 @@ import DanmuButtonCards from "../danmuButtonCards";
 interface RollProps {
   leftOrRight: boolean; // true: left, false: right
   isCardsDanmu?: boolean;
+  danmuList: PartialGetTradeListType[];
 }
 
-const Roll: React.FC<RollProps> = ({ leftOrRight, isCardsDanmu }) => {
-  const [danmuList, setDanmuList] = React.useState([
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-    {},
-  ]);
-
+const Roll: React.FC<RollProps> = ({
+  leftOrRight,
+  isCardsDanmu,
+  danmuList,
+}) => {
   const [danmuLeft, setDanmuLeft] = React.useState<number>(0); // 弹幕的整体宽度
 
   const startRoll = () => {};
@@ -44,7 +36,7 @@ const Roll: React.FC<RollProps> = ({ leftOrRight, isCardsDanmu }) => {
           return (
             <div key={index + "s"} className="flex-shrink-0 mr-[8px]">
               {isCardsDanmu ? (
-                <DanmuButtonCards></DanmuButtonCards>
+                <DanmuButtonCards item={item}></DanmuButtonCards>
               ) : (
                 <DanmuButton></DanmuButton>
               )}
@@ -61,7 +53,7 @@ const Roll: React.FC<RollProps> = ({ leftOrRight, isCardsDanmu }) => {
           return (
             <div key={index + "s"} className="flex-shrink-0 mr-[8px]">
               {isCardsDanmu ? (
-                <DanmuButtonCards></DanmuButtonCards>
+                <DanmuButtonCards item={item}></DanmuButtonCards>
               ) : (
                 <DanmuButton></DanmuButton>
               )}

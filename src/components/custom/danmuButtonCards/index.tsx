@@ -13,7 +13,13 @@ const userInfo = {
   followers: 100,
 };
 
-const DanmuButtonCards: React.FC<DanmuButtonProps> = ({ text, onClick }) => {
+interface DanmuButtonProps {
+  item?: PartialGetTradeListType;
+  onClick?: () => void;
+}
+
+const DanmuButtonCards: React.FC<DanmuButtonProps> = (props) => {
+  const { item } = props;
   return (
     <div
       className="flex items-center h-[40px] pl-[4px] pr-[12px] rounded-[22px] border-[1px] border-solid border-[#0D0D0D] 
@@ -28,11 +34,11 @@ const DanmuButtonCards: React.FC<DanmuButtonProps> = ({ text, onClick }) => {
       }}
     >
       <Image
-        src={userInfo.avatar}
+        src={item?.imageUrl || userInfo.avatar}
         alt=""
         width={32}
         height={32}
-        className="w-[32px] h-[32px]"
+        className="w-[32px] h-[32px] rounded-full border-[1px] border-solid border-[#0D0D0D]"
       ></Image>
       <div className="ml-[4px] leading-[14px] flex-shrink-0">
         <div className="font-medium text-[12px] text-[#004D22]">

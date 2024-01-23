@@ -4,25 +4,28 @@ import twitterIcon from "@/assets/home/twitterIcon.svg";
 import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
 
 export interface userInfoType {
-  username: string;
-  avatar: string;
-  followers: number;
+  username?: string;
+  avatar?: string;
+  followers?: number;
+  twitterScreenName?: string;
 }
 
-const userInfo = {
+const userInfoDefault = {
   username: "username",
   avatar: defaultHeaderIcon,
+  twitterScreenName: "twitterScreenName",
   followers: 100,
 };
 interface UserHeaderProps {
-  userInfo1?: userInfoType;
+  userInfo?: userInfoType;
   nameMarginLeft?: string;
   headerWidth?: number;
   titleSize?: string;
+  twitterScreenName?: string;
 }
 
 const UserHeader: React.FC<UserHeaderProps> = ({
-  userInfo1,
+  userInfo = userInfoDefault,
   nameMarginLeft,
   headerWidth = 44,
   titleSize = "20px",
@@ -38,6 +41,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({
         }}
         width={headerWidth}
         height={headerWidth}
+        className="rounded-full border-[2px] border-solid border-[#0d0d0d]"
       ></Image>
       <div
         className="ml-[6px]"
@@ -62,7 +66,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({
             height={16}
           ></Image>
           <div className="ml-[2px] ">
-            @{userInfo?.username} • {userInfo?.followers} followers
+            @{userInfo?.twitterScreenName} • {userInfo?.followers} followers
           </div>
         </div>
       </div>

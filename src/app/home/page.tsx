@@ -23,23 +23,21 @@ import InviteSpeakPopup from "@/components/ui/inviteSpeakerPopup";
 import ChooseVoiceNotePopup from "@/components/ui/createVoiceNotePopup";
 import UploadAudioPopup from "@/components/ui/uploadAudioPopup";
 import AudioPlayer from "@/components/custom/audioPlayer";
+import { InfiniteScroll } from "antd-mobile";
+import { getHolderAll, getHouseAll, infoType } from "@/api/model/home";
 
 const tabsList = [
   {
-    text: "Tab1",
+    text: "Holdings",
     img: "",
   },
   {
-    text: "Tab2",
-    img: "",
-  },
-  {
-    text: "Tab3",
+    text: "All",
     img: "",
   },
 ];
 const Home: React.FC = () => {
-  const [tabsActive, setTabsActive] = React.useState(0);
+  let [tabsActive, setTabsActive] = React.useState(0);
 
   const [showPopupBuy, setShowPopupBuy] = React.useState(false);
   const [showPopupSell, setShowPopupSell] = React.useState(false);
@@ -56,15 +54,45 @@ const Home: React.FC = () => {
   const [showCreatVoiceNotePopup, setShowCreatVoiceNotePopup] =
     React.useState(false);
   const [showUploadAudioPopup, setShowUploadAudioPopup] = React.useState(false);
-  const [cardList, setCardList] = React.useState([
-    {
-      userInfo: {
-        username: "username",
-        avatar: defaultHeaderIcon,
-        followers: 100,
-      },
-    },
-  ]);
+
+  const [hasMore, setHasMore] = React.useState(true);
+
+  let [paramsData, setParamsData] = React.useState({
+    pageNum: 1,
+    pageSize: 10,
+    queryKey: "",
+  });
+
+  const [cardList, setCardList] = React.useState<PartialGetAllHomeType[]>([]);
+
+  const loadMore = (refresh?: boolean) => {
+    const parmas: infoType = {
+      pageNum: paramsData.pageNum,
+      pageSize: paramsData.pageSize,
+    };
+    if (refresh) parmas.pageNum = 1;
+
+    const getHomeList = tabsActive == 1 ? getHouseAll : getHolderAll;
+    if (tabsActive == 1) {
+      parmas.queryKey = paramsData.queryKey;
+    }
+
+    return getHomeList(parmas).then((res) => {
+      console.log(res);
+      let { pageList = [], count = 0 } = res.result;
+      if (!pageList) pageList = [];
+
+      const newCardList = [
+        ...(refresh ? [] : cardList),
+        ...(pageList ? pageList : []),
+      ];
+      setCardList(newCardList);
+      if (newCardList.length >= count) {
+        setHasMore(false);
+      }
+      paramsData.pageNum = paramsData.pageNum + 1;
+    });
+  };
 
   const clickBuy = () => {
     console.log("buy");
@@ -76,7 +104,7 @@ const Home: React.FC = () => {
     setShowPopupSell(true);
   };
   return (
-    <div className="relative">
+    <div className="relative flex-col flex h-[794px]">
       <div className=" flex pt-[18px] h-[76px]">
         <div className="flex items-center">
           <div className="text-[32px] font-bold mr-[3px]">
@@ -97,28 +125,34 @@ const Home: React.FC = () => {
           tabList={tabsList}
           activeIndex={tabsActive}
           tabClick={(val) => {
+            console.log(val);
+            tabsActive = val;
             setTabsActive(val);
+            loadMore(true);
           }}
         ></Tabs>
       </div>
 
-      <div className="flex flex-wrap flex-1 overflow-y-scroll">
-        {cardList.map((item, index) => {
-          return (
-            <div key={index + "r"}>
-              <Card
-                onOpeningEvent={() => {
-                  setShowOpenIngEvent(true);
-                }}
-                onClickBuy={clickBuy}
-                onClickSell={() => {
-                  clickSell();
-                }}
-                item={item}
-              ></Card>
-            </div>
-          );
-        })}
+      <div className="flex-1 pb-[10px] overflow-y-scroll">
+        <div className="flex flex-wrap flex-1 overflow-y-scroll">
+          {cardList.map((item, index) => {
+            return (
+              <div key={index + "r"}>
+                <Card
+                  onOpeningEvent={() => {
+                    setShowOpenIngEvent(true);
+                  }}
+                  onClickBuy={clickBuy}
+                  onClickSell={() => {
+                    clickSell();
+                  }}
+                  item={item}
+                ></Card>
+              </div>
+            );
+          })}
+        </div>
+        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
       </div>
 
       <div className="flex fixed bottom-[40px] right-[55px] ">
@@ -147,7 +181,7 @@ const Home: React.FC = () => {
         {showCreatVoiceNote && (
           <div className="absolute right-0 bottom-[70px] w-[178px] h-[108px] border-[2px] border-solid border-[#0D0D0D] rounded-[12px] p-[10px] bg-[#fff] cursor-pointer">
             <div
-              className="w-[154px] h-[40px] rounded-[8px] bg-[#00FC6E] flex items-center justify-center text-[#0D0D0D] font-semibold"
+              className="w-[154px] h-[40px] rounded-[8px]  flex items-center justify-center text-[#0D0D0D] font-semibold hover:bg-[#00FC6E]"
               onClick={() => {
                 setShowCreatVoiceNote(false);
                 setShowCreatVoiceNotePopup(true);
@@ -163,7 +197,7 @@ const Home: React.FC = () => {
               Voice Note
             </div>
             <div
-              className="mt-[4px] w-[154px] h-[40px] rounded-[8px]  flex items-center justify-center text-[#0D0D0D] font-semibold"
+              className="mt-[4px] w-[154px] hover:bg-[#00FC6E] h-[40px] rounded-[8px]  flex items-center justify-center text-[#0D0D0D] font-semibold"
               onClick={() => {
                 setShowCreatVoiceNote(false);
                 setShowUploadAudioPopup(true);

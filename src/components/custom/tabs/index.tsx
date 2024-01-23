@@ -24,11 +24,13 @@ const Tabs: React.FC<TabsProps> = (props) => {
             onClick={() => {
               handleClickTabs(index);
             }}
-            className="w-[68px] h-[28px] border-[2px] rounded-[16px] text-[16px] font-medium flex items-center justify-center mr-[4px] cursor-pointer"
+            className="min-w-[68px] px-[14px] h-[28px] border-[2px] rounded-[16px] text-[16px] font-medium flex items-center justify-center mr-[4px] cursor-pointer"
             style={{
               border: activeIndex === index ? "2px solid #0D0D0D" : "none",
+              padding: activeIndex === index ? "0px 14px" : "0px 16px",
               color: activeIndex === index ? "#0D0D0D" : "#404140",
               background: activeIndex === index ? "#00FC6E" : "none",
+              fontWeight: activeIndex === index ? "600" : "500",
             }}
           >
             {item.text}

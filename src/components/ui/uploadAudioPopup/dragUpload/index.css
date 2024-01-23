@@ -5,3 +5,10 @@
 .ant-upload-wrapper {
   display: flex;
 }
+.ant-progress-outer {
+  height: auto !important;
+}
+.ant-progress-inner {
+  height: 8px !important;
+  border: 1px solid #0d0d0d;
+}

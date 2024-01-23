@@ -16,6 +16,7 @@ import Search from "@/components/custom/search";
 import { verifyTwitterToken, bindInviteCode } from "@/api/model/login";
 import { useRouter } from "next/navigation";
 import { getUserInfo } from "@/api/model/userService";
+import Loading from "@/components/custom/Loading";
 interface LoginProps {
   // Add any props you need for the Login component
 }
@@ -54,16 +55,14 @@ const Login: React.FC<LoginProps> = () => {
       .then(async (res: any) => {
         if (res.result) {
           localStorage.setItem("token", res.result);
-          setIsShowInviteCode(true);
-
-          // getUserInfo().then((res) => {
-          //   console.log(res);
-          //   if (res.result.bindInviteCode) {
-          //     router.push("/home");
-          //   } else {
-          //     setIsShowInviteCode(true);
-          //   }
-          // });
+          getUserInfo().then((res) => {
+            console.log(res);
+            if (res.result.bindInviteCode) {
+              router.push("/home");
+            } else {
+              setIsShowInviteCode(true);
+            }
+          });
         } else {
         }
       })

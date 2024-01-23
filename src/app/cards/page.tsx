@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 
 import Button from "@/components/custom/button";
 import Roll from "@/components/custom/roll";
@@ -20,6 +20,7 @@ import ETHIcon from "@/assets/popup/ETH.svg";
 import CustomScrollbar from "@/components/custom/scroll";
 import twitterIcon from "@/assets/home/twitterIcon.svg";
 import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll";
+import { getTradeGetAllTradeList } from "@/api/model/card";
 
 interface Props {
   // Define your props here
@@ -31,6 +32,21 @@ const Page: React.FC<Props> = () => {
   const [paimingList, setPaimingList] = React.useState([1, 2, 3]);
   const [scrollItemClientHeight, setScrollItemClientHeight] =
     React.useState<number>(0);
+
+  const [danmuList, setDanmuList] = React.useState<any[]>([]);
+
+  useEffect(() => {
+    const params = {
+      pageNum: 1,
+      pageSize: 20,
+    };
+    getTradeGetAllTradeList(params).then((res) => {
+      console.log(res);
+
+      setDanmuList(res.result);
+    });
+  }, []);
+
   return (
     <div className="mt-[24px] w-full">
       <div className=" flex w-full justify-between pr-[39px] items-center">
@@ -41,7 +57,11 @@ const Page: React.FC<Props> = () => {
           Recent Trade
         </div>
         <div className="ml-[12px] relative overflow-hidden flex-1 h-full flex items-center">
-          <Roll isCardsDanmu={true} leftOrRight={true}></Roll>
+          <Roll
+            danmuList={danmuList}
+            isCardsDanmu={true}
+            leftOrRight={true}
+          ></Roll>
         </div>
       </div>
 

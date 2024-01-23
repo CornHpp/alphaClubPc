@@ -1,6 +1,5 @@
 import React from "react";
 import UserHeader from "@/components/ui/userHeader";
-import { userInfoType } from "@/components/ui/userHeader";
 import Image from "next/image";
 import handLoveSign from "@/assets/home/handLoveSign.svg";
 import ethereum from "@/assets/home/ethereum.svg";
@@ -10,12 +9,9 @@ import rightArrow from "@/assets/home/rightArrow.svg";
 import { useRouter } from "next/navigation";
 import EventPopup from "../eventPopup";
 import OpenIngEvent from "../openIngEvent";
-type CardType = {
-  userInfo: userInfoType;
-};
 
 interface CardProps {
-  item: CardType;
+  item: PartialGetAllHomeType;
   onClickBuy: () => void;
   onClickSell: () => void;
   onOpeningEvent: () => void;
@@ -40,7 +36,14 @@ const Card: React.FC<CardProps> = ({
           borderBottom: "2px solid #0D0D0D",
         }}
       >
-        <UserHeader></UserHeader>
+        <UserHeader
+          userInfo={{
+            username: item.twitterName,
+            avatar: item.imageUrl,
+            twitterScreenName: item.twitterScreenName,
+            followers: 100,
+          }}
+        ></UserHeader>
         <Image
           src={rightArrow}
           alt=""
@@ -84,7 +87,9 @@ const Card: React.FC<CardProps> = ({
               width={24}
               height={24}
             ></Image>
-            <div className="text-[#0D0D0D] font-semibold ml-[2px]">242</div>
+            <div className="text-[#0D0D0D] font-semibold ml-[2px]">
+              {item.price}
+            </div>
           </div>
         </div>
       </div>

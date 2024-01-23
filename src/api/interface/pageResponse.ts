@@ -15,6 +15,12 @@ type ResponseBaseType<T> = {
   result: T;
 };
 
+type ResponseBaseTypeArrResult<T> = {
+  code: string;
+  message: string;
+  result: T[];
+};
+
 type allSpaceResponse = {
   biddingEndTtime: string;
   imageUrl: string;

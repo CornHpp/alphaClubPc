@@ -11,9 +11,16 @@ import "./index.css";
 
 import React from "react";
 
+interface PressRecordProps {
+  // Add props here
+  toFatherAudioFile: (audioUrl: FormData) => void;
+}
+
 let wavesurfer: any, record: any;
 let audioContext: any;
-const PressRecord: React.FC = () => {
+
+const PressRecord: React.FC<PressRecordProps> = (props) => {
+  const { toFatherAudioFile } = props;
   const [recordStatus, setRecordStatus] = React.useState(1);
 
   useEffect(() => {
@@ -26,7 +33,6 @@ const PressRecord: React.FC = () => {
         container: "#mic",
         waveColor: "#949694",
         progressColor: "##FFFFB3",
-        url: "/demo.wav",
         barGap: 2,
         barRadius: 4,
         barWidth: 2,
@@ -47,6 +53,10 @@ const PressRecord: React.FC = () => {
       );
       // Render recorded audio
       record.on("record-end", (blob: any) => {
+        const formData = new FormData();
+        formData.append("file", blob, "recording.webm");
+        toFatherAudioFile(formData);
+
         const container = document.querySelector("#recordings") as HTMLElement;
         const recordedUrl = URL.createObjectURL(blob);
 
@@ -59,7 +69,6 @@ const PressRecord: React.FC = () => {
           height: 76,
           barGap: 3,
           barWidth: 2,
-
           cursorColor: "#FF4141",
           cursorWidth: 2,
         });

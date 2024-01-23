@@ -6,6 +6,7 @@ import Search from "@/components/custom/search";
 import "./index.css";
 import redDelete from "@/assets/popup/redDelete.svg";
 import { Input } from "antd";
+import { audioCreate, audioUpload } from "@/api/model/audio";
 
 import DragUpload from "./dragUpload";
 
@@ -15,8 +16,8 @@ interface Props {
   showPopup: boolean;
   setShowPopup: (showPopup: boolean) => void;
   onClickSelectCoHost: () => void;
-  onClickSchedule: () => void;
   isEdit?: boolean;
+  onClickSchedule: () => void;
 }
 
 const UploadAudioPopup: React.FC<Props> = ({
@@ -28,8 +29,25 @@ const UploadAudioPopup: React.FC<Props> = ({
 }) => {
   const [selectedPrice, setSelectedPrice] = React.useState(0);
   const [value, setValue] = React.useState("");
+  const [saveAudioUrl, setSaveAudioUrl] = React.useState("");
 
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
+
+  const clickStartingNow = () => {
+    const data: creatAudioType = {
+      title: value,
+      descr: "",
+      fileUrl: saveAudioUrl,
+      showTime: "",
+      source: 1,
+    };
+
+    audioCreate(data).then((res) => {
+      console.log(res);
+      setShowPopup(false);
+      setSelectedPrice(0);
+    });
+  };
 
   return (
     <PopupView
@@ -75,7 +93,7 @@ const UploadAudioPopup: React.FC<Props> = ({
         <div>Upload Audio</div>
         <div className=" w-full flex items-center ">
           <div className="mt-[4px] flex  h-[100px] ">
-            <DragUpload></DragUpload>
+            <DragUpload setUrltoParent={setSaveAudioUrl}></DragUpload>
           </div>
         </div>
       </div>
@@ -115,9 +133,7 @@ const UploadAudioPopup: React.FC<Props> = ({
           border="2px solid #0D0D0D"
           normalBackGround="#0D0D0D"
           color="#fff"
-          buttonClick={() => {
-            console.log("click");
-          }}
+          buttonClick={clickStartingNow}
         ></Button>
       </div>
     </PopupView>

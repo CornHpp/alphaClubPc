@@ -29,7 +29,14 @@ service.interceptors.request.use(
         showFullScreenLoading();
       }
     }
+
     config.headers["Content-Type"] = "application/json;charset=utf-8";
+
+    // 上传文件格式
+    if (config.url == "/audio/upload") {
+      config.headers["Content-Type"] = "multipart/form-data";
+    }
+
     // 请求携带自定义token
     const token = localStorage.getItem("token");
 
@@ -60,6 +67,7 @@ service.interceptors.response.use(
         hideFullScreenLoading();
       }
     }, 200);
+    console.log(code);
 
     if (code != 200) {
       console.error(`[${res.config.url}]: ` + msg);
@@ -72,7 +80,7 @@ service.interceptors.response.use(
         return {};
       }
       toast.warning(msg);
-      return res.data;
+      return Promise.reject(res?.data?.message);
     }
     return res.data;
   },
