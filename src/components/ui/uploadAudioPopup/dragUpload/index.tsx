@@ -21,6 +21,7 @@ const DragUpload: React.FC<uploadProps> = (props) => {
   const [fileName, setFileName] = React.useState("");
   const [percent, setPercent] = React.useState(0);
   let isHasFile = false;
+  const [uploading, setUploading] = React.useState(false);
 
   const startProgress = () => {
     const timer = setInterval(() => {
@@ -28,6 +29,7 @@ const DragUpload: React.FC<uploadProps> = (props) => {
         if (pre >= 95) {
           clearInterval(timer);
           if (isHasFile) {
+            setUploading(false);
             return 100;
           }
           return 95;
@@ -56,6 +58,7 @@ const DragUpload: React.FC<uploadProps> = (props) => {
       setFileName(info.file.name);
       if (status !== "uploading") {
         startProgress();
+        setUploading(true);
 
         console.log(info.file, info.fileList);
         const fileList = info.fileList;
@@ -130,15 +133,19 @@ const DragUpload: React.FC<uploadProps> = (props) => {
   };
 
   return (
-    <Dragger {...uploadAttruite}>
-      <div className="flex flex-col justify-center items-center">
-        <Image src={cloudUploadIcon} alt="" width={32} height={32}></Image>
-        <div className="font-semibold text-[#656765] text-[14px]">
-          Drag Or Browse
+    <div className={uploading ? "selfSttyle" : ""}>
+      <Dragger {...uploadAttruite}>
+        <div className="flex flex-col justify-center items-center">
+          <Image src={cloudUploadIcon} alt="" width={32} height={32}></Image>
+          <div className="font-semibold text-[#656765] text-[14px]">
+            {uploading ? "Uploading..." : "Drag Or Browse"}
+          </div>
+          {!uploading && (
+            <div className="text-[11px] text-[#949694]">support: wav. mp3.</div>
+          )}
         </div>
-        <div className="text-[11px] text-[#949694]">support: wav. mp3.</div>
-      </div>
-    </Dragger>
+      </Dragger>
+    </div>
   );
 };
 
