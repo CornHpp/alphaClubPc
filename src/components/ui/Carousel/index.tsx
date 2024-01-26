@@ -9,10 +9,11 @@ import AudioCard from "./audioCard";
 interface CarouselProps {
   // Define your props here
   onOpenEventPopup: () => void;
+  item: creatAudioType;
 }
 
 const CarouselView: React.FC<CarouselProps> = (props) => {
-  const { onOpenEventPopup } = props;
+  const { onOpenEventPopup, item } = props;
   const carouseRef = React.useRef(null);
   const [currentSlide, setCurrentSlide] = React.useState(0);
 
@@ -47,7 +48,12 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
               onOpenEventPopup();
             }}
           >
-            <AudioCard></AudioCard>
+            <AudioCard
+              time={item.showTime}
+              audioUrl={item.fileUrl}
+              audioSource={item.source}
+              title={item.title}
+            ></AudioCard>
           </div>
           {!showDanmu ? (
             <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[129px] block px-[10px] py-[10px]">

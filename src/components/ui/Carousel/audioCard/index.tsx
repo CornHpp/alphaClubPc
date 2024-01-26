@@ -4,32 +4,44 @@ import Image from "next/image";
 import audioIcon from "@/assets/home/audio.svg";
 import machine from "@/assets/home/machine.svg";
 import person from "@/assets/home/person.svg";
-
+import volumeIcon from "@/assets/home/volumeIcon.svg";
+import timeIcon from "@/assets/popup/timeIcon.svg";
 import PlayAudio from "@/components/custom/playAudio";
 import AudioPlayer from "@/components/custom/audioPlayer";
 
 interface CarouselProps {
-  // Define your component props here
+  time: string | undefined;
+  audioUrl: string;
+  audioSource: number;
+  title?: string;
 }
 
-const AudioCard: React.FC<CarouselProps> = () => {
-  const [shortAudio, setShortAudio] = React.useState<boolean>(true);
+const AudioCard: React.FC<CarouselProps> = (props) => {
+  const {
+    time = "2024.01.04",
+    audioUrl = "/demo.wav",
+    audioSource,
+    title,
+  } = props;
   return (
     <div>
       <div className="flex">
-        <SmallButton text="LIVE" background="#00FC6E">
+        <SmallButton
+          text={audioSource === 0 ? "SHORT" : "LOING"}
+          background="#FFFFB3"
+        >
           <Image
-            src={audioIcon}
+            src={volumeIcon}
             alt=""
-            width={13.5}
-            height={10}
-            className="w-[13.5px] h-[10px] mr-[3px]"
+            width={12}
+            height={12}
+            className="w-[12px] h-[12px] mr-[3px]"
           ></Image>
         </SmallButton>
         <div className="ml-[6px]">
-          <SmallButton text="GAME" background="#FFDCFB">
+          <SmallButton text={time} background="#fff">
             <Image
-              src={machine}
+              src={timeIcon}
               alt=""
               width={12}
               height={12}
@@ -39,13 +51,13 @@ const AudioCard: React.FC<CarouselProps> = () => {
         </div>
       </div>
 
-      <div className="text-[18px] font-semibold mt-[2px]">voice note no.12</div>
+      <div className="text-[18px] font-semibold mt-[2px]">{title}</div>
 
-      {shortAudio ? (
-        <PlayAudio></PlayAudio>
+      {audioSource === 0 ? (
+        <PlayAudio src={audioUrl}></PlayAudio>
       ) : (
         <AudioPlayer
-          src="/demo.wav"
+          src={audioUrl}
           onPlay={(e) => console.log("onPlay")}
         ></AudioPlayer>
       )}

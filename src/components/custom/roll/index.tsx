@@ -32,34 +32,39 @@ const Roll: React.FC<RollProps> = ({
           leftOrRight ? "scrollLeft" : "scrollRight"
         }  flex  relative`}
       >
-        {danmuList.map((item, index) => {
-          return (
-            <div key={index + "s"} className="flex-shrink-0 mr-[8px]">
-              {isCardsDanmu ? (
-                <DanmuButtonCards item={item}></DanmuButtonCards>
-              ) : (
-                <DanmuButton></DanmuButton>
-              )}
-            </div>
-          );
-        })}
+        {danmuList?.length &&
+          danmuList.map((item, index) => {
+            return (
+              <div
+                key={index + "s"}
+                className="flex-shrink-0 mr-[8px] cursor-pointer"
+              >
+                {isCardsDanmu ? (
+                  <DanmuButtonCards item={item}></DanmuButtonCards>
+                ) : (
+                  <DanmuButton></DanmuButton>
+                )}
+              </div>
+            );
+          })}
       </div>
       <div
         className={`${
           leftOrRight ? "scrollLeft" : "scrollRight"
         }  flex relative`}
       >
-        {danmuList.map((item, index) => {
-          return (
-            <div key={index + "s"} className="flex-shrink-0 mr-[8px]">
-              {isCardsDanmu ? (
-                <DanmuButtonCards item={item}></DanmuButtonCards>
-              ) : (
-                <DanmuButton></DanmuButton>
-              )}
-            </div>
-          );
-        })}
+        {danmuList?.length &&
+          danmuList.map((item, index) => {
+            return (
+              <div key={index + "s"} className="flex-shrink-0 mr-[8px]">
+                {isCardsDanmu ? (
+                  <DanmuButtonCards item={item}></DanmuButtonCards>
+                ) : (
+                  <DanmuButton></DanmuButton>
+                )}
+              </div>
+            );
+          })}
       </div>
     </div>
   );

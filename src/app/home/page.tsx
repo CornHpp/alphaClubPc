@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import starIcon from "@/assets/home/star.svg";
 import Tabs from "@/components/custom/tabs";
@@ -25,6 +25,12 @@ import UploadAudioPopup from "@/components/ui/uploadAudioPopup";
 import AudioPlayer from "@/components/custom/audioPlayer";
 import { InfiniteScroll } from "antd-mobile";
 import { getHolderAll, getHouseAll, infoType } from "@/api/model/home";
+import InfiniteScrollContent from "@/components/custom/infiniteScrollContent";
+import Emitter from "@/lib/emitter";
+import { useSelector } from "react-redux";
+import { Player, Controls } from "@lottiefiles/react-lottie-player";
+import loadingAnimation from "@/lib/animation/loadingfinal.json";
+import nothingIcon from "@/assets/home/nothingIcon.svg";
 
 const tabsList = [
   {
@@ -59,19 +65,41 @@ const Home: React.FC = () => {
 
   let [paramsData, setParamsData] = React.useState({
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 50,
     queryKey: "",
   });
 
   const [cardList, setCardList] = React.useState<PartialGetAllHomeType[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
+
+  useEffect(() => {
+    Emitter.on("clickSearchIcon", (value: string) => {
+      console.log(value);
+      paramsData.queryKey = value;
+      loadMore(true);
+    });
+
+    loadMore(true);
+    return () => {
+      Emitter.off("clickSearchIcon", () => {
+        console.log("off");
+      });
+    };
+  }, []);
 
   const loadMore = (refresh?: boolean) => {
     const parmas: infoType = {
       pageNum: paramsData.pageNum,
       pageSize: paramsData.pageSize,
+      queryKey: paramsData.queryKey,
     };
-    if (refresh) parmas.pageNum = 1;
+    if (refresh) {
+      parmas.pageNum = 1;
+      setIsLoading(true);
+      setCardList([]);
+    }
 
+    console.log(tabsActive);
     const getHomeList = tabsActive == 1 ? getHouseAll : getHolderAll;
     if (tabsActive == 1) {
       parmas.queryKey = paramsData.queryKey;
@@ -79,6 +107,7 @@ const Home: React.FC = () => {
 
     return getHomeList(parmas).then((res) => {
       console.log(res);
+      setIsLoading(false);
       let { pageList = [], count = 0 } = res.result;
       if (!pageList) pageList = [];
 
@@ -132,30 +161,60 @@ const Home: React.FC = () => {
           }}
         ></Tabs>
       </div>
-
-      <div className="flex-1 pb-[10px] overflow-y-scroll">
-        <div className="flex flex-wrap flex-1 overflow-y-scroll">
-          {cardList.map((item, index) => {
-            return (
-              <div key={index + "r"}>
-                <Card
-                  onOpeningEvent={() => {
-                    setShowOpenIngEvent(true);
-                  }}
-                  onClickBuy={clickBuy}
-                  onClickSell={() => {
-                    clickSell();
-                  }}
-                  item={item}
-                ></Card>
-              </div>
-            );
-          })}
+      {isLoading && loadingAnimation && (
+        <div
+          className="w-[120px] h-[120px] bg-[#fff] flex items-center justify-center broder-solid border-[2px] border-[#0d0d0d] rounded-[16px]
+          fixed top-[45%] left-[50%] transform [-translate-x-1/2] [-translate-y-1/2]
+        "
+        >
+          <Player
+            autoplay
+            loop
+            src={loadingAnimation}
+            style={{ height: "100px", width: "100px" }}
+          ></Player>
         </div>
-        <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
-      </div>
+      )}
 
-      <div className="flex fixed bottom-[40px] right-[55px] ">
+      {!isLoading && cardList.length > 0 && (
+        <div className="flex-1 pb-[10px] overflow-y-scroll">
+          <div className="flex flex-wrap flex-1 overflow-y-scroll">
+            {cardList.map((item, index) => {
+              return (
+                <div key={index + "r"}>
+                  <Card
+                    onOpeningEvent={() => {
+                      setShowOpenIngEvent(true);
+                    }}
+                    onClickBuy={clickBuy}
+                    onClickSell={() => {
+                      clickSell();
+                    }}
+                    item={item}
+                  ></Card>
+                </div>
+              );
+            })}
+          </div>
+          <InfiniteScroll loadMore={loadMore} hasMore={hasMore}>
+            <InfiniteScrollContent></InfiniteScrollContent>
+          </InfiniteScroll>
+        </div>
+      )}
+      {!isLoading && cardList.length == 0 && (
+        <div className="flex flex-col items-center font-semibold  fixed top-[45%] left-[50%] transform [-translate-x-1/2] [-translate-y-1/2]">
+          <Image
+            src={nothingIcon}
+            alt=""
+            width={120}
+            height={120}
+            className="w-[120px] h-[120px]"
+          ></Image>
+          Un，there is nothing here
+        </div>
+      )}
+
+      <div className="flex fixed bottom-[40px] right-[55px]">
         <Button
           active={false}
           width="123px"
@@ -179,7 +238,12 @@ const Home: React.FC = () => {
         </Button>
 
         {showCreatVoiceNote && (
-          <div className="absolute right-0 bottom-[70px] w-[178px] h-[108px] border-[2px] border-solid border-[#0D0D0D] rounded-[12px] p-[10px] bg-[#fff] cursor-pointer">
+          <div
+            onMouseLeave={() => {
+              setShowCreatVoiceNote(false);
+            }}
+            className="absolute right-0 bottom-[70px] w-[178px] h-[108px] border-[2px] border-solid border-[#0D0D0D] rounded-[12px] p-[10px] bg-[#fff] cursor-pointer"
+          >
             <div
               className="w-[154px] h-[40px] rounded-[8px]  flex items-center justify-center text-[#0D0D0D] font-semibold hover:bg-[#00FC6E]"
               onClick={() => {

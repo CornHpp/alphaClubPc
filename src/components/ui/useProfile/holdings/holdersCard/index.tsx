@@ -3,7 +3,13 @@ import React from "react";
 import keyIcon from "@/assets/home/key.svg";
 import Image from "next/image";
 
-const HoldersCard: React.FC = () => {
+interface Props {
+  // Add your props here
+  item: any;
+}
+
+const HoldersCard: React.FC<Props> = (props) => {
+  const { item } = props;
   return (
     <div className="flex items-center justify-between">
       <UserHeader></UserHeader>
@@ -18,7 +24,7 @@ const HoldersCard: React.FC = () => {
             height={18}
             className="mr-[1px]"
           ></Image>
-          4
+          {item.keys}
         </div>
       </div>
     </div>

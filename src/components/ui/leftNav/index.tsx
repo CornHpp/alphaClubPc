@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { use, useEffect } from "react";
 import Image from "next/image";
 import logo from "@/assets/home/logo.svg";
 import Button from "@/components/custom/button";
@@ -10,7 +10,7 @@ import airdropIcon from "@/assets/home/airdropIcon.svg";
 import leftBg from "@/assets/home/leftBG.svg";
 import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
 import twitterIcon from "@/assets/home/twitterIcon.svg";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 interface LeftNavProps {
   // Add any props you need for your component here
@@ -37,6 +37,13 @@ const buttonLists = [
 const LeftNav: React.FC<LeftNavProps> = () => {
   const [buttonActive, setButtonActive] = React.useState(0);
   const router = useRouter();
+  const pathName = usePathname();
+  useEffect(() => {
+    const index = buttonLists.findIndex((item) => {
+      return item.router === pathName;
+    });
+    setButtonActive(index);
+  }, [pathName]);
   return (
     <div
       className=" mt-[16px]  relative"
@@ -47,6 +54,7 @@ const LeftNav: React.FC<LeftNavProps> = () => {
       <Image
         src={leftBg}
         alt=""
+        priority={true}
         className="w-[244px] h-[76px] absolute top-[-1px] left-[-2px] z-[110]"
         width={244}
         height={76}
@@ -59,9 +67,9 @@ const LeftNav: React.FC<LeftNavProps> = () => {
       <Image
         src={logo}
         alt=""
-        width={104}
-        height={69}
-        className="w-[104px] h-[69px]  absolute left-[48px] top-[16px] z-[120] cursor-pointer"
+        width={180}
+        height={64}
+        className="w-[180px] h-[64px]  absolute left-[22px] top-[22px] z-[120] cursor-pointer"
         onClick={() => {
           router.push("/home");
         }}
@@ -73,7 +81,7 @@ const LeftNav: React.FC<LeftNavProps> = () => {
         className="h-full flex flex-col pb-[16px]
         pl-[24px]
         border-[2px] border-[#0D0D0D] border-solid 
-        pt-[100px]
+        pt-[98px]
         z-[120]
         "
         style={{
@@ -128,6 +136,7 @@ const LeftNav: React.FC<LeftNavProps> = () => {
               src={defaultHeaderIcon}
               alt=""
               width={56}
+              className="w-[56px] h-[56px]"
               height={56}
             ></Image>
             <div className="ml-[8px]">

@@ -4,4 +4,5 @@ interface creatAudioType {
   fileUrl: string;
   showTime?: string;
   source: number;
+  id?: number;
 }

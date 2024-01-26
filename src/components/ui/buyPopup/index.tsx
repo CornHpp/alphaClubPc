@@ -4,6 +4,7 @@ import ETHIcon from "@/assets/popup/ETH.svg";
 import Image from "next/image";
 import Button from "@/components/custom/button";
 import Search from "@/components/custom/search";
+import { formatBalanceNumber } from "@/lib/util";
 
 interface Props {
   // Define your component props here
@@ -45,13 +46,13 @@ const BuyPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
 
         {buttonList.map((item, index) => {
           return (
-            <div className="mb-[12px] mt-[4px]">
+            <div className="mb-[12px] mt-[4px]" key={index + "o"}>
               <Button
                 hideBottomBackground={true}
                 active={false}
                 width="323px"
                 height="50px"
-                text={item.price}
+                text={formatBalanceNumber(item.price)}
                 normalBackGround={selectedPrice === index ? "#00FC6E" : "#fff"}
                 borderRadius="27px"
                 border="2px solid #0D0D0D"

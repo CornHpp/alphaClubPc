@@ -42,10 +42,11 @@ const DanmuButtonCards: React.FC<DanmuButtonProps> = (props) => {
       ></Image>
       <div className="ml-[4px] leading-[14px] flex-shrink-0">
         <div className="font-medium text-[12px] text-[#004D22]">
-          Kent Sold <span className="text-[#0D0D0D]">0.01</span> Key
+          {item?.twitterName} {item?.tradeType == 1 ? "bought" : "sold"}{" "}
+          <span className="text-[#0D0D0D]">{item?.keys}</span> Key
         </div>
         <div className="text-[16px] font-semibold text-[#005A0E] flex items-center mt-[3px]">
-          0.42ETH{" "}
+          {item?.moneyCount}ETH{" "}
           <div className="text-[12px] flex items-center ml-[12px] font-medium">
             <Image src={clockIcon} alt="" width={12} height={12}></Image>
             <span className="ml-[2px]">32 mins ago</span>

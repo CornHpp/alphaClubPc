@@ -93,15 +93,17 @@ const CreateEventPopupView: React.FC<Props> = ({
           </div>
           {selectedCoHost.map((item, index) => {
             return (
-              <PersonHeadImg
-                onClickDelete={() => {
-                  setSelectedCoHost((prev) => {
-                    const newSelectedCoHost = [...prev];
-                    newSelectedCoHost.splice(index, 1);
-                    return newSelectedCoHost;
-                  });
-                }}
-              ></PersonHeadImg>
+              <div key={index + "qqq"}>
+                <PersonHeadImg
+                  onClickDelete={() => {
+                    setSelectedCoHost((prev) => {
+                      const newSelectedCoHost = [...prev];
+                      newSelectedCoHost.splice(index, 1);
+                      return newSelectedCoHost;
+                    });
+                  }}
+                ></PersonHeadImg>
+              </div>
             );
           })}
         </div>

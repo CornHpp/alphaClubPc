@@ -1,19 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import UserHeader from "@/components/ui/userHeader";
 import Image from "next/image";
 import danceFloor from "@/assets/profile/danceFloor.svg";
 import baseChainIcon from "@/assets/profile/baseChainIcon.svg";
 import Button from "@/components/custom/button";
 import handLoveSign from "@/assets/home/handLoveSign.svg";
+import { useSelector } from "react-redux";
 import ethereum from "@/assets/home/ethereum.svg";
 interface Props {
-  // Add your props here
   onOpenDepositPopup: () => void;
   onOpenWithdrawPopup: () => void;
   onOpenExportWalletPopup: () => void;
 }
 
 const UserInfoView: React.FC<Props> = (props) => {
+  const { userinfo } = useSelector((state: any) => state.user);
+
   // Add your component logic here
   const { onOpenDepositPopup, onOpenWithdrawPopup, onOpenExportWalletPopup } =
     props;
@@ -24,6 +26,18 @@ const UserInfoView: React.FC<Props> = (props) => {
   const [exportWalletHideButtonBg, setExportWalletHideButtonBg] =
     React.useState(false);
 
+  const [userInfo, setUserInfo] = React.useState({});
+
+  useEffect(() => {
+    const usr = {
+      username: userinfo.twitterName,
+      avatar: userinfo.imageUrl,
+      followers: userinfo.followersCount,
+      twitterScreenName: userinfo.twitterScreenName,
+    };
+    setUserInfo(usr);
+  }, []);
+
   return (
     <div className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid  bg-[#D8FCD1]">
       <div
@@ -33,8 +47,8 @@ const UserInfoView: React.FC<Props> = (props) => {
           borderRadius: "18px 18px 0px 0",
         }}
       >
-        <UserHeader nameMarginLeft={"12px"}></UserHeader>
-        <div
+        <UserHeader userInfo={userInfo} nameMarginLeft={"12px"}></UserHeader>
+        {/* <div
           className="w-[82px] h-[32px] border-[#0D0D0D] border-solid border-[2px]  flex items-center pl-[10px] bg-[#00FC6E] "
           style={{
             borderRightWidth: "0px",
@@ -45,7 +59,7 @@ const UserInfoView: React.FC<Props> = (props) => {
           <div className="text-[12px] font-semibold leading-[12px] w-[40px] ml-[4px] ">
             Dance Floor
           </div>
-        </div>
+        </div> */}
       </div>
 
       <div className="pt-[12px] pl-[14px] flex items-center bg-white">

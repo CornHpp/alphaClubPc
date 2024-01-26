@@ -20,15 +20,15 @@ export const service = axios.create({
 service.interceptors.request.use(
   (config: any) => {
     // 根据custom参数中配置的是否需要显示loading
-    if (config.custom && config.custom.loading === true) {
-      if (config.url == "Auth/twitterlogin?") {
-        showFullScreenLoading(
-          "Just a moment, it is a little slow to log in for the first time"
-        );
-      } else {
-        showFullScreenLoading();
-      }
-    }
+    // if (config.custom && config.custom.loading === true) {
+    //   if (config.url == "Auth/twitterlogin?") {
+    //     showFullScreenLoading(
+    //       "Just a moment, it is a little slow to log in for the first time"
+    //     );
+    //   } else {
+    //     showFullScreenLoading();
+    //   }
+    // }
 
     config.headers["Content-Type"] = "application/json;charset=utf-8";
 
@@ -67,9 +67,9 @@ service.interceptors.response.use(
         hideFullScreenLoading();
       }
     }, 200);
-    console.log(code);
 
     if (code != 200) {
+      console.log("error", res);
       console.error(`[${res.config.url}]: ` + msg);
 
       if (
@@ -111,7 +111,7 @@ service.interceptors.response.use(
     if (status == 401) {
       setTimeout(() => {
         localStorage.removeItem("token");
-        location.href = `${location.origin}/`;
+        location.href = `${location.origin}/login`;
       }, 1000);
     }
     return Promise.reject(error);

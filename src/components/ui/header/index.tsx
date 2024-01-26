@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import Search from "@/components/custom/search";
 import total from "@/assets/home/total.svg";
 import holdings from "@/assets/home/holdings.svg";
@@ -7,15 +7,103 @@ import balance from "@/assets/home/balance.svg";
 import earn from "@/assets/home/earn.svg";
 import point from "@/assets/home/point.svg";
 import Image from "next/image";
+import { useSelector, useDispatch } from "react-redux";
+import { setSearchValue } from "@/redux/features/headSearchValue";
+import { usePathname } from "next/navigation";
+import Emitter from "@/lib/emitter";
 
-interface Props {
-  // Define your component's props here
-}
+import { setEtherObject } from "@/redux/features/userSlice";
 
-const Header: React.FC<Props> = () => {
+import { ethers } from "ethers";
+const provider = ethers.getDefaultProvider(
+  process.env.NEXT_PUBLIC_APP_PROVIDE_WEB3NETWORK as string
+);
+const main = async () => {
+  console.log(provider);
+};
+main();
+interface Props {}
+
+const Header: React.FC<Props> = (props) => {
+  const { value } = useSelector((state: any) => state.searchValue);
+  const { userinfo } = useSelector((state: any) => state.user);
+  const dispatch = useDispatch();
+  const setValue = (value: string) => {
+    dispatch(setSearchValue(value));
+  };
+
+  const getBalance = async (address: string) => {
+    const balance = await provider.getBalance(address as string);
+    console.log(balance);
+    console.log(`ETH Balance of vitalik: ${ethers.formatEther(balance)} ETH`);
+    setIconLists((pre) => {
+      return pre.map((item, index) => {
+        if (index === 2) {
+          return {
+            ...item,
+            value: ethers.formatEther(balance),
+          };
+        }
+        return item;
+      });
+    });
+  };
+  useEffect(() => {
+    dispatch(setEtherObject(provider));
+    getBalance(userinfo?.walletAddress);
+  }, []);
+
+  const [iconLists, setIconLists] = React.useState([
+    {
+      img: total,
+      text: "Total Value",
+      value: "0",
+    },
+    {
+      img: holdings,
+      text: "Holdings Value",
+      value: "0",
+      currency: "ETH",
+    },
+    {
+      img: balance,
+      text: "Balance",
+      value: "0",
+      currency: "ETH",
+    },
+    {
+      img: earn,
+      text: "earn",
+      value: "0",
+      currency: "ETH",
+    },
+    {
+      img: point,
+      text: "point",
+      value: "0",
+    },
+  ]);
+
+  const [showSearch, setShowSearch] = React.useState(false);
+
+  const pathName = usePathname();
+  useEffect(() => {
+    setShowSearch(pathName === "/home");
+  }, [pathName]);
   return (
     <div className="h-[90px]  pr-[7px] flex items-center justify-between flex-shrink-0">
-      <Search></Search>
+      {showSearch ? (
+        <Search
+          value={value}
+          onChange={setValue}
+          onClickSerchIcon={() => {
+            Emitter.emit("clickSearchIcon", value);
+          }}
+        ></Search>
+      ) : (
+        <div></div>
+      )}
+
       <div className="flex items-center">
         {iconLists.map((item, index) => {
           return (
@@ -45,34 +133,3 @@ const Header: React.FC<Props> = () => {
 };
 
 export default Header;
-
-const iconLists = [
-  {
-    img: total,
-    text: "Total Value",
-    value: "3072",
-  },
-  {
-    img: holdings,
-    text: "Holdings Value",
-    value: "6.07",
-    currency: "ETH",
-  },
-  {
-    img: balance,
-    text: "Balance",
-    value: "1.31",
-    currency: "ETH",
-  },
-  {
-    img: earn,
-    text: "earn",
-    value: "0.92",
-    currency: "ETH",
-  },
-  {
-    img: point,
-    text: "point",
-    value: "635",
-  },
-];

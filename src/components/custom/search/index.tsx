@@ -16,6 +16,7 @@ interface Props {
   boxShadow?: string | boolean;
   value?: string;
   onChange: (val: string) => void;
+  onClickSerchIcon?: (val: string | undefined) => void;
 }
 
 const Search: React.FC<Props> = (props) => {
@@ -30,6 +31,7 @@ const Search: React.FC<Props> = (props) => {
     paddingLeft,
     borderRadius,
     boxShadow,
+    onClickSerchIcon,
   } = props;
   const [search, setSearch] = useState("");
   return (
@@ -53,6 +55,11 @@ const Search: React.FC<Props> = (props) => {
         ${boxShadow ? "boxShadow" : "focus:shadow-[0px_0px_16px_#00FC6E]"}`}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            onClickSerchIcon && onClickSerchIcon(value);
+          }
+        }}
       ></input>
       {rightNode ? (
         <div
@@ -73,7 +80,7 @@ const Search: React.FC<Props> = (props) => {
           top-1/2 transform -translate-y-1/2
           "
           onClick={() => {
-            console.log(search);
+            onClickSerchIcon && onClickSerchIcon(value);
           }}
         ></Image>
       )}

@@ -4,9 +4,7 @@ import LeftNav from "@/components/ui/leftNav";
 import Header from "@/components/ui/header";
 import Login from "@/app/login/page";
 import { usePathname } from "next/navigation";
-
-import { Provider as ReduxProvider } from "react-redux";
-import { store } from "@/redux";
+import { Providers } from "./walletProviders";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   const [isLogin, setIsLogin] = React.useState(0);
@@ -14,7 +12,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <ReduxProvider store={store}>
+      <Providers>
         {pathname != "/login" ? (
           <div className="flex px-[16px]  relative pb-[16px]">
             <LeftNav></LeftNav>
@@ -38,7 +36,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
         ) : (
           <div>{children}</div>
         )}
-      </ReduxProvider>
+      </Providers>
     </>
   );
 }

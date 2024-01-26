@@ -40,7 +40,7 @@ const HoldCard: React.FC<HoldCardProps> = () => {
               width={18}
               height={18}
               alt=""
-              className="mr-[2px]"
+              className="mr-[2px] w-[18px] h-[18px]"
             ></Image>
             7.22 ETH ($3138)
           </div>

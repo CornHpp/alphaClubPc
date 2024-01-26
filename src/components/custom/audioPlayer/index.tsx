@@ -39,7 +39,13 @@ function formatTime(value: string) {
   return time;
 }
 
-export const Audio: React.FC<any> = (props) => {
+interface audioType {
+  src: string;
+  width?: string;
+  height?: string;
+}
+
+export const Audio: React.FC<audioType> = (props) => {
   const { src, width = "100%", height = "30px" } = props;
 
   const [playStatus, setPlayStatus] = React.useState(1);

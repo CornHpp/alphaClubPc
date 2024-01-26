@@ -8,7 +8,9 @@ import Carousel from "@/components/ui/Carousel";
 import rightArrow from "@/assets/home/rightArrow.svg";
 import { useRouter } from "next/navigation";
 import EventPopup from "../eventPopup";
+import nothingIcon from "@/assets/home/nothingIcon.svg";
 import OpenIngEvent from "../openIngEvent";
+import { formatBalanceNumber } from "@/lib/util/index";
 
 interface CardProps {
   item: PartialGetAllHomeType;
@@ -50,16 +52,34 @@ const Card: React.FC<CardProps> = ({
           width={16}
           height={16}
           className="mr-[16px]"
+          onClick={() => {
+            router.push(`/profile/${item.houseId}`);
+          }}
         ></Image>
       </div>
+      {item.audioEventDomain ? (
+        <Carousel
+          onOpenEventPopup={() => {
+            // setShowEventPopup(true);
+          }}
+          item={item.audioEventDomain}
+        ></Carousel>
+      ) : (
+        <div className="w-full px-[16px] py-[16px] mb-[10px]">
+          <div className="border-[2px] border-[#0D0D0D] border-solid overflow-hidden rounded-[10px] w-full h-[129px] flex flex-col items-center justify-center font-semibold text-[14px]">
+            <Image
+              src={nothingIcon}
+              alt=""
+              className="w-[64px] h-[64px]"
+              width={64}
+              height={64}
+            ></Image>
+            Uh, there’s nothing here.
+          </div>
+        </div>
+      )}
 
-      <Carousel
-        onOpenEventPopup={() => {
-          // setShowEventPopup(true);
-        }}
-      ></Carousel>
-
-      <div className="mb-[16px] mx-[16px] flex items-center">
+      <div className="mb-[14px] mx-[16px] flex items-center">
         <div className="">
           <div className="text-[14px] text-[#404140] font-medium">Holders</div>
           <div className="flex items-center mt-[6px]">
@@ -70,7 +90,9 @@ const Card: React.FC<CardProps> = ({
               width={24}
               height={24}
             ></Image>
-            <div className="text-[#0D0D0D] font-semibold ml-[2px]">242</div>
+            <div className="text-[#0D0D0D] font-semibold ml-[2px] text-[24px]">
+              242
+            </div>
           </div>
         </div>
         <div className="w-[2px] h-[12px] mx-[16px] bg-[#0D0D0D] rounded-[2px]"></div>
@@ -87,8 +109,8 @@ const Card: React.FC<CardProps> = ({
               width={24}
               height={24}
             ></Image>
-            <div className="text-[#0D0D0D] font-semibold ml-[2px]">
-              {item.price}
+            <div className="text-[#0D0D0D] font-semibold ml-[2px] text-[24px]">
+              {formatBalanceNumber(item.price)}
             </div>
           </div>
         </div>

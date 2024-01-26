@@ -38,11 +38,19 @@ const UploadAudioPopup: React.FC<Props> = ({
       title: value,
       descr: "",
       fileUrl: saveAudioUrl,
-      showTime: "",
-      source: 1,
+      showTime: "2024-01-22 10:00:00",
+      source: 0,
     };
 
-    audioCreate(data).then((res) => {
+    const test = {
+      title: "test",
+      source: 0,
+      fileUrl:
+        "http://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
+      showTime: "2024-01-22 10:00:00",
+    };
+
+    audioCreate(test).then((res) => {
       console.log(res);
       setShowPopup(false);
       setSelectedPrice(0);

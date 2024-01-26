@@ -20,7 +20,11 @@ import ETHIcon from "@/assets/popup/ETH.svg";
 import CustomScrollbar from "@/components/custom/scroll";
 import twitterIcon from "@/assets/home/twitterIcon.svg";
 import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll";
-import { getTradeGetAllTradeList } from "@/api/model/card";
+import {
+  getTradeGetAllTradeList,
+  getTradeGetHouseGetOrderList,
+} from "@/api/model/card";
+import { formatBalanceNumber } from "@/lib/util";
 
 interface Props {
   // Define your props here
@@ -28,14 +32,20 @@ interface Props {
 
 const Page: React.FC<Props> = () => {
   const [currentTab, setCurrentTab] = React.useState(0);
-  const [list, setList] = React.useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
-  const [paimingList, setPaimingList] = React.useState([1, 2, 3]);
+  const [greaerThenFourOrderlist, setGreaerThenFourOrderlist] = React.useState<
+    PartialGetTradeOrderList[]
+  >([]);
+
+  const [twitterFriendList, setTwitterFriendList] = React.useState<any[]>([]);
+  const [paimingList, setPaimingList] = React.useState<
+    PartialGetTradeOrderList[]
+  >([]);
   const [scrollItemClientHeight, setScrollItemClientHeight] =
     React.useState<number>(0);
 
   const [danmuList, setDanmuList] = React.useState<any[]>([]);
 
-  useEffect(() => {
+  const getPageData = () => {
     const params = {
       pageNum: 1,
       pageSize: 20,
@@ -45,6 +55,37 @@ const Page: React.FC<Props> = () => {
 
       setDanmuList(res.result);
     });
+  };
+
+  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true);
+
+  const getLoadOrder = () => {
+    const params = {
+      pageNum: 1,
+      pageSize: 50,
+    };
+    return getTradeGetHouseGetOrderList(params).then((res) => {
+      console.log(res);
+      let { pageList = [], count = 0 } = res.result;
+      if (!pageList) pageList = [];
+
+      setPaimingList(pageList.slice(0, 3));
+
+      const newCardList = [
+        ...greaerThenFourOrderlist,
+        ...(pageList ? pageList.slice(3) : []),
+      ];
+
+      setGreaerThenFourOrderlist(res.result.pageList.slice(3));
+
+      if (newCardList.length >= count) {
+        setOrderHasMore(false);
+      }
+    });
+  };
+
+  useEffect(() => {
+    getPageData();
   }, []);
 
   return (
@@ -95,7 +136,12 @@ const Page: React.FC<Props> = () => {
                           : thirdWinner
                       }
                       alt=""
+                      style={{
+                        width: "auto",
+                        height: index == 1 ? "229px" : "200px",
+                      }}
                       width={173}
+                      priority={true}
                       height={index == 1 ? 229 : 200}
                     ></Image>
                     <div className="absolute left-0 top-0 w-full h-full">
@@ -106,13 +152,15 @@ const Page: React.FC<Props> = () => {
                         }}
                       >
                         <Image
-                          src={defaultHeaderIcon}
+                          src={item.imageUrl || defaultHeaderIcon}
                           alt=""
                           width={51}
                           height={51}
-                          className="w-[51px] h-[51px]"
+                          className="w-[51px] h-[51px] rounded-full border-[2px] border-solid border-[#0d0d0d]"
                         ></Image>
-                        <div className="text-[16px] font-bold">Jim</div>
+                        <div className="text-[16px] font-bold">
+                          {item.twitterName}
+                        </div>
                       </div>
 
                       <div className="pt-[6px]  flex items-center ml-[6px]">
@@ -126,14 +174,14 @@ const Page: React.FC<Props> = () => {
                               height={12}
                             ></Image>
                             <div className="ml-[2px] text-[12px] font-medium">
-                              @Dekid
+                              Twitter
                             </div>
                           </div>
-                          <div className="text-[14px] font-semibold">
-                            @Gooy10
+                          <div className="text-[14px] font-semibold overflow-hidden text-ellipsis whitespace-normal  w-[70px]">
+                            @{item.twitterScreenName}
                           </div>
                         </div>
-                        <div className="w-[2px] h-[12px] ml-[12px] mr-[8px] bg-[#0D0D0D] rounded-[2px]"></div>
+                        <div className="w-[2px] h-[12px] ml-[8px] mr-[8px] bg-[#0D0D0D] rounded-[2px]"></div>
 
                         <div className="">
                           <div className="flex items-center text-[12px] text-[#404140]">
@@ -148,12 +196,20 @@ const Page: React.FC<Props> = () => {
                               Followers
                             </div>
                           </div>
-                          <div className="text-[14px] font-semibold">1.5K</div>
+                          <div className="text-[14px] font-semibold">
+                            {item.followersCount}
+                          </div>
                         </div>
                       </div>
 
                       <div className=" w-full pt-[10px] px-[6px]  ">
-                        <div className="border-[#0D0D0D] border-[2px]  h-[50px] border-solid rounded-[8px] flex flex-col items-center justify-center ">
+                        <div
+                          className="border-[#0D0D0D] border-[2px]  h-[50px] border-solid rounded-[8px] flex flex-col items-center justify-center "
+                          style={{
+                            height: index == 1 ? "58px" : "50px",
+                            fontSize: index == 1 ? "18px" : "16px",
+                          }}
+                        >
                           <div className="flex font-semibold mb-[-2px] items-center">
                             <Image
                               src={ETHIcon}
@@ -162,7 +218,8 @@ const Page: React.FC<Props> = () => {
                               height={16}
                               className="w-[16px] h-[16px] mr-[2px]"
                             ></Image>
-                            104 ETH
+                            {formatBalanceNumber(item.price)}
+                            ETH
                           </div>
                           <div className="flex items-center">
                             <Image
@@ -173,7 +230,7 @@ const Page: React.FC<Props> = () => {
                               height={12}
                             ></Image>
                             <div className="text-[#404140]  ml-[2px] text-[12px]">
-                              Holder:242
+                              Holder:{item.holdcount}
                             </div>
                           </div>
                         </div>
@@ -187,17 +244,11 @@ const Page: React.FC<Props> = () => {
 
           <div className="box-border pl-[12px] bg-[#fff]  rounded-[12px] w-[563px] ml-[-2px] border-[2px] border-[#0D0D0D] border-solid flex-1 mb-[-2px]">
             <InfinietScrollbar
-              hasMore={false}
-              onLoadMore={() => {
-                return new Promise((resolve) => {
-                  setTimeout(() => {
-                    resolve();
-                  }, 1000);
-                });
-              }}
+              hasMore={orderHasMore}
+              onLoadMore={getLoadOrder}
               distanceClientHeight={336}
             >
-              {list.map((item, index) => {
+              {greaerThenFourOrderlist.map((item, index) => {
                 return (
                   <div
                     id="scrollItemId"
@@ -210,7 +261,7 @@ const Page: React.FC<Props> = () => {
                         <span className="text-[12px]">th</span>
                       </div>
                     </div>
-                    <UserPrice></UserPrice>
+                    <UserPrice item={item}></UserPrice>
                   </div>
                 );
               })}
@@ -219,9 +270,12 @@ const Page: React.FC<Props> = () => {
         </div>
 
         <div className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] h-[600px] w-[563px] pl-[14px] pt-[14px] bg-[#fff] flex flex-col">
-          <div className="text-[20px] font-bold">Twitter Friends</div>
+          <div className="text-[20px] font-bold">
+            <div>Polls Ranking</div>
+            <div></div>
+          </div>
 
-          <div className="mt-[12px]">
+          {/* <div className="mt-[12px]">
             <CreationTabs
               currentTab={currentTab}
               setCurrentTab={setCurrentTab}
@@ -234,7 +288,7 @@ const Page: React.FC<Props> = () => {
                 },
               ]}
             ></CreationTabs>
-          </div>
+          </div> */}
           <div className="mt-[16px] flex-1">
             <InfinietScrollbar
               hasMore={false}
@@ -248,7 +302,7 @@ const Page: React.FC<Props> = () => {
               }}
             >
               <div>
-                {list.map((item, index) => {
+                {twitterFriendList.map((item, index) => {
                   return (
                     <div
                       className="flex items-center mb-[16px] pr-[16px]"

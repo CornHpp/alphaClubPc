@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import UserInfoView from "./userInfo";
 import CreationvView from "./creation";
 import HoldingsView from "./holdings";
@@ -13,6 +13,9 @@ import DepositPopup from "../depositPopup";
 import WithdrawPopup from "../withdrawPopup";
 import ExportWalletPopop from "../exportWallPopup";
 import AcceptCoHostPopup from "../coHostPopup";
+import logoutIcon from "@/assets/profile/logoutIcon.svg";
+import LoginPopupView from "../loginPopup";
+import { useParams } from "next/navigation";
 interface Props {
   // Add your props here
 }
@@ -27,42 +30,63 @@ const UseProfileView: React.FC<Props> = () => {
   const [showPopupExportWallet, setShowPopupExportWallet] =
     React.useState(false);
 
+  const [showPopupLoginView, setShowPopupLoginView] = React.useState(false);
+  const urlParams = useParams();
+
   return (
     <div className="mt-[24px] w-full">
       <div className=" flex w-full justify-between pr-[39px] items-center">
         <div className="text-[32px] font-bold mr-[3px]">My Profile</div>
-        <div className="flex items-center font-semibold cursor-pointer">
-          <div
-            className="text-[16px] flex mr-[24px]"
-            onClick={() => {
-              setShowPopupInviteCode(true);
-            }}
-          >
-            <Image
-              src={inviteIcon}
-              alt=""
-              width={20}
-              height={20}
-              className="mr-[2px]"
-            ></Image>
-            Invite Code
+
+        {!urlParams.id && (
+          <div className="flex items-center font-semibold cursor-pointer">
+            <div
+              className="text-[16px] flex mr-[24px]"
+              onClick={() => {
+                setShowPopupInviteCode(true);
+              }}
+            >
+              <Image
+                src={inviteIcon}
+                alt=""
+                width={20}
+                height={20}
+                className="mr-[2px]"
+              ></Image>
+              Invite Code
+            </div>
+            <div
+              className="text-[16px] flex"
+              onClick={() => {
+                setShowPopupSetting(true);
+              }}
+            >
+              <Image
+                src={setting}
+                alt=""
+                width={20}
+                height={20}
+                className="mr-[2px]"
+              ></Image>
+              Setting
+            </div>
+            <div
+              className="text-[16px] flex ml-[24px]"
+              onClick={() => {
+                setShowPopupLoginView(true);
+              }}
+            >
+              <Image
+                src={logoutIcon}
+                alt=""
+                width={20}
+                height={20}
+                className="mr-[2px]"
+              ></Image>
+              Logout
+            </div>
           </div>
-          <div
-            className="text-[16px] flex"
-            onClick={() => {
-              setShowPopupSetting(true);
-            }}
-          >
-            <Image
-              src={setting}
-              alt=""
-              width={20}
-              height={20}
-              className="mr-[2px]"
-            ></Image>
-            Setting
-          </div>
-        </div>
+        )}
       </div>
       {/* <div className="mt-[12px] grid w-full pr-[37px] grid-cols-3 gap-[24px]">
         <div className="">
@@ -153,6 +177,11 @@ const UseProfileView: React.FC<Props> = () => {
           console.log("onClickSchedule");
         }}
       ></ExportWalletPopop>
+
+      <LoginPopupView
+        showPopup={showPopupLoginView}
+        setShowPopup={setShowPopupLoginView}
+      ></LoginPopupView>
     </div>
   );
 };

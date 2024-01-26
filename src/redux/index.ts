@@ -9,18 +9,20 @@ import { persistStore, persistReducer } from "redux-persist";
 // 创建的reducers
 import userSlice from "./features/userSlice";
 import cryptoSlice from "./features/cryptoSlice";
+import searchValueSlice from "./features/headSearchValue";
 
 // combineReducers合并reducer
 const reducers = combineReducers({
   user: userSlice,
   crypto: cryptoSlice,
+  searchValue: searchValueSlice,
 });
 
 const persistConfig = {
   key: "root",
   storage,
   // 黑名单 不缓存的
-  blacklist: ["roomCache", "stateCache", "crypto"],
+  blacklist: ["searchValue", "crypto"],
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);

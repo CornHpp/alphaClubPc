@@ -23,6 +23,6 @@
       "node_modules/*": ["./node_modules/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/lib/emitter.js"],
   "exclude": ["node_modules"]
 }

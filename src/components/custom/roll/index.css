@@ -1,6 +1,6 @@
 .scrollLeft {
   white-space: nowrap;
-  animation: scrollLe 15s linear infinite; /* 定义动画 */
+  animation: scrollLe 50s linear infinite; /* 定义动画 */
 }
 @keyframes scrollLe {
   0% {
@@ -15,7 +15,7 @@
 
 .scrollRight {
   white-space: nowrap; /* 保持内容在一行 */
-  animation: scrollri 15s linear infinite; /* 定义动画 */
+  animation: scrollri 50s linear infinite; /* 定义动画 */
 }
 @keyframes scrollri {
   0% {

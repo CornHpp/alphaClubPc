@@ -73,7 +73,10 @@ const InviteSpeakPopup: React.FC<Props> = ({
       <div className="">
         {list.map((item, index) => {
           return (
-            <div className="w-full flex items-center mt-[16px]">
+            <div
+              className="w-full flex items-center mt-[16px]"
+              key={index + "g"}
+            >
               <div className="flex-1 flex items-center justify-between">
                 <UserHeader headerWidth={40} titleSize={"16px"}></UserHeader>
                 <div className=" text-right text-[12px]">

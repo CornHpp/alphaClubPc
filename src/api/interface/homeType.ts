@@ -1,5 +1,5 @@
 interface getAllHomeType {
-  audioEventDomain: string;
+  audioEventDomain: creatAudioType;
   eventDomain: string;
   followersCount: number;
   houseId: number;

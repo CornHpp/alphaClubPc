@@ -5,6 +5,7 @@ import "./index.css";
 import "overlayscrollbars/overlayscrollbars.css";
 import React, { useEffect, useRef } from "react";
 import UserPrice from "@/components/ui/userPrice";
+import InfiniteScrollContent from "@/components/custom/infiniteScrollContent";
 
 import { InfiniteScroll } from "antd-mobile";
 interface ScrollProps {
@@ -33,7 +34,9 @@ const InfinietScrollbar: React.FC<ScrollProps> = ({
         }}
       >
         {children}
-        <InfiniteScroll loadMore={onLoadMore} hasMore={hasMore} />
+        <InfiniteScroll loadMore={onLoadMore} hasMore={hasMore}>
+          <InfiniteScrollContent></InfiniteScrollContent>
+        </InfiniteScroll>
       </div>
     </OverlayScrollbarsComponent>
   );

@@ -2,13 +2,10 @@ import React from "react";
 
 const lists = [
   {
-    name: "Events",
+    name: "Voice Note",
   },
   {
-    name: "Short Recording",
-  },
-  {
-    name: "Activity",
+    name: "AudioDem",
   },
 ];
 

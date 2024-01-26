@@ -83,7 +83,10 @@ export function copyTextToClipboardSafari(text: string) {
 }
 
 // 格式化余额
-export const formatBalanceNumber = (num: number, maxDecimals = 5) => {
+export const formatBalanceNumber = (
+  num: number | string | undefined,
+  maxDecimals = 6
+) => {
   const result = String(num);
   const index = result.indexOf(".");
   let decimals = result.length - index - 1;

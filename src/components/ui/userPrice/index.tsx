@@ -3,29 +3,41 @@ import UserHeader from "../userHeader";
 import Image from "next/image";
 
 import ethIcon from "@/assets/profile/ethIcon.svg";
+import { formatBalanceNumber } from "@/lib/util";
 
 interface Props {
   // Define your props here
+  item?: PartialGetTradeOrderList;
 }
 
-const UserPrice: React.FC<Props> = () => {
+const UserPrice: React.FC<Props> = (props) => {
+  const { item } = props;
   return (
     <div className="w-full flex items-center justify-between">
-      <UserHeader headerWidth={40} titleSize={"16px"}></UserHeader>
+      <UserHeader
+        userInfo={{
+          username: item?.twitterName,
+          avatar: item?.imageUrl,
+          twitterScreenName: item?.twitterScreenName,
+          followers: item?.followersCount,
+        }}
+        headerWidth={40}
+        titleSize={"16px"}
+      ></UserHeader>
 
-      <div className="">
+      <div className="flex flex-col items-end">
         <div className="flex text-[18px] font-semibold">
           <Image
-            className="mr-[2px]"
+            className="mr-[2px] w-[16px] h-[17px]"
             src={ethIcon}
             alt=""
             width={16}
             height={17}
           ></Image>
-          68 ETH
+          {formatBalanceNumber(item?.price)} ETH
         </div>
-        <div className="flex text-[#404140] text-[12px] font-medium">
-          Holder：3244
+        <div className="flex text-[#404140] text-[12px] font-medium ">
+          Holder：{item?.holdcount}
         </div>
       </div>
     </div>

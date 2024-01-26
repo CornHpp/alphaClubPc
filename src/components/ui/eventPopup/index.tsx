@@ -89,7 +89,10 @@ const EventPopup: React.FC<Props> = ({
         <div className="flex flex-wrap">
           {coHostList.map((item, index) => {
             return (
-              <div className="w-[25%] flex flex-col justify-center items-center h-[122px]">
+              <div
+                className="w-[25%] flex flex-col justify-center items-center h-[122px]"
+                key={index + "r"}
+              >
                 <Image
                   src={defaultHeaderIcon}
                   alt=""

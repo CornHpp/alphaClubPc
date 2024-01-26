@@ -14,3 +14,14 @@ export const getTradeGetAllTradeList = async (
 
   return response;
 };
+
+export const getTradeGetHouseGetOrderList = async (
+  params: paramsType
+): Promise<ResponsePagingType<PartialGetTradeOrderList>> => {
+  const url = "/house/getOrderList";
+  const response = await request.get<
+    ResponsePagingType<PartialGetTradeOrderList>
+  >(url, params);
+
+  return response;
+};

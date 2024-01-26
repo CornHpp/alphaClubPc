@@ -17,6 +17,8 @@ import { verifyTwitterToken, bindInviteCode } from "@/api/model/login";
 import { useRouter } from "next/navigation";
 import { getUserInfo } from "@/api/model/userService";
 import Loading from "@/components/custom/Loading";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "@/redux/features/userSlice";
 interface LoginProps {
   // Add any props you need for the Login component
 }
@@ -46,6 +48,8 @@ const Login: React.FC<LoginProps> = () => {
   }, []);
   const params = getQueryParams();
 
+  const dispatch = useDispatch();
+
   const validateTwitterToken = useCallback(async () => {
     console.log("validating twitter token");
     verifyTwitterToken({
@@ -57,6 +61,7 @@ const Login: React.FC<LoginProps> = () => {
           localStorage.setItem("token", res.result);
           getUserInfo().then((res) => {
             console.log(res);
+            dispatch(setUserInfo(res.result));
             if (res.result.bindInviteCode) {
               router.push("/home");
             } else {
@@ -89,7 +94,7 @@ const Login: React.FC<LoginProps> = () => {
   return (
     <div className="w-[100vw] h-[100vh] flex flex-col items-center">
       <div className="w-full h-[90px] flex items-center px-[40px] justify-between">
-        <Image src={logo} alt="" width={104} height={69}></Image>
+        <Image src={logo} alt="" width={180} height={64}></Image>
         <div
           className="flex items-center cursor-pointer"
           onClick={() => {

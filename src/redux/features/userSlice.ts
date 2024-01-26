@@ -11,6 +11,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 // 存储的用户数据类型
 export type UserInfoType = {
+  bindInviteCode?: string;
   followersCount?: number;
   imageUrl?: string;
   twitterName?: string;
@@ -24,6 +25,7 @@ export interface UserStateType {
   isMobile?: boolean;
   SASToken: string;
   balance: number;
+  etherObject: any;
 }
 
 const initialState: UserStateType = {
@@ -31,6 +33,7 @@ const initialState: UserStateType = {
   balance: 0,
   isMobile: true,
   SASToken: "",
+  etherObject: {},
 };
 
 export const tokenSlice = createSlice({
@@ -51,10 +54,18 @@ export const tokenSlice = createSlice({
     setBalance: (state, action) => {
       state.balance = action.payload;
     },
+    setEtherObject: (state, action) => {
+      state.etherObject = action.payload;
+    },
   },
 });
 
-export const { setUserInfo, setIsMobile, setSASToken, setBalance } =
-  tokenSlice.actions;
+export const {
+  setUserInfo,
+  setIsMobile,
+  setSASToken,
+  setBalance,
+  setEtherObject,
+} = tokenSlice.actions;
 
 export default tokenSlice.reducer;

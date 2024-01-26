@@ -10,6 +10,7 @@ import "./index.css";
 
 interface PlayAudioProps {
   shortAudio?: boolean;
+  src: string;
 }
 
 let wavesurfer: any;
@@ -28,7 +29,7 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
         container: "#container",
         waveColor: "#949694",
         progressColor: "##FFFFB3",
-        url: "/demo.wav",
+        url: props.src,
         barGap: 2,
         barRadius: 4,
         barWidth: 2,

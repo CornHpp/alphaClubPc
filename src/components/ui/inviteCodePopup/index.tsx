@@ -1,8 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PopupView from "../popup";
 import Image from "next/image";
 import diamondIcon from "@/assets/popup/diamondIcon.svg";
 import rightIcon from "@/assets/popup/rightIcon.svg";
+import {
+  getUserInviteCode,
+  inviteCodeResponseType,
+} from "@/api/model/userService";
+import { copyTextToClipboardSafari } from "@/lib/util/index";
 interface Props {
   // Define your component props here
   showPopup: boolean;
@@ -20,17 +25,18 @@ const InviteCodePopup: React.FC<Props> = ({
   const [selectedPrice, setSelectedPrice] = React.useState(0);
 
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
+  const [inviteCodeList, setInviteCodeList] = React.useState<
+    inviteCodeResponseType[]
+  >([]);
+  const getUserInviteCodeFunc = async () => {
+    const res = await getUserInviteCode();
+    setInviteCodeList(res.result);
+    console.log(res);
+  };
 
-  const [inviteCodeList, setInviteCodeList] = React.useState([
-    {
-      inviteCode: "123456",
-      isCopy: false,
-    },
-    {
-      inviteCode: "123456",
-      isCopy: true,
-    },
-  ]);
+  useEffect(() => {
+    getUserInviteCodeFunc();
+  }, []);
 
   return (
     <PopupView
@@ -60,7 +66,10 @@ const InviteCodePopup: React.FC<Props> = ({
         <div>My Invite Code</div>
         {inviteCodeList.map((item, index) => {
           return (
-            <div className="mt-[14px] flex items-center w-[full] justify-between">
+            <div
+              className="mt-[14px] flex items-center w-[full] justify-between"
+              key={index + "o"}
+            >
               <div className="text-[18px]  font-semibold ">
                 {item.inviteCode}
               </div>
@@ -76,7 +85,14 @@ const InviteCodePopup: React.FC<Props> = ({
                   Copied
                 </div>
               ) : (
-                <div className="ml-[6px] text-[14px]  font-semibold w-[60px] h-[28px] border-[2px] border-[#0D0D0D] cursor-pointer border-solid flex items-center justify-center rounded-[15px]">
+                <div
+                  onClick={() => {
+                    inviteCodeList[index].isCopy = true;
+                    setInviteCodeList([...inviteCodeList]);
+                    copyTextToClipboardSafari(item.inviteCode);
+                  }}
+                  className="ml-[6px] text-[14px]  font-semibold w-[60px] h-[28px] border-[2px] border-[#0D0D0D] cursor-pointer border-solid flex items-center justify-center rounded-[15px]"
+                >
                   Copy
                 </div>
               )}
