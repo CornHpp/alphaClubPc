@@ -71,6 +71,7 @@ const Home: React.FC = () => {
 
   const [cardList, setCardList] = React.useState<PartialGetAllHomeType[]>([])
   const [isLoading, setIsLoading] = React.useState(true)
+
   const loadMore = useCallback(
     (refresh?: boolean) => {
       const parmas: infoType = {
@@ -111,13 +112,17 @@ const Home: React.FC = () => {
   )
 
   useEffect(() => {
+    loadMore(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  useEffect(() => {
     Emitter.on("clickSearchIcon", (value: string) => {
       console.log(value)
       paramsData.queryKey = value
       loadMore(true)
     })
 
-    loadMore(true)
     return () => {
       Emitter.off("clickSearchIcon", () => {
         console.log("off")
