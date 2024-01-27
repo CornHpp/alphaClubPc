@@ -9,11 +9,11 @@ import { Providers } from "./walletProviders";
 function AppLayout({ children }: { children: React.ReactNode }) {
   const [isLogin, setIsLogin] = React.useState(0);
   const pathname = usePathname();
-
+  console.log("pathname", pathname);
   return (
     <>
       <Providers>
-        {pathname != "/login" ? (
+        {pathname != "/login" && pathname != "/" ? (
           <div className="flex px-[16px]  relative pb-[16px]">
             <LeftNav></LeftNav>
 

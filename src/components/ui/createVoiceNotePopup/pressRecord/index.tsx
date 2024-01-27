@@ -1,33 +1,33 @@
 // Record plugin
 
-import { useEffect } from "react"
-import WaveSurfer from "wavesurfer.js"
-import RecordPlugin from "node_modules/wavesurfer.js/dist/plugins/record.esm.js"
-import Image from "next/image"
-import voicePlayIcon from "@/assets/home/voicePlayIcon.svg"
-import voicePlayIcon2 from "@/assets/popup/voicePlayIcon2.svg"
-import voicePlayIcon3 from "@/assets/popup/voicePlayIcon3.svg"
-import "./index.css"
+import { useEffect } from "react";
+import WaveSurfer from "wavesurfer.js";
+import RecordPlugin from "node_modules/wavesurfer.js/dist/plugins/record.esm.js";
+import Image from "next/image";
+import voicePlayIcon from "@/assets/home/voicePlayIcon.svg";
+import voicePlayIcon2 from "@/assets/popup/voicePlayIcon2.svg";
+import voicePlayIcon3 from "@/assets/popup/voicePlayIcon3.svg";
+import "./index.css";
 
-import React from "react"
+import React from "react";
 
 interface PressRecordProps {
   // Add props here
-  toFatherAudioFile: (audioUrl: FormData) => void
+  toFatherAudioFile: (audioUrl: FormData) => void;
 }
 
-let wavesurfer: any, record: any
-let audioContext: any
+let wavesurfer: any, record: any;
+let audioContext: any;
 
 const PressRecord: React.FC<PressRecordProps> = (props) => {
-  const { toFatherAudioFile } = props
-  const [recordStatus, setRecordStatus] = React.useState(1)
+  const { toFatherAudioFile } = props;
+  const [recordStatus, setRecordStatus] = React.useState(1);
 
   useEffect(() => {
     const createWaveSurfer = () => {
       // Create an instance of WaveSurfer
       if (wavesurfer) {
-        wavesurfer.destroy()
+        wavesurfer.destroy();
       }
       wavesurfer = WaveSurfer.create({
         container: "#mic",
@@ -39,10 +39,10 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
         barHeight: 1,
         height: 76,
         dragToSeek: true,
-      })
+      });
       wavesurfer.on("click", () => {
-        wavesurfer.play()
-      })
+        wavesurfer.play();
+      });
 
       // Initialize the Record plugin
       record = wavesurfer.registerPlugin(
@@ -50,36 +50,38 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
           scrollingWaveform: true,
           renderRecordedAudio: true,
         })
-      )
+      );
       // Render recorded audio
       record.on("record-end", (blob: any) => {
-        const formData = new FormData()
-        formData.append("file", blob, "recording.webm")
-        toFatherAudioFile(formData)
+        console.log(blob);
+        const formData = new FormData();
+        formData.append("file", blob, "recording.webm");
+        toFatherAudioFile(formData);
 
-        const container = document.querySelector("#recordings") as HTMLElement
-        const recordedUrl = URL.createObjectURL(blob)
+        const recordedUrl = URL.createObjectURL(blob);
 
         // Create wavesurfer from the recorded audio
         audioContext = WaveSurfer.create({
-          container,
+          container: "#recordings",
           waveColor: "#949694",
           progressColor: "#000000",
-          url: recordedUrl,
+          url: "http://localhost:3000/demo.wav",
           height: 76,
           barGap: 3,
           barWidth: 2,
           cursorColor: "#FF4141",
           cursorWidth: 2,
-        })
-      })
+        });
+      });
 
       record.on("record-progress", (time: number) => {
-        updateProgress(time)
-      })
-    }
+        updateProgress(time);
+      });
+    };
 
-    const progress = document.querySelector("#progress") as HTMLParagraphElement
+    const progress = document.querySelector(
+      "#progress"
+    ) as HTMLParagraphElement;
     const updateProgress = (time: number) => {
       // time will be in milliseconds, convert it to mm:ss format
       const formattedTime = [
@@ -87,73 +89,73 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
         Math.floor((time % 60000) / 1000), // seconds
       ]
         .map((v) => (v < 10 ? "0" + v : v))
-        .join(":")
-      progress.textContent = formattedTime
-    }
+        .join(":");
+      progress.textContent = formattedTime;
+    };
 
-    const pauseButton = document.querySelector("#pause") as HTMLButtonElement
+    const pauseButton = document.querySelector("#pause") as HTMLButtonElement;
     if (pauseButton) {
       pauseButton.onclick = () => {
         if (record.isPaused()) {
-          record.resumeRecording()
-          pauseButton.textContent = "Pause"
-          return
+          record.resumeRecording();
+          pauseButton.textContent = "Pause";
+          return;
         }
 
-        record.pauseRecording()
-        pauseButton.textContent = "Resume"
-      }
+        record.pauseRecording();
+        pauseButton.textContent = "Resume";
+      };
     }
 
-    createWaveSurfer()
-  }, [toFatherAudioFile])
+    createWaveSurfer();
+  }, [toFatherAudioFile]);
 
   const clickStartRecording = () => {
     record.startRecording().then(() => {
-      setRecordStatus(2)
-    })
-  }
+      setRecordStatus(2);
+    });
+  };
 
   const clickPulseRecording = () => {
-    console.log(record)
-    record.pauseRecording()
-    setRecordStatus(3)
-  }
+    console.log(record);
+    record.pauseRecording();
+    setRecordStatus(3);
+  };
 
   const clickContinueRecording = () => {
-    record.resumeRecording()
-    setRecordStatus(2)
-  }
+    record.resumeRecording();
+    setRecordStatus(2);
+  };
 
   const clickStopAndPlay = () => {
-    record.stopRecording()
-    setRecordStatus(4)
-  }
+    record.stopRecording();
+    setRecordStatus(4);
+  };
 
   const clickPlay = () => {
-    audioContext.playPause()
-  }
+    audioContext.playPause();
+  };
 
   const clickPlayStop = () => {
-    audioContext.playPause()
-  }
+    audioContext.playPause();
+  };
 
   return (
     <div className="mt-[16px]">
-      {recordStatus != 4 ? (
-        <div
-          id="mic"
-          className="w-[368px] h-[80px] rounded-[10px] border-[2px] border-solid border-[#0D0D0D] bg-[#E9E9E9]"
-        ></div>
-      ) : (
-        <div
-          id="recordings"
-          className="w-[368px] h-[80px] rounded-[10px] border-[2px] border-solid border-[#0D0D0D]  disableRecordingAudio bg-[#E9E9E9] overflow-hidden"
-          style={{
-            marginTop: "1rem 0",
-          }}
-        ></div>
-      )}
+      <div
+        id="mic"
+        className={`w-[368px] h-[80px] rounded-[10px] border-[2px] border-solid border-[#0D0D0D] bg-[#E9E9E9] ${
+          recordStatus == 4 ? "disableRecording" : ""
+        }`}
+      ></div>
+      <div
+        id="recordings"
+        className={`w-[368px] h-[80px] rounded-[10px] border-[2px] border-solid border-[#0D0D0D]  disableRecordingAudio bg-[#E9E9E9] overflow-hidden} 
+        `}
+        style={{
+          marginTop: "1rem 0",
+        }}
+      ></div>
       <div className="mt-[4px] w-full justify-between flex text-[12px]">
         <div>00:00:00</div>
         <p id="progress">00:00</p>
@@ -223,7 +225,7 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
         </div>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default PressRecord
+export default PressRecord;

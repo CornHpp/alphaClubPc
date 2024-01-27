@@ -32,7 +32,8 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
         const params = {
           title: value,
           fileUrl: res.result,
-          source: 1,
+          source: 0,
+          showTime: "2021-09-01 12:00:00",
         };
         audioCreate(params).then((res) => {
           console.log("res", res);

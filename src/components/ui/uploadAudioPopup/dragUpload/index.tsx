@@ -48,6 +48,7 @@ const DragUpload: React.FC<uploadProps> = (props) => {
       setPercent(0);
       return false;
     },
+    accept: ".mp3,.wav",
     onChange(info) {
       const { status } = info.file;
 
