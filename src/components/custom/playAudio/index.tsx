@@ -1,29 +1,28 @@
-// Record plugin
-import React, { useEffect } from "react"
-import WaveSurfer from "wavesurfer.js"
-import Image from "next/image"
-import playIcon from "@/assets/home/playIcon.svg"
-import stopIcon from "@/assets/home/stopIcon.svg"
-import stopWatchIcon from "@/assets/home/stopWatchIcon.svg"
+import React, { useEffect } from "react";
+import WaveSurfer from "wavesurfer.js";
+import Image from "next/image";
+import playIcon from "@/assets/home/playIcon.svg";
+import stopIcon from "@/assets/home/stopIcon.svg";
+import stopWatchIcon from "@/assets/home/stopWatchIcon.svg";
 
-import "./index.css"
+import "./index.css";
 
 interface PlayAudioProps {
-  shortAudio?: boolean
-  src: string
+  shortAudio?: boolean;
+  src: string;
 }
 
-let wavesurfer: any
-let timer: any
+let wavesurfer: any;
+let timer: any;
 const PlayAudio: React.FC<PlayAudioProps> = (props) => {
-  const [playStatus, setPlayStatus] = React.useState(1)
-  const [countTime, setCountTime] = React.useState<number | string>(0)
+  const [playStatus, setPlayStatus] = React.useState(1);
+  const [countTime, setCountTime] = React.useState<number | string>(0);
 
   useEffect(() => {
     const createWaveSurfer = () => {
       // Create an instance of WaveSurfer
       if (wavesurfer) {
-        wavesurfer.destroy()
+        wavesurfer.destroy();
       }
       wavesurfer = WaveSurfer.create({
         container: "#container",
@@ -38,7 +37,7 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
         cursorColor: "#FF4141",
         cursorWidth: 2,
         dragToSeek: true,
-      })
+      });
 
       wavesurfer.on("timeupdate", () => {
         // const currentTime = wavesurfer.getCurrentTime();
@@ -53,24 +52,24 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
         //     return time;
         //   });
         // }, 1000);
-      })
+      });
 
       wavesurfer.on("ready", () => {
-        const alltime = wavesurfer.getDuration()
-        setCountTime(alltime.toFixed(2))
-      })
-    }
+        const alltime = wavesurfer.getDuration();
+        setCountTime(alltime.toFixed(2));
+      });
+    };
 
-    createWaveSurfer()
-  }, [props.src])
+    createWaveSurfer();
+  }, [props.src]);
 
   const clickPlayAudio = () => {
-    wavesurfer.playPause()
-  }
+    wavesurfer.playPause();
+  };
 
   const clickPlayStop = () => {
-    wavesurfer.playPause()
-  }
+    wavesurfer.playPause();
+  };
 
   return (
     <>
@@ -100,8 +99,8 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
             width={32}
             height={32}
             onClick={() => {
-              clickPlayAudio()
-              setPlayStatus(2)
+              clickPlayAudio();
+              setPlayStatus(2);
             }}
           ></Image>
         ) : (
@@ -111,14 +110,14 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
             width={32}
             height={32}
             onClick={() => {
-              clickPlayStop()
-              setPlayStatus(1)
+              clickPlayStop();
+              setPlayStatus(1);
             }}
           ></Image>
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default PlayAudio
+export default PlayAudio;
