@@ -4,7 +4,7 @@ import WaveSurfer from "wavesurfer.js"
 import Image from "next/image"
 import playIcon from "@/assets/home/playIcon.svg"
 import stopIcon from "@/assets/home/stopIcon.svg"
-import stopWatchIcon from "@/assets/home/stopwatchIcon.svg"
+import stopWatchIcon from "@/assets/home/stopWatchIcon.svg"
 
 import "./index.css"
 

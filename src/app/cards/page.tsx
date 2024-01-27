@@ -1,92 +1,92 @@
-"use client";
-import React, { useEffect } from "react";
+"use client"
+import React, { useEffect } from "react"
 
-import Button from "@/components/custom/button";
-import Roll from "@/components/custom/roll";
-import UseProfileView from "@/components/ui/useProfile";
-import CreationTabs from "@/components/ui/useProfile/creation/creationTabs";
-import UserPrice from "@/components/ui/userPrice";
-import Image from "next/image";
-import loveWhiteIcon from "@/assets/cards/loveWhiteIcon.svg";
-import loveBlackIcon from "@/assets/cards/loveBlackIcon.svg";
-import personAddIcon from "@/assets/cards/personAddIcon.svg";
-import champion from "@/assets/cards/champion.svg";
-import secondPlace from "@/assets/cards/secondplace.svg";
-import thirdWinner from "@/assets/cards/thirdWinner.svg";
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
-import personIcon from "@/assets/cards/personIcon.svg";
-import handLoveSign from "@/assets/home/handLoveSign.svg";
-import ETHIcon from "@/assets/popup/ETH.svg";
-import CustomScrollbar from "@/components/custom/scroll";
-import twitterIcon from "@/assets/home/twitterIcon.svg";
-import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll";
+import Button from "@/components/custom/button"
+import Roll from "@/components/custom/roll"
+import UseProfileView from "@/components/ui/useProfile"
+import CreationTabs from "@/components/ui/useProfile/creation/creationTabs"
+import UserPrice from "@/components/ui/userPrice"
+import Image from "next/image"
+import loveWhiteIcon from "@/assets/cards/loveWhiteIcon.svg"
+import loveBlackIcon from "@/assets/cards/loveBlackIcon.svg"
+import personAddIcon from "@/assets/cards/personAddIcon.svg"
+import champion from "@/assets/cards/champion.svg"
+import secondPlace from "@/assets/cards/secondPlace.svg"
+import thirdWinner from "@/assets/cards/thirdWinner.svg"
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
+import personIcon from "@/assets/cards/personIcon.svg"
+import handLoveSign from "@/assets/home/handLoveSign.svg"
+import ETHIcon from "@/assets/popup/ETH.svg"
+import CustomScrollbar from "@/components/custom/scroll"
+import twitterIcon from "@/assets/home/twitterIcon.svg"
+import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll"
 import {
   getTradeGetAllTradeList,
   getTradeGetHouseGetOrderList,
-} from "@/api/model/card";
-import { formatBalanceNumber } from "@/lib/util";
+} from "@/api/model/card"
+import { formatBalanceNumber } from "@/lib/util"
 
 interface Props {
   // Define your props here
 }
 
 const Page: React.FC<Props> = () => {
-  const [currentTab, setCurrentTab] = React.useState(0);
+  const [currentTab, setCurrentTab] = React.useState(0)
   const [greaerThenFourOrderlist, setGreaerThenFourOrderlist] = React.useState<
     PartialGetTradeOrderList[]
-  >([]);
+  >([])
 
-  const [twitterFriendList, setTwitterFriendList] = React.useState<any[]>([]);
+  const [twitterFriendList, setTwitterFriendList] = React.useState<any[]>([])
   const [paimingList, setPaimingList] = React.useState<
     PartialGetTradeOrderList[]
-  >([]);
+  >([])
   const [scrollItemClientHeight, setScrollItemClientHeight] =
-    React.useState<number>(0);
+    React.useState<number>(0)
 
-  const [danmuList, setDanmuList] = React.useState<any[]>([]);
+  const [danmuList, setDanmuList] = React.useState<any[]>([])
 
   const getPageData = () => {
     const params = {
       pageNum: 1,
       pageSize: 20,
-    };
+    }
     getTradeGetAllTradeList(params).then((res) => {
-      console.log(res);
+      console.log(res)
 
-      setDanmuList(res.result);
-    });
-  };
+      setDanmuList(res.result)
+    })
+  }
 
-  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true);
+  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true)
 
   const getLoadOrder = () => {
     const params = {
       pageNum: 1,
       pageSize: 50,
-    };
+    }
     return getTradeGetHouseGetOrderList(params).then((res) => {
-      console.log(res);
-      let { pageList = [], count = 0 } = res.result;
-      if (!pageList) pageList = [];
+      console.log(res)
+      let { pageList = [], count = 0 } = res.result
+      if (!pageList) pageList = []
 
-      setPaimingList(pageList.slice(0, 3));
+      setPaimingList(pageList.slice(0, 3))
 
       const newCardList = [
         ...greaerThenFourOrderlist,
         ...(pageList ? pageList.slice(3) : []),
-      ];
+      ]
 
-      setGreaerThenFourOrderlist(res.result.pageList.slice(3));
+      setGreaerThenFourOrderlist(res.result.pageList.slice(3))
 
       if (newCardList.length >= count) {
-        setOrderHasMore(false);
+        setOrderHasMore(false)
       }
-    });
-  };
+    })
+  }
 
   useEffect(() => {
-    getPageData();
-  }, []);
+    getPageData()
+  }, [])
 
   return (
     <div className="mt-[24px] w-full">
@@ -237,7 +237,7 @@ const Page: React.FC<Props> = () => {
                       </div>
                     </div>
                   </div>
-                );
+                )
               })}
             </div>
           </div>
@@ -263,7 +263,7 @@ const Page: React.FC<Props> = () => {
                     </div>
                     <UserPrice item={item}></UserPrice>
                   </div>
-                );
+                )
               })}
             </InfinietScrollbar>
           </div>
@@ -296,9 +296,9 @@ const Page: React.FC<Props> = () => {
               onLoadMore={() => {
                 return new Promise((resolve) => {
                   setTimeout(() => {
-                    resolve();
-                  }, 1000);
-                });
+                    resolve()
+                  }, 1000)
+                })
               }}
             >
               <div>
@@ -322,7 +322,7 @@ const Page: React.FC<Props> = () => {
                             borderRadius="27px"
                             border="none"
                             buttonClick={() => {
-                              console.log("click");
+                              console.log("click")
                             }}
                           >
                             <Image
@@ -344,7 +344,7 @@ const Page: React.FC<Props> = () => {
                             borderRadius="27px"
                             border="none"
                             buttonClick={() => {
-                              console.log("click");
+                              console.log("click")
                             }}
                           >
                             <Image
@@ -357,7 +357,7 @@ const Page: React.FC<Props> = () => {
                         )}
                       </div>
                     </div>
-                  );
+                  )
                 })}
               </div>
             </InfinietScrollbar>
@@ -365,8 +365,8 @@ const Page: React.FC<Props> = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 const renderThumb = ({ ...props }) => {
   //设置滚动条的样式
@@ -376,8 +376,8 @@ const renderThumb = ({ ...props }) => {
     opacity: "0.2",
     borderRadius: "6px",
     right: "4px",
-  };
-  return <div style={{ ...thumbStyle }} {...props} />;
-};
+  }
+  return <div style={{ ...thumbStyle }} {...props} />
+}
 
-export default Page;
+export default Page
