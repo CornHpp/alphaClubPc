@@ -1,22 +1,22 @@
-import React, { useState } from "react";
-import PopupView from "../popup";
-import Image from "next/image";
-import type { DatePickerProps } from "antd";
-import PlusCricleIcon from "@/assets/profile/PlusCricleIcon.svg";
+import React, { useState } from "react"
+import PopupView from "../popup"
+import Image from "next/image"
+import type { DatePickerProps } from "antd"
+import PlusCricleIcon from "@/assets/profile/PlusCricleIcon.svg"
 
-import HoldTabs from "../useProfile/holdings/holdTabs";
-import Search from "@/components/custom/search";
-import searchPopupIcon from "@/assets/popup/searchPopupIcon.svg";
-import UserHeader from "../userHeader";
-import circleRightIcon from "@/assets/popup/circleRightIcon.svg";
-import circleWrongIcon from "@/assets/popup/circleWrongIcon.svg";
-import circleDisableIcon from "@/assets/popup/circleDisableIcon.svg";
+import HoldTabs from "../useProfile/holdings/holdTabs"
+import Search from "@/components/custom/search"
+import searchPopupIcon from "@/assets/popup/searchPopupIcon.svg"
+import UserHeader from "../userHeader"
+import circleRightIcon from "@/assets/popup/circleRightIcon.svg"
+import circleWrongIcon from "@/assets/popup/circleWrongIcon.svg"
+import circleDisableIcon from "@/assets/popup/circleDisableIcon.svg"
 interface Props {
   // Define your component props here
-  showPopup: boolean;
-  setShowPopup: (showPopup: boolean) => void;
-  onClickBack: () => void;
-  onClickConfirm: () => void;
+  showPopup: boolean
+  setShowPopup: (showPopup: boolean) => void
+  onClickBack: () => void
+  onClickConfirm: () => void
 }
 
 const InviteSpeakPopup: React.FC<Props> = ({
@@ -25,21 +25,21 @@ const InviteSpeakPopup: React.FC<Props> = ({
   onClickBack,
   onClickConfirm,
 }) => {
-  const [selectedPrice, setSelectedPrice] = React.useState(0);
+  const [selectedPrice, setSelectedPrice] = React.useState(0)
 
-  const [list, setList] = useState([{}, {}]);
+  const [list, setList] = useState([{}, {}])
 
   const onChange: DatePickerProps["onChange"] = (date, dateString) => {
-    console.log(date, dateString);
-  };
-  const [currentTab, setCurrentTab] = useState(0);
+    console.log(date, dateString)
+  }
+  const [currentTab, setCurrentTab] = useState(0)
   return (
     <PopupView
       width={512}
       showPopup={showPopup}
       handleCancel={() => {
-        setShowPopup(false);
-        setSelectedPrice(0);
+        setShowPopup(false)
+        setSelectedPrice(0)
       }}
       titleText={
         <HoldTabs
@@ -67,6 +67,7 @@ const InviteSpeakPopup: React.FC<Props> = ({
             </div>
           }
           rightNode={<></>}
+          onChange={() => {}}
         ></Search>
       </div>
 
@@ -130,11 +131,11 @@ const InviteSpeakPopup: React.FC<Props> = ({
                 </div>
               )}
             </div>
-          );
+          )
         })}
       </div>
     </PopupView>
-  );
-};
+  )
+}
 
-export default InviteSpeakPopup;
+export default InviteSpeakPopup

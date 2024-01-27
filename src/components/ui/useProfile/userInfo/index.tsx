@@ -1,32 +1,32 @@
-import React, { useEffect } from "react";
-import UserHeader from "@/components/ui/userHeader";
-import Image from "next/image";
-import danceFloor from "@/assets/profile/danceFloor.svg";
-import baseChainIcon from "@/assets/profile/baseChainIcon.svg";
-import Button from "@/components/custom/button";
-import handLoveSign from "@/assets/home/handLoveSign.svg";
-import { useSelector } from "react-redux";
-import ethereum from "@/assets/home/ethereum.svg";
+import React, { useEffect } from "react"
+import UserHeader from "@/components/ui/userHeader"
+import Image from "next/image"
+import danceFloor from "@/assets/profile/danceFloor.svg"
+import baseChainIcon from "@/assets/profile/baseChainIcon.svg"
+import Button from "@/components/custom/button"
+import handLoveSign from "@/assets/home/handLoveSign.svg"
+import { useSelector } from "react-redux"
+import ethereum from "@/assets/home/ethereum.svg"
 interface Props {
-  onOpenDepositPopup: () => void;
-  onOpenWithdrawPopup: () => void;
-  onOpenExportWalletPopup: () => void;
+  onOpenDepositPopup: () => void
+  onOpenWithdrawPopup: () => void
+  onOpenExportWalletPopup: () => void
 }
 
 const UserInfoView: React.FC<Props> = (props) => {
-  const { userinfo } = useSelector((state: any) => state.user);
+  const { userinfo } = useSelector((state: any) => state.user)
 
   // Add your component logic here
   const { onOpenDepositPopup, onOpenWithdrawPopup, onOpenExportWalletPopup } =
-    props;
+    props
 
   const [widthDrawHideButtonBg, setWidthDrawHideButtonBg] =
-    React.useState(false);
+    React.useState(false)
 
   const [exportWalletHideButtonBg, setExportWalletHideButtonBg] =
-    React.useState(false);
+    React.useState(false)
 
-  const [userInfo, setUserInfo] = React.useState({});
+  const [userInfo, setUserInfo] = React.useState({})
 
   useEffect(() => {
     const usr = {
@@ -34,9 +34,14 @@ const UserInfoView: React.FC<Props> = (props) => {
       avatar: userinfo.imageUrl,
       followers: userinfo.followersCount,
       twitterScreenName: userinfo.twitterScreenName,
-    };
-    setUserInfo(usr);
-  }, []);
+    }
+    setUserInfo(usr)
+  }, [
+    userinfo.followersCount,
+    userinfo.imageUrl,
+    userinfo.twitterName,
+    userinfo.twitterScreenName,
+  ])
 
   return (
     <div className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid  bg-[#D8FCD1]">
@@ -130,7 +135,7 @@ const UserInfoView: React.FC<Props> = (props) => {
           borderRadius="27px"
           border="none"
           buttonClick={() => {
-            onOpenDepositPopup();
+            onOpenDepositPopup()
           }}
         ></Button>
 
@@ -145,13 +150,13 @@ const UserInfoView: React.FC<Props> = (props) => {
             border="2px solid #0D0D0D"
             hideBottomBackground={widthDrawHideButtonBg}
             onMouseEnter={() => {
-              setWidthDrawHideButtonBg(true);
+              setWidthDrawHideButtonBg(true)
             }}
             buttonClick={() => {
-              onOpenWithdrawPopup();
+              onOpenWithdrawPopup()
             }}
             onMouseLeave={() => {
-              setWidthDrawHideButtonBg(false);
+              setWidthDrawHideButtonBg(false)
             }}
           ></Button>
 
@@ -166,13 +171,13 @@ const UserInfoView: React.FC<Props> = (props) => {
               border="2px solid #0D0D0D"
               hideBottomBackground={exportWalletHideButtonBg}
               onMouseEnter={() => {
-                setExportWalletHideButtonBg(true);
+                setExportWalletHideButtonBg(true)
               }}
               buttonClick={() => {
-                onOpenExportWalletPopup();
+                onOpenExportWalletPopup()
               }}
               onMouseLeave={() => {
-                setExportWalletHideButtonBg(false);
+                setExportWalletHideButtonBg(false)
               }}
             ></Button>
           </div>
@@ -190,7 +195,7 @@ const UserInfoView: React.FC<Props> = (props) => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default UserInfoView;
+export default UserInfoView

@@ -1,19 +1,19 @@
-import React from "react";
-import { SmallButton } from "..";
-import Image from "next/image";
-import audioIcon from "@/assets/home/audio.svg";
-import machine from "@/assets/home/machine.svg";
-import person from "@/assets/home/person.svg";
-import volumeIcon from "@/assets/home/volumeIcon.svg";
-import timeIcon from "@/assets/popup/timeIcon.svg";
-import PlayAudio from "@/components/custom/playAudio";
-import AudioPlayer from "@/components/custom/audioPlayer";
+import React from "react"
+import { SmallButton } from ".."
+import Image from "next/image"
+import audioIcon from "@/assets/home/audio.svg"
+import machine from "@/assets/home/machine.svg"
+import person from "@/assets/home/person.svg"
+import volumeIcon from "@/assets/home/volumeIcon.svg"
+import timeIcon from "@/assets/popup/timeIcon.svg"
+import PlayAudio from "@/components/custom/playAudio"
+import AudioPlayer from "@/components/custom/audioPlayer"
 
 interface CarouselProps {
-  time: string | undefined;
-  audioUrl: string;
-  audioSource: number;
-  title?: string;
+  time: string | undefined
+  audioUrl: string
+  audioSource: number
+  title?: string
 }
 
 const AudioCard: React.FC<CarouselProps> = (props) => {
@@ -22,7 +22,7 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
     audioUrl = "/demo.wav",
     audioSource,
     title,
-  } = props;
+  } = props
   return (
     <div>
       <div className="flex">
@@ -56,13 +56,10 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
       {audioSource === 0 ? (
         <PlayAudio src={audioUrl}></PlayAudio>
       ) : (
-        <AudioPlayer
-          src={audioUrl}
-          onPlay={(e) => console.log("onPlay")}
-        ></AudioPlayer>
+        <AudioPlayer src={audioUrl}></AudioPlayer>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default AudioCard;
+export default AudioCard

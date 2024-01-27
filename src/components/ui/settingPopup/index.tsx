@@ -1,17 +1,17 @@
-import React from "react";
-import PopupView from "../popup";
-import Image from "next/image";
-import Button from "@/components/custom/button";
-import Search from "@/components/custom/search";
-import plusIcon from "@/assets/popup/plus.svg";
-import Switch from "@/components/custom/switch";
+import React from "react"
+import PopupView from "../popup"
+import Image from "next/image"
+import Button from "@/components/custom/button"
+import Search from "@/components/custom/search"
+import plusIcon from "@/assets/popup/plus.svg"
+import Switch from "@/components/custom/switch"
 
 interface Props {
   // Define your component props here
-  showPopup: boolean;
-  setShowPopup: (showPopup: boolean) => void;
-  onClickSelectCoHost: () => void;
-  onClickSchedule: () => void;
+  showPopup: boolean
+  setShowPopup: (showPopup: boolean) => void
+  onClickSelectCoHost: () => void
+  onClickSchedule: () => void
 }
 
 const SettingPopup: React.FC<Props> = ({
@@ -20,17 +20,17 @@ const SettingPopup: React.FC<Props> = ({
   onClickSelectCoHost,
   onClickSchedule,
 }) => {
-  const [selectedPrice, setSelectedPrice] = React.useState(0);
+  const [selectedPrice, setSelectedPrice] = React.useState(0)
 
-  const [hideButtonBg, setHideButtonBg] = React.useState(false);
+  const [hideButtonBg, setHideButtonBg] = React.useState(false)
 
   return (
     <PopupView
       width={355}
       showPopup={showPopup}
       handleCancel={() => {
-        setShowPopup(false);
-        setSelectedPrice(0);
+        setShowPopup(false)
+        setSelectedPrice(0)
       }}
       titleText="Setting"
     >
@@ -46,6 +46,9 @@ const SettingPopup: React.FC<Props> = ({
             height={32}
             placeholder="min 0.001"
             rightNode={<div className="text-[16px] font-medium">Key</div>}
+            onChange={function (val: string): void {
+              throw new Error("Function not implemented.")
+            }}
           ></Search>
         </div>
       </div>
@@ -61,13 +64,13 @@ const SettingPopup: React.FC<Props> = ({
           borderRadius="27px"
           border="none"
           buttonClick={() => {
-            console.log("click");
-            setShowPopup(false);
+            console.log("click")
+            setShowPopup(false)
           }}
         ></Button>
       </div>
     </PopupView>
-  );
-};
+  )
+}
 
-export default SettingPopup;
+export default SettingPopup

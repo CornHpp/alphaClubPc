@@ -1,54 +1,54 @@
-import React, { useEffect } from "react";
-import Image from "next/image";
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
-import { getPersonTradeList } from "@/api/model/profile";
-import { useSelector } from "react-redux";
-import clockIcon from "@/assets/profile/clockIcon.svg";
-import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll";
-import { useParams } from "next/navigation";
-import nothingIcon from "@/assets/home/nothingIcon.svg";
+import React, { useCallback, useEffect } from "react"
+import Image from "next/image"
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
+import { getPersonTradeList } from "@/api/model/profile"
+import { useSelector } from "react-redux"
+import clockIcon from "@/assets/profile/clockIcon.svg"
+import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll"
+import { useParams } from "next/navigation"
+import nothingIcon from "@/assets/home/nothingIcon.svg"
 
 interface Props {
   // Add your props here
 }
 
 const TradeView: React.FC<Props> = () => {
-  const { userinfo } = useSelector((state: any) => state.user);
-  const [lists, setLists] = React.useState<PartialGetTradeListType[]>([]);
+  const { userinfo } = useSelector((state: any) => state.user)
+  const [lists, setLists] = React.useState<PartialGetTradeListType[]>([])
 
-  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true);
+  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true)
 
-  const urlParams = useParams();
+  const urlParams = useParams()
 
-  const houseId = urlParams.id ? urlParams.id : "1128532098262765568";
-  console.log(houseId);
+  const houseId = urlParams.id ? urlParams.id : "1128532098262765568"
+  console.log(houseId)
 
   const queryParams = {
     pageNum: 1,
     pageSize: 50,
-  };
+  }
 
-  const getPersonTradeListFunc = async () => {
+  const getPersonTradeListFunc = useCallback(async () => {
     const params = {
       pageNum: queryParams.pageNum,
       pageSize: queryParams.pageSize,
       houseId: houseId,
-    };
-    const res = await getPersonTradeList(params);
-
-    let { pageList = [], count = 0 } = res.result;
-    if (!pageList) pageList = [];
-    const newCardList = [...lists, ...(pageList ? pageList : [])];
-    if (newCardList.length >= count) {
-      setOrderHasMore(false);
     }
-    setLists(newCardList);
-    queryParams.pageNum++;
-  };
+    const res = await getPersonTradeList(params)
+
+    let { pageList = [], count = 0 } = res.result
+    if (!pageList) pageList = []
+    const newCardList = [...lists, ...(pageList ? pageList : [])]
+    if (newCardList.length >= count) {
+      setOrderHasMore(false)
+    }
+    setLists(newCardList)
+    queryParams.pageNum++
+  }, [houseId, lists, queryParams.pageNum, queryParams.pageSize])
 
   useEffect(() => {
-    getPersonTradeListFunc();
-  }, []);
+    getPersonTradeListFunc()
+  }, [getPersonTradeListFunc])
   // Add your component logic here
   return (
     <div className="border-[2px] min-w-[355px] rounded-[16px] h-[227px] border-[#0D0D0D] border-solid py-[14px] bg-white">
@@ -96,7 +96,7 @@ const TradeView: React.FC<Props> = () => {
                     <div className=" text-[#404140]">2023.12.12</div>
                   </div>
                 </div>
-              );
+              )
             })}
           </InfinietScrollbar>
         )}
@@ -115,7 +115,7 @@ const TradeView: React.FC<Props> = () => {
         )}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default TradeView;
+export default TradeView

@@ -1,16 +1,16 @@
-import treasureIcon from "@/assets/airdrop/treasureIcon.svg";
-import smileyFaceIcon from "@/assets/airdrop/smileyFaceIcon.svg";
-import Image from "next/image";
-import closeIcon from "@/assets/popup/close.svg";
-import closeHover from "@/assets/popup/closeHover.svg";
-import React from "react";
+import treasureIcon from "@/assets/airdrop/treasureIcon.svg"
+import smileyFaceIcon from "@/assets/airdrop/smileyFaceIcon.svg"
+import Image from "next/image"
+import closeIcon from "@/assets/popup/close.svg"
+import closeHover from "@/assets/popup/closeHover.svg"
+import React from "react"
 interface Props {
-  handleCancel?: () => void;
-  showPopup?: boolean;
+  handleCancel?: () => void
+  showPopup?: boolean
 }
 const OpenTreasure: React.FC<Props> = (props) => {
-  const [hoverCloseImage, setHoverCloseImage] = React.useState(false);
-  const { showPopup } = props;
+  const [hoverCloseImage, setHoverCloseImage] = React.useState(false)
+  const { showPopup } = props
   return (
     <>
       {showPopup && (
@@ -23,12 +23,12 @@ const OpenTreasure: React.FC<Props> = (props) => {
           <div className="flex flex-col items-center justify-center rounded-[8px] p-[12px] text-[#fff] relative">
             <Image src={treasureIcon} alt="" width={300} height={200}></Image>
             <div className="text-[16px]">
-              You're one of a kind，just like these{" "}
+              You{"'"}re one of a kind，just like these{" "}
               <span className="text-[28px] text-[#00FC6E] font-bold">100</span>{" "}
               points
             </div>
             <div className="text-[#FFF96D] text-[16px] flex items-center">
-              Let's cheer for you!
+              Let{"'"}s cheer for you!
               <Image
                 src={smileyFaceIcon}
                 alt=""
@@ -47,11 +47,11 @@ const OpenTreasure: React.FC<Props> = (props) => {
                   height={37}
                   className="cursor-pointer"
                   onMouseEnter={() => {
-                    setHoverCloseImage(true);
+                    setHoverCloseImage(true)
                   }}
                   onClick={props.handleCancel}
                   onMouseLeave={() => {
-                    setHoverCloseImage(false);
+                    setHoverCloseImage(false)
                   }}
                 ></Image>
               ) : (
@@ -62,10 +62,10 @@ const OpenTreasure: React.FC<Props> = (props) => {
                   height={37}
                   className="cursor-pointer"
                   onMouseEnter={() => {
-                    setHoverCloseImage(true);
+                    setHoverCloseImage(true)
                   }}
                   onMouseLeave={() => {
-                    setHoverCloseImage(false);
+                    setHoverCloseImage(false)
                   }}
                 ></Image>
               )}
@@ -74,7 +74,7 @@ const OpenTreasure: React.FC<Props> = (props) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default OpenTreasure;
+export default OpenTreasure

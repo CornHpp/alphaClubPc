@@ -1,28 +1,28 @@
-import React from "react";
-import arrowDownIcon from "@/assets/home/arrowDownIcon.svg";
-import leaveIcon from "@/assets/home/leaveIcon.svg";
-import Image from "next/image";
-import { SmallButton } from "../Carousel";
-import audioIcon from "@/assets/home/audio.svg";
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
-import personAdd from "@/assets/home/personAdd.svg";
-import emoIcon from "@/assets/home/emoIcon.svg";
-import voiceLightIcon from "@/assets/home/voiceLightIcon.svg";
-import musicIcon from "@/assets/home/musicIcon.svg";
-import voiceStopIcon from "@/assets/home/voiceStopIcon.svg";
-import Button from "@/components/custom/button";
+import React from "react"
+import arrowDownIcon from "@/assets/home/arrowDownIcon.svg"
+import leaveIcon from "@/assets/home/leaveIcon.svg"
+import Image from "next/image"
+import { SmallButton } from "../Carousel"
+import audioIcon from "@/assets/home/audio.svg"
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
+import personAdd from "@/assets/home/personAdd.svg"
+import emoIcon from "@/assets/home/emoIcon.svg"
+import voiceLightIcon from "@/assets/home/voiceLightIcon.svg"
+import musicIcon from "@/assets/home/musicIcon.svg"
+import voiceStopIcon from "@/assets/home/voiceStopIcon.svg"
+import Button from "@/components/custom/button"
 
 interface OpenIngEventProps {
   // Add props here
-  showOpenIngEvent: boolean;
-  onClickEvent: () => void;
+  showOpenIngEvent: boolean
+  onClickEvent: () => void
 }
 
 const OpenIngEvent: React.FC<OpenIngEventProps> = (props) => {
-  const { showOpenIngEvent, onClickEvent } = props;
-  const [showPeople, setShowPeople] = React.useState(false);
+  const { showOpenIngEvent, onClickEvent } = props
+  const [showPeople, setShowPeople] = React.useState(false)
 
-  const [isCanSpeak, setIsCanSpeak] = React.useState(false);
+  const [isCanSpeak, setIsCanSpeak] = React.useState(false)
   const [coHostList, setCoHostList] = React.useState([
     {
       name: "username",
@@ -39,7 +39,7 @@ const OpenIngEvent: React.FC<OpenIngEventProps> = (props) => {
     {
       name: "username",
     },
-  ]);
+  ])
 
   return (
     <>
@@ -56,8 +56,8 @@ const OpenIngEvent: React.FC<OpenIngEventProps> = (props) => {
                 transition: "transform 0.3s",
               }}
               onClick={() => {
-                console.log("leave");
-                setShowPeople(!showPeople);
+                console.log("leave")
+                setShowPeople(!showPeople)
               }}
             ></Image>
             <div className="flex items-center">
@@ -99,7 +99,10 @@ const OpenIngEvent: React.FC<OpenIngEventProps> = (props) => {
               <div className="flex flex-wrap">
                 {coHostList.map((item, index) => {
                   return (
-                    <div className="w-[25%] flex flex-col justify-center items-center h-[122px]">
+                    <div
+                      key={index + "sds"}
+                      className="w-[25%] flex flex-col justify-center items-center h-[122px]"
+                    >
                       <Image
                         src={defaultHeaderIcon}
                         alt=""
@@ -111,7 +114,7 @@ const OpenIngEvent: React.FC<OpenIngEventProps> = (props) => {
                         Host
                       </div>
                     </div>
-                  );
+                  )
                 })}
               </div>
             </div>
@@ -130,7 +133,7 @@ const OpenIngEvent: React.FC<OpenIngEventProps> = (props) => {
                   <div
                     className="flex items-center w-[82px] h-[36px] border-[2px] border-solid border-[#0D0D0D] rounded-[18px] justify-center"
                     onClick={() => {
-                      onClickEvent();
+                      onClickEvent()
                     }}
                   >
                     <Image
@@ -225,7 +228,7 @@ const OpenIngEvent: React.FC<OpenIngEventProps> = (props) => {
         </div>
       )}
     </>
-  );
-};
+  )
+}
 
-export default OpenIngEvent;
+export default OpenIngEvent

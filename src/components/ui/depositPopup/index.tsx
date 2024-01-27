@@ -34,7 +34,7 @@ const DepositPopup: React.FC<Props> = ({
     setThemeVariables({
       "--w3m-z-index": 1001,
     })
-  }, [])
+  }, [setThemeVariables])
 
   const { open } = useWeb3Modal()
 

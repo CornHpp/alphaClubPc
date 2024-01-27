@@ -44,6 +44,9 @@ const WithdrawPopup: React.FC<Props> = ({
             height={50}
             placeholder="address"
             rightNode={<></>}
+            onChange={function (val: string): void {
+              throw new Error("Function not implemented.")
+            }}
           ></Search>
         </div>
         <div className="mt-[12px] flex items-center">
@@ -51,6 +54,7 @@ const WithdrawPopup: React.FC<Props> = ({
             width={364}
             height={50}
             placeholder="min 0.001"
+            onChange={() => {}}
             rightNode={
               <div
                 className="text-[16px] font-medium

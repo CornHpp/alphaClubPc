@@ -1,57 +1,57 @@
-"use client";
-import React, { useEffect } from "react";
-import Search from "@/components/custom/search";
-import total from "@/assets/home/total.svg";
-import holdings from "@/assets/home/holdings.svg";
-import balance from "@/assets/home/balance.svg";
-import earn from "@/assets/home/earn.svg";
-import point from "@/assets/home/point.svg";
-import Image from "next/image";
-import { useSelector, useDispatch } from "react-redux";
-import { setSearchValue } from "@/redux/features/headSearchValue";
-import { usePathname } from "next/navigation";
-import Emitter from "@/lib/emitter";
+"use client"
+import React, { useEffect } from "react"
+import Search from "@/components/custom/search"
+import total from "@/assets/home/total.svg"
+import holdings from "@/assets/home/holdings.svg"
+import balance from "@/assets/home/balance.svg"
+import earn from "@/assets/home/earn.svg"
+import point from "@/assets/home/point.svg"
+import Image from "next/image"
+import { useSelector, useDispatch } from "react-redux"
+import { setSearchValue } from "@/redux/features/headSearchValue"
+import { usePathname } from "next/navigation"
+import Emitter from "@/lib/emitter"
 
-import { setEtherObject } from "@/redux/features/userSlice";
+import { setEtherObject } from "@/redux/features/userSlice"
 
-import { ethers } from "ethers";
+import { ethers } from "ethers"
 const provider = ethers.getDefaultProvider(
   process.env.NEXT_PUBLIC_APP_PROVIDE_WEB3NETWORK as string
-);
+)
 const main = async () => {
-  console.log(provider);
-};
-main();
+  console.log(provider)
+}
+main()
 interface Props {}
 
 const Header: React.FC<Props> = (props) => {
-  const { value } = useSelector((state: any) => state.searchValue);
-  const { userinfo } = useSelector((state: any) => state.user);
-  const dispatch = useDispatch();
+  const { value } = useSelector((state: any) => state.searchValue)
+  const { userinfo } = useSelector((state: any) => state.user)
+  const dispatch = useDispatch()
   const setValue = (value: string) => {
-    dispatch(setSearchValue(value));
-  };
+    dispatch(setSearchValue(value))
+  }
 
   const getBalance = async (address: string) => {
-    const balance = await provider.getBalance(address as string);
-    console.log(balance);
-    console.log(`ETH Balance of vitalik: ${ethers.formatEther(balance)} ETH`);
+    const balance = await provider.getBalance(address as string)
+    console.log(balance)
+    console.log(`ETH Balance of vitalik: ${ethers.formatEther(balance)} ETH`)
     setIconLists((pre) => {
       return pre.map((item, index) => {
         if (index === 2) {
           return {
             ...item,
             value: ethers.formatEther(balance),
-          };
+          }
         }
-        return item;
-      });
-    });
-  };
+        return item
+      })
+    })
+  }
   useEffect(() => {
-    dispatch(setEtherObject(provider));
-    getBalance(userinfo?.walletAddress);
-  }, []);
+    dispatch(setEtherObject(provider))
+    getBalance(userinfo?.walletAddress)
+  }, [dispatch, userinfo?.walletAddress])
 
   const [iconLists, setIconLists] = React.useState([
     {
@@ -82,14 +82,14 @@ const Header: React.FC<Props> = (props) => {
       text: "point",
       value: "0",
     },
-  ]);
+  ])
 
-  const [showSearch, setShowSearch] = React.useState(false);
+  const [showSearch, setShowSearch] = React.useState(false)
 
-  const pathName = usePathname();
+  const pathName = usePathname()
   useEffect(() => {
-    setShowSearch(pathName === "/home");
-  }, [pathName]);
+    setShowSearch(pathName === "/home")
+  }, [pathName])
   return (
     <div className="h-[90px]  pr-[7px] flex items-center justify-between flex-shrink-0">
       {showSearch ? (
@@ -97,7 +97,7 @@ const Header: React.FC<Props> = (props) => {
           value={value}
           onChange={setValue}
           onClickSerchIcon={() => {
-            Emitter.emit("clickSearchIcon", value);
+            Emitter.emit("clickSearchIcon", value)
           }}
         ></Search>
       ) : (
@@ -125,11 +125,11 @@ const Header: React.FC<Props> = (props) => {
                 </div>
               </div>
             </div>
-          );
+          )
         })}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

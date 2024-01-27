@@ -53,6 +53,9 @@ const ExportWalletPopop: React.FC<Props> = ({
               </div>
             }
             rightNode={<></>}
+            onChange={function (val: string): void {
+              throw new Error("Function not implemented.")
+            }}
           ></Search>
         </div>
         <div className="mt-[16px] text-[14px] font-medium">

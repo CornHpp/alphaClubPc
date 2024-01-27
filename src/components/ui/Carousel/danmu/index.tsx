@@ -11,10 +11,10 @@ const Danmu: React.FC<Props> = () => {
   return (
     <div className="w-full h-full">
       <div className="h-[50%] pt-[4px] relative">
-        <Roll leftOrRight={true}></Roll>
+        <Roll danmuList={[]} leftOrRight={true}></Roll>
       </div>
       <div className="h-[50%] relative">
-        <Roll leftOrRight={false}></Roll>
+        <Roll danmuList={[]} leftOrRight={false}></Roll>
       </div>
     </div>
   )
