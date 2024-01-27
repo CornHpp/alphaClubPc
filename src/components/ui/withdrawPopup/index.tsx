@@ -1,16 +1,16 @@
-import React from "react";
-import PopupView from "../popup";
-import Image from "next/image";
-import Button from "@/components/custom/button";
-import Search from "@/components/custom/search";
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
+import React from "react"
+import PopupView from "../popup"
+import Image from "next/image"
+import Button from "@/components/custom/button"
+import Search from "@/components/custom/search"
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
 
 interface Props {
   // Define your component props here
-  showPopup: boolean;
-  setShowPopup: (showPopup: boolean) => void;
-  onClickSelectCoHost: () => void;
-  onClickSchedule: () => void;
+  showPopup: boolean
+  setShowPopup: (showPopup: boolean) => void
+  onClickSelectCoHost: () => void
+  onClickSchedule: () => void
 }
 
 const WithdrawPopup: React.FC<Props> = ({
@@ -19,17 +19,17 @@ const WithdrawPopup: React.FC<Props> = ({
   onClickSelectCoHost,
   onClickSchedule,
 }) => {
-  const [selectedPrice, setSelectedPrice] = React.useState(0);
+  const [selectedPrice, setSelectedPrice] = React.useState(0)
 
-  const [hideButtonBg, setHideButtonBg] = React.useState(false);
+  const [hideButtonBg, setHideButtonBg] = React.useState(false)
 
   return (
     <PopupView
       width={396}
       showPopup={showPopup}
       handleCancel={() => {
-        setShowPopup(false);
-        setSelectedPrice(0);
+        setShowPopup(false)
+        setSelectedPrice(0)
       }}
       titleText="Withdraw ETH"
     >
@@ -42,7 +42,7 @@ const WithdrawPopup: React.FC<Props> = ({
           <Search
             width={364}
             height={50}
-            placeholder="min 0.001"
+            placeholder="address"
             rightNode={<></>}
           ></Search>
         </div>
@@ -84,11 +84,11 @@ const WithdrawPopup: React.FC<Props> = ({
             border="2px solid #0D0D0D"
             hideBottomBackground={hideButtonBg}
             onMouseEnter={() => {
-              setHideButtonBg(true);
+              setHideButtonBg(true)
             }}
             buttonClick={() => {}}
             onMouseLeave={() => {
-              setHideButtonBg(false);
+              setHideButtonBg(false)
             }}
           ></Button>
           <div className="ml-[8px]">
@@ -108,7 +108,7 @@ const WithdrawPopup: React.FC<Props> = ({
         </div>
       </div>
     </PopupView>
-  );
-};
+  )
+}
 
-export default WithdrawPopup;
+export default WithdrawPopup
