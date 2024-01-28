@@ -14,8 +14,8 @@ import { formatBalanceNumber } from "@/lib/util/index";
 
 interface CardProps {
   item: PartialGetAllHomeType;
-  onClickBuy: () => void;
-  onClickSell: () => void;
+  onClickBuy: (price: string, holderId: string) => void;
+  onClickSell: (price: string, holderId: string) => void;
   onOpeningEvent: () => void;
 }
 
@@ -130,7 +130,7 @@ const Card: React.FC<CardProps> = ({
             setHideButtonBg(true);
           }}
           buttonClick={() => {
-            onClickSell();
+            onClickSell(item.price as string, item.houseId as string);
           }}
           onMouseLeave={() => {
             setHideButtonBg(false);
@@ -147,7 +147,7 @@ const Card: React.FC<CardProps> = ({
           normalBackGround="#0D0D0D"
           color="#fff"
           buttonClick={() => {
-            onClickBuy();
+            onClickBuy(item.price as string, item.houseId as string);
           }}
         ></Button>
       </div>

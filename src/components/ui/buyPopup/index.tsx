@@ -5,15 +5,35 @@ import Image from "next/image";
 import Button from "@/components/custom/button";
 import Search from "@/components/custom/search";
 import { formatBalanceNumber } from "@/lib/util";
+import {
+  eventPriceBykeysType,
+  getCurrentEventPriceByKeyNumber,
+} from "@/api/model/home";
+import BigNumber from "bignumber.js";
+
+export interface eventPriceBykeysTypeAndKeys extends eventPriceBykeysType {
+  keys: string;
+  holderId: string;
+  action: number; //1:buy 2:sell
+}
 
 interface Props {
   // Define your component props here
   showPopupBuy: boolean;
   setShowPopupBuy: (showPopupBuy: boolean) => void;
+  price: string;
+  holderId: string;
+  openOrderPopup: (orderMap: any) => void;
 }
 
-const BuyPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
-  const [selectedPrice, setSelectedPrice] = React.useState(0);
+const BuyPopupView: React.FC<Props> = ({
+  setShowPopupBuy,
+  showPopupBuy,
+  price = "0",
+  holderId,
+  openOrderPopup,
+}) => {
+  const [selectedPrice, setSelectedPrice] = React.useState(-1);
 
   const [buttonList, setButtonList] = React.useState([
     {
@@ -26,8 +46,40 @@ const BuyPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
       price: 0.003,
     },
   ]);
+  const [getOrderMap, setGetOrderMap] = React.useState<eventPriceBykeysType>();
+  let [value, setValue] = React.useState("");
+  const [needPayPrice, setNeedPayPrice] = React.useState<string>("");
+  const getCurrentEventPriceByKeyNumberFunc = React.useCallback(
+    async (val: string) => {
+      const res = await getCurrentEventPriceByKeyNumber(holderId, val);
+      setGetOrderMap(res.result);
+      setNeedPayPrice(res.result.orderPrice);
+    },
+    [holderId]
+  );
 
-  const [value, setValue] = React.useState("");
+  const clickBuy = (price: number, index: number) => {
+    if (selectedPrice === index) {
+      setSelectedPrice(-1);
+      setValue("");
+      setNeedPayPrice("");
+      return;
+    }
+    const selectPrice = price.toString();
+    getCurrentEventPriceByKeyNumberFunc(selectPrice);
+    setSelectedPrice(index);
+    setValue(price.toString());
+  };
+  const clickBuyButton = () => {
+    const orderMap = {
+      keys: value,
+      holderId: holderId,
+      action: 1,
+      ...getOrderMap,
+    };
+    openOrderPopup(orderMap);
+  };
+
   return (
     <PopupView
       showPopup={showPopupBuy}
@@ -37,10 +89,10 @@ const BuyPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
       }}
     >
       <div className="">
-        <div className="font-medium text-[14px]">Room Price</div>
+        <div className="font-medium text-[14px]">Card Price</div>
         <div className="flex mt-[4px] font-semibold text-[24px]">
           <Image src={ETHIcon} alt="" width={24} height={24}></Image>
-          0.074ETH
+          {formatBalanceNumber(price)}ETH
         </div>
         <div className="mt-[16px]">Price Formula</div>
 
@@ -57,13 +109,7 @@ const BuyPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
                 borderRadius="27px"
                 border="2px solid #0D0D0D"
                 buttonClick={() => {
-                  if (selectedPrice === index) {
-                    setSelectedPrice(-1);
-                    setValue("");
-                    return;
-                  }
-                  setSelectedPrice(index);
-                  setValue(item.price.toString());
+                  clickBuy(item.price, index);
                 }}
               ></Button>
             </div>
@@ -78,7 +124,7 @@ const BuyPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
             width={323}
             height={50}
             placeholder="min 0.001"
-            rightNode={<div className="text-[16px] font-medium">Key</div>}
+            rightNode={<div className="text-[16px] font-medium">Card</div>}
           ></Search>
         </div>
 
@@ -90,12 +136,17 @@ const BuyPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
             height="50px"
             text={
               <div className="flex flex-col items-center">
-                <div className="text-[18px] text-[#949694] leading-[24px]">
+                <div
+                  className="text-[18px] text-[#949694] leading-[24px]"
+                  style={{
+                    color: needPayPrice ? "#fff" : "#949694",
+                  }}
+                >
                   Buy
                 </div>
-                {value ? (
+                {needPayPrice ? (
                   <div className="text-[12px] text-[#00FC6E] leading-[16px]">
-                    2.51 ETH ($2800.3)
+                    {needPayPrice} ETH
                   </div>
                 ) : (
                   <div className={`text-[12px] text-[#949694] leading-[16px]`}>
@@ -104,11 +155,14 @@ const BuyPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
                 )}
               </div>
             }
-            normalBackGround={value ? "#0D0D0D" : "#E9E9E9"}
+            normalBackGround={needPayPrice ? "#0D0D0D" : "#E9E9E9"}
             borderRadius="27px"
             border="none"
             buttonClick={() => {
-              console.log("click");
+              if (!needPayPrice) {
+                return;
+              }
+              clickBuyButton();
             }}
           ></Button>
         </div>

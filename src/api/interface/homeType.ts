@@ -2,7 +2,7 @@ interface getAllHomeType {
   audioEventDomain: creatAudioType;
   eventDomain: string;
   followersCount: number;
-  houseId: number;
+  houseId: string;
   imageUrl: string;
   price: string;
   twitterName: string;

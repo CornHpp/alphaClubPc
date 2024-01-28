@@ -1,21 +1,44 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PopupView from "../popup";
 import ETHIcon from "@/assets/popup/ETH.svg";
 import Image from "next/image";
 import Button from "@/components/custom/button";
 import Search from "@/components/custom/search";
 import TimeLine from "@/components/custom/timeLine";
+import { formatBalanceNumber } from "@/lib/util";
+import { getCurrentEventKeys } from "@/api/model/home";
 
 interface Props {
   // Define your component props here
   showPopupBuy: boolean;
   setShowPopupBuy: (showPopupBuy: boolean) => void;
+  price: string;
+  holderId: string;
 }
 
-const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
-  const [balance, setBalance] = React.useState(1.23);
+const SellPopupView: React.FC<Props> = ({
+  setShowPopupBuy,
+  showPopupBuy,
+  price,
+  holderId,
+}) => {
+  const [balance, setBalance] = React.useState<string>("");
 
+  const [totalPrice, setTotalPrice] = React.useState<number>(0);
   const [value, setValue] = React.useState("");
+
+  const getCurrentEventKeysFunc = useCallback(async () => {
+    const res = await getCurrentEventKeys(holderId);
+    console.log(res);
+    setBalance(res.result ? res.result : "0");
+  }, [holderId]);
+
+  React.useEffect(() => {
+    if (showPopupBuy) {
+      getCurrentEventKeysFunc();
+    }
+  }, [getCurrentEventKeysFunc, showPopupBuy]);
+
   return (
     <PopupView
       showPopup={showPopupBuy}
@@ -24,16 +47,16 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
       }}
     >
       <div className="">
-        <div className="font-medium text-[14px]">Room Price</div>
+        <div className="font-medium text-[14px]">Card Price</div>
         <div className="flex mt-[4px] font-semibold text-[24px]">
           <Image src={ETHIcon} alt="" width={24} height={24}></Image>
-          0.074ETH
+          {formatBalanceNumber(price)}ETH
         </div>
 
         <div className="mt-[16px]">
           <TimeLine
             onSelectPrice={(val) => {
-              setValue(val * balance + "");
+              setValue(val * Number(balance) + "");
             }}
           ></TimeLine>
         </div>
@@ -42,7 +65,7 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
           <Search
             width={323}
             height={54}
-            placeholder="Key Number"
+            placeholder="Card amount"
             value={value}
             onChange={(val) => {
               console.log(val);
@@ -71,7 +94,7 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
 
         <div className="mt-[8px] text-[#404140] text-[16px] w-full text-center">
           My Balance:{" "}
-          <span className="font-medium text-[#0D0D0D]">{balance} Key</span>
+          <span className="font-medium text-[#0D0D0D]">{balance} card</span>
         </div>
 
         <div className="mt-[24px]">
@@ -83,20 +106,20 @@ const SellPopupView: React.FC<Props> = ({ setShowPopupBuy, showPopupBuy }) => {
             text={
               <div className="flex flex-col items-center">
                 <div className="text-[18px] text-[#949694] leading-[24px]">
-                  Buy
+                  Sell
                 </div>
-                {value ? (
+                {totalPrice ? (
                   <div className="text-[12px] text-[#00FC6E] leading-[16px]">
                     2.51 ETH ($2800.3)
                   </div>
                 ) : (
                   <div className={`text-[12px] text-[#949694] leading-[16px]`}>
-                    0.00 ETH
+                    0.00 card
                   </div>
                 )}
               </div>
             }
-            normalBackGround={value ? "#0D0D0D" : "#E9E9E9"}
+            normalBackGround={totalPrice ? "#0D0D0D" : "#E9E9E9"}
             borderRadius="27px"
             border="none"
             buttonClick={() => {

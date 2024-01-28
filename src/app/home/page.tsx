@@ -1,36 +1,44 @@
-"use client"
-import React, { useCallback, useEffect } from "react"
-import Image from "next/image"
-import starIcon from "@/assets/home/star.svg"
-import Tabs from "@/components/custom/tabs"
-import Card from "@/components/ui/card"
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
-import plusIcon from "@/assets/home/plusIcon.svg"
-import BuyPopupView from "@/components/ui/buyPopup"
-import SellPopipView from "@/components/ui/sellPopup"
-import CreateEventPopupView from "@/components/ui/createEventPopup"
-import ChooseSpeakerPopup from "@/components/ui/chooseSpeakerPopup"
-import ChooseTimePopup from "@/components/ui/chooseTimePopup"
-import SuccessPopup from "@/components/ui/successPopup"
-import UseProfileView from "@/components/ui/useProfile"
-import Button from "@/components/custom/button"
-import createIcon from "@/assets/home/create.svg"
-import microphoneIcon from "@/assets/home/microphoneIcon.svg"
-import cloudUploadIcon from "@/assets/home/cloudUploadIcon.svg"
-import EventPopup from "@/components/ui/eventPopup"
-import OpenIngEvent from "@/components/ui/openIngEvent"
-import InviteSpeakPopup from "@/components/ui/inviteSpeakerPopup"
-import ChooseVoiceNotePopup from "@/components/ui/createVoiceNotePopup"
-import UploadAudioPopup from "@/components/ui/uploadAudioPopup"
-import AudioPlayer from "@/components/custom/audioPlayer"
-import { InfiniteScroll } from "antd-mobile"
-import { getHolderAll, getHouseAll, infoType } from "@/api/model/home"
-import InfiniteScrollContent from "@/components/custom/infiniteScrollContent"
-import Emitter from "@/lib/emitter"
-import { useSelector } from "react-redux"
-import { Player, Controls } from "@lottiefiles/react-lottie-player"
-import loadingAnimation from "@/lib/animation/loadingfinal.json"
-import nothingIcon from "@/assets/home/nothingIcon.svg"
+"use client";
+import React, { useCallback, useEffect } from "react";
+import Image from "next/image";
+import starIcon from "@/assets/home/star.svg";
+import Tabs from "@/components/custom/tabs";
+import Card from "@/components/ui/card";
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
+import plusIcon from "@/assets/home/plusIcon.svg";
+import BuyPopupView, {
+  eventPriceBykeysTypeAndKeys,
+} from "@/components/ui/buyPopup";
+import SellPopipView from "@/components/ui/sellPopup";
+import CreateEventPopupView from "@/components/ui/createEventPopup";
+import ChooseSpeakerPopup from "@/components/ui/chooseSpeakerPopup";
+import ChooseTimePopup from "@/components/ui/chooseTimePopup";
+import SuccessPopup from "@/components/ui/successPopup";
+import UseProfileView from "@/components/ui/useProfile";
+import Button from "@/components/custom/button";
+import createIcon from "@/assets/home/create.svg";
+import microphoneIcon from "@/assets/home/microphoneIcon.svg";
+import cloudUploadIcon from "@/assets/home/cloudUploadIcon.svg";
+import EventPopup from "@/components/ui/eventPopup";
+import OpenIngEvent from "@/components/ui/openIngEvent";
+import InviteSpeakPopup from "@/components/ui/inviteSpeakerPopup";
+import ChooseVoiceNotePopup from "@/components/ui/createVoiceNotePopup";
+import UploadAudioPopup from "@/components/ui/uploadAudioPopup";
+import AudioPlayer from "@/components/custom/audioPlayer";
+import { InfiniteScroll } from "antd-mobile";
+import {
+  eventPriceBykeysType,
+  getHolderAll,
+  getHouseAll,
+  infoType,
+} from "@/api/model/home";
+import InfiniteScrollContent from "@/components/custom/infiniteScrollContent";
+import Emitter from "@/lib/emitter";
+import { useSelector } from "react-redux";
+import { Player, Controls } from "@lottiefiles/react-lottie-player";
+import loadingAnimation from "@/lib/animation/loadingfinal.json";
+import nothingIcon from "@/assets/home/nothingIcon.svg";
+import BuyOrderPopup from "@/components/ui/buyOrderPopup";
 
 const tabsList = [
   {
@@ -41,36 +49,38 @@ const tabsList = [
     text: "All",
     img: "",
   },
-]
+];
 const Home: React.FC = () => {
-  let [tabsActive, setTabsActive] = React.useState(0)
+  let [tabsActive, setTabsActive] = React.useState(0);
 
-  const [showPopupBuy, setShowPopupBuy] = React.useState(false)
-  const [showPopupSell, setShowPopupSell] = React.useState(false)
+  const [showPopupBuy, setShowPopupBuy] = React.useState(false);
+  const [showPopupSell, setShowPopupSell] = React.useState(false);
 
-  const [showPopupCreateEvent, setShowPopupCreateEvent] = React.useState(false)
+  const [showPopupCreateEvent, setShowPopupCreateEvent] = React.useState(false);
   const [showPopupChooseSpeaker, setShowPopupChooseSpeaker] =
-    React.useState(false)
-  const [showPopupChooseTime, setShowPopupChooseTime] = React.useState(false)
-  const [showPopupSuccess, setShowPopupSuccess] = React.useState(false)
-  const [showOpenIngEvent, setShowOpenIngEvent] = React.useState(false)
-  const [showPopupInviteSpeak, setShowPopupInviteSpeak] = React.useState(false)
+    React.useState(false);
+  const [showPopupChooseTime, setShowPopupChooseTime] = React.useState(false);
+  const [showPopupSuccess, setShowPopupSuccess] = React.useState(false);
+  const [showOpenIngEvent, setShowOpenIngEvent] = React.useState(false);
+  const [showPopupInviteSpeak, setShowPopupInviteSpeak] = React.useState(false);
 
-  const [showCreatVoiceNote, setShowCreatVoiceNote] = React.useState(false)
+  const [showCreatVoiceNote, setShowCreatVoiceNote] = React.useState(false);
   const [showCreatVoiceNotePopup, setShowCreatVoiceNotePopup] =
-    React.useState(false)
-  const [showUploadAudioPopup, setShowUploadAudioPopup] = React.useState(false)
+    React.useState(false);
+  const [showUploadAudioPopup, setShowUploadAudioPopup] = React.useState(false);
 
-  const [hasMore, setHasMore] = React.useState(true)
+  const [showBuyOrderPopup, setShowBuyOrderPopup] = React.useState(false);
+
+  const [hasMore, setHasMore] = React.useState(true);
 
   let [paramsData, setParamsData] = React.useState({
     pageNum: 1,
     pageSize: 50,
     queryKey: "",
-  })
+  });
 
-  const [cardList, setCardList] = React.useState<PartialGetAllHomeType[]>([])
-  const [isLoading, setIsLoading] = React.useState(true)
+  const [cardList, setCardList] = React.useState<PartialGetAllHomeType[]>([]);
+  const [isLoading, setIsLoading] = React.useState(true);
 
   const loadMore = useCallback(
     (refresh?: boolean) => {
@@ -78,67 +88,73 @@ const Home: React.FC = () => {
         pageNum: paramsData.pageNum,
         pageSize: paramsData.pageSize,
         queryKey: paramsData.queryKey,
-      }
+      };
       if (refresh) {
-        parmas.pageNum = 1
-        setIsLoading(true)
-        setCardList([])
+        parmas.pageNum = 1;
+        setIsLoading(true);
+        setCardList([]);
       }
 
-      console.log(tabsActive)
-      const getHomeList = tabsActive == 1 ? getHouseAll : getHolderAll
+      console.log(tabsActive);
+      const getHomeList = tabsActive == 1 ? getHouseAll : getHolderAll;
       if (tabsActive == 1) {
-        parmas.queryKey = paramsData.queryKey
+        parmas.queryKey = paramsData.queryKey;
       }
 
       return getHomeList(parmas).then((res) => {
-        console.log(res)
-        setIsLoading(false)
-        let { pageList = [], count = 0 } = res.result
-        if (!pageList) pageList = []
+        console.log(res);
+        setIsLoading(false);
+        let { pageList = [], count = 0 } = res.result;
+        if (!pageList) pageList = [];
 
         const newCardList = [
           ...(refresh ? [] : cardList),
           ...(pageList ? pageList : []),
-        ]
-        setCardList(newCardList)
+        ];
+        setCardList(newCardList);
         if (newCardList.length >= count) {
-          setHasMore(false)
+          setHasMore(false);
         }
-        paramsData.pageNum = paramsData.pageNum + 1
-      })
+        paramsData.pageNum = paramsData.pageNum + 1;
+      });
     },
     [cardList, paramsData, tabsActive]
-  )
+  );
 
   useEffect(() => {
-    loadMore(true)
+    loadMore(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, []);
 
   useEffect(() => {
     Emitter.on("clickSearchIcon", (value: string) => {
-      console.log(value)
-      paramsData.queryKey = value
-      loadMore(true)
-    })
+      console.log(value);
+      paramsData.queryKey = value;
+      loadMore(true);
+    });
 
     return () => {
       Emitter.off("clickSearchIcon", () => {
-        console.log("off")
-      })
-    }
-  }, [loadMore, paramsData])
+        console.log("off");
+      });
+    };
+  }, [loadMore, paramsData]);
 
-  const clickBuy = () => {
-    console.log("buy")
-    setShowPopupBuy(true)
-  }
+  const [eventSinglePrice, setEventSinglePrice] = React.useState("");
+  const [clickCurrentHolderId, setClickCurrentHolderId] = React.useState("");
+  const [orderMap, setOrderMap] = React.useState<eventPriceBykeysTypeAndKeys>();
 
-  const clickSell = () => {
-    console.log("sell")
-    setShowPopupSell(true)
-  }
+  const clickBuy = (price: string, holderId: string) => {
+    setShowPopupBuy(true);
+    setEventSinglePrice(price);
+    setClickCurrentHolderId(holderId);
+  };
+
+  const clickSell = (price: string, holderId: string) => {
+    setEventSinglePrice(price);
+    setClickCurrentHolderId(holderId);
+    setShowPopupSell(true);
+  };
   return (
     <div className="relative flex-col flex h-[794px]">
       <div className=" flex pt-[18px] h-[76px]">
@@ -161,10 +177,10 @@ const Home: React.FC = () => {
           tabList={tabsList}
           activeIndex={tabsActive}
           tabClick={(val) => {
-            console.log(val)
-            tabsActive = val
-            setTabsActive(val)
-            loadMore(true)
+            console.log(val);
+            tabsActive = val;
+            setTabsActive(val);
+            loadMore(true);
           }}
         ></Tabs>
       </div>
@@ -188,19 +204,26 @@ const Home: React.FC = () => {
           <div className="flex flex-wrap flex-1 overflow-y-scroll">
             {cardList.map((item, index) => {
               return (
-                <div key={index + "r"}>
+                <div
+                  key={index + "r"}
+                  onClick={() => {
+                    console.log(item);
+                  }}
+                >
                   <Card
                     onOpeningEvent={() => {
-                      setShowOpenIngEvent(true)
+                      setShowOpenIngEvent(true);
                     }}
-                    onClickBuy={clickBuy}
-                    onClickSell={() => {
-                      clickSell()
+                    onClickBuy={(price, holderId) => {
+                      clickBuy(price, holderId);
+                    }}
+                    onClickSell={(price, holderId) => {
+                      clickSell(price, holderId);
                     }}
                     item={item}
                   ></Card>
                 </div>
-              )
+              );
             })}
           </div>
           <InfiniteScroll loadMore={loadMore} hasMore={hasMore}>
@@ -232,7 +255,7 @@ const Home: React.FC = () => {
           borderRadius="28px"
           border="2px solid #0D0D0D"
           buttonClick={() => {
-            setShowCreatVoiceNote(true)
+            setShowCreatVoiceNote(true);
           }}
         >
           <Image
@@ -247,15 +270,15 @@ const Home: React.FC = () => {
         {showCreatVoiceNote && (
           <div
             onMouseLeave={() => {
-              setShowCreatVoiceNote(false)
+              setShowCreatVoiceNote(false);
             }}
             className="absolute right-0 bottom-[70px] w-[178px] h-[108px] border-[2px] border-solid border-[#0D0D0D] rounded-[12px] p-[10px] bg-[#fff] cursor-pointer"
           >
             <div
               className="w-[154px] h-[40px] rounded-[8px]  flex items-center justify-center text-[#0D0D0D] font-semibold hover:bg-[#00FC6E]"
               onClick={() => {
-                setShowCreatVoiceNote(false)
-                setShowCreatVoiceNotePopup(true)
+                setShowCreatVoiceNote(false);
+                setShowCreatVoiceNotePopup(true);
               }}
             >
               <Image
@@ -270,8 +293,8 @@ const Home: React.FC = () => {
             <div
               className="mt-[4px] w-[154px] hover:bg-[#00FC6E] h-[40px] rounded-[8px]  flex items-center justify-center text-[#0D0D0D] font-semibold"
               onClick={() => {
-                setShowCreatVoiceNote(false)
-                setShowUploadAudioPopup(true)
+                setShowCreatVoiceNote(false);
+                setShowUploadAudioPopup(true);
               }}
             >
               <Image
@@ -290,30 +313,39 @@ const Home: React.FC = () => {
       <BuyPopupView
         showPopupBuy={showPopupBuy}
         setShowPopupBuy={setShowPopupBuy}
+        price={eventSinglePrice}
+        holderId={clickCurrentHolderId}
+        openOrderPopup={(val) => {
+          setOrderMap(val);
+          setShowPopupBuy(false);
+          setShowBuyOrderPopup(true);
+        }}
       ></BuyPopupView>
 
       <SellPopipView
         showPopupBuy={showPopupSell}
         setShowPopupBuy={setShowPopupSell}
+        price={eventSinglePrice}
+        holderId={clickCurrentHolderId}
       ></SellPopipView>
 
       <CreateEventPopupView
         showPopupBuy={showPopupCreateEvent}
         setShowPopupBuy={setShowPopupCreateEvent}
         onClickSchedule={() => {
-          setShowPopupCreateEvent(false)
-          setShowPopupChooseTime(true)
+          setShowPopupCreateEvent(false);
+          setShowPopupChooseTime(true);
         }}
         onClickSelectCoHost={() => {
-          setShowPopupCreateEvent(false)
-          setShowPopupChooseSpeaker(true)
+          setShowPopupCreateEvent(false);
+          setShowPopupChooseSpeaker(true);
         }}
       ></CreateEventPopupView>
 
       <ChooseSpeakerPopup
         onClickBack={() => {
-          setShowPopupChooseSpeaker(false)
-          setShowPopupCreateEvent(true)
+          setShowPopupChooseSpeaker(false);
+          setShowPopupCreateEvent(true);
         }}
         showPopupBuy={showPopupChooseSpeaker}
         setShowPopupBuy={setShowPopupChooseSpeaker}
@@ -321,32 +353,32 @@ const Home: React.FC = () => {
 
       <ChooseTimePopup
         onClickConfirm={() => {
-          setShowPopupChooseTime(false)
-          setShowPopupSuccess(true)
+          setShowPopupChooseTime(false);
+          setShowPopupSuccess(true);
         }}
         showPopupBuy={showPopupChooseTime}
         setShowPopupBuy={setShowPopupChooseTime}
         onClickBack={() => {
-          console.log("back")
-          setShowPopupChooseTime(false)
-          setShowPopupCreateEvent(true)
+          console.log("back");
+          setShowPopupChooseTime(false);
+          setShowPopupCreateEvent(true);
         }}
       ></ChooseTimePopup>
 
       <SuccessPopup
         onClickConfirm={() => {
-          console.log("confirm")
+          console.log("confirm");
         }}
         showPopupBuy={showPopupSuccess}
         setShowPopupBuy={setShowPopupSuccess}
         onClickBack={() => {
-          console.log("back")
+          console.log("back");
         }}
       ></SuccessPopup>
 
       <OpenIngEvent
         onClickEvent={() => {
-          setShowPopupInviteSpeak(true)
+          setShowPopupInviteSpeak(true);
         }}
         showOpenIngEvent={showOpenIngEvent}
       ></OpenIngEvent>
@@ -355,10 +387,10 @@ const Home: React.FC = () => {
         showPopup={showPopupInviteSpeak}
         setShowPopup={setShowPopupInviteSpeak}
         onClickBack={() => {
-          setShowPopupInviteSpeak(false)
+          setShowPopupInviteSpeak(false);
         }}
         onClickConfirm={function (): void {
-          throw new Error("Function not implemented.")
+          throw new Error("Function not implemented.");
         }}
       ></InviteSpeakPopup>
 
@@ -366,23 +398,33 @@ const Home: React.FC = () => {
         showPopup={showCreatVoiceNotePopup}
         setShowPopup={setShowCreatVoiceNotePopup}
         onClickBack={() => {
-          setShowPopupInviteSpeak(false)
+          setShowPopupInviteSpeak(false);
         }}
       ></ChooseVoiceNotePopup>
       <UploadAudioPopup
         showPopup={showUploadAudioPopup}
         setShowPopup={setShowUploadAudioPopup}
         onClickSchedule={() => {
-          setShowPopupCreateEvent(false)
-          setShowPopupChooseTime(true)
+          setShowPopupCreateEvent(false);
+          setShowPopupChooseTime(true);
         }}
         onClickSelectCoHost={() => {
-          setShowPopupCreateEvent(false)
-          setShowPopupChooseSpeaker(true)
+          setShowPopupCreateEvent(false);
+          setShowPopupChooseSpeaker(true);
         }}
       ></UploadAudioPopup>
-    </div>
-  )
-}
 
-export default Home
+      <BuyOrderPopup
+        orderMap={orderMap}
+        showPopup={showBuyOrderPopup}
+        setShowPopup={setShowBuyOrderPopup}
+        onClickOrderBack={() => {
+          setShowBuyOrderPopup(false);
+          setShowPopupBuy(true);
+        }}
+      ></BuyOrderPopup>
+    </div>
+  );
+};
+
+export default Home;

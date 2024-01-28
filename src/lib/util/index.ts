@@ -14,7 +14,10 @@ export const copyTextToClipboard = (value: string) => {
 };
 
 // 格式化字符串
-export function filterString(str: string, num = 8 as number): string {
+export function filterString(
+  str: string | undefined,
+  num = 8 as number
+): string {
   if (!str) return "";
   return (
     str.slice(0, num + 2) + "..." + str.slice(str.length - num, str.length)
