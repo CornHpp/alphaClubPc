@@ -127,7 +127,7 @@ const CreationvView: React.FC<Props> = () => {
           <InfinietScrollbar
             hasMore={orderHasMore}
             onLoadMore={getAudioPersonListFunc}
-            distanceClientHeight={639}
+            distanceClientHeight={"639px"}
           >
             <div>
               <div className="mx-[14px]">

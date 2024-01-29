@@ -10,7 +10,7 @@ import InfiniteScrollContent from "@/components/custom/infiniteScrollContent";
 import { InfiniteScroll } from "antd-mobile";
 interface ScrollProps {
   children?: React.ReactNode;
-  distanceClientHeight?: number;
+  distanceClientHeight?: string;
   hasMore: boolean;
   onLoadMore: (isRetry: boolean) => Promise<void>;
 }
@@ -30,7 +30,7 @@ const InfinietScrollbar: React.FC<ScrollProps> = ({
     >
       <div
         style={{
-          height: distanceClientHeight ? distanceClientHeight + "px" : "auto",
+          height: distanceClientHeight ? distanceClientHeight : "auto",
         }}
       >
         {children}

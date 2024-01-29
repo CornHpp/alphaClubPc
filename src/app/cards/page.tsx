@@ -1,95 +1,103 @@
-"use client"
-import React, { useEffect } from "react"
+"use client";
+import React, { useEffect } from "react";
 
-import Button from "@/components/custom/button"
-import Roll from "@/components/custom/roll"
-import UseProfileView from "@/components/ui/useProfile"
-import CreationTabs from "@/components/ui/useProfile/creation/creationTabs"
-import UserPrice from "@/components/ui/userPrice"
-import Image from "next/image"
-import loveWhiteIcon from "@/assets/cards/loveWhiteIcon.svg"
-import loveBlackIcon from "@/assets/cards/loveBlackIcon.svg"
-import personAddIcon from "@/assets/cards/personAddIcon.svg"
-import champion from "@/assets/cards/champion.svg"
-import secondPlace from "@/assets/cards/secondPlace.svg"
-import thirdWinner from "@/assets/cards/thirdWinner.svg"
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
-import personIcon from "@/assets/cards/personIcon.svg"
-import handLoveSign from "@/assets/home/handLoveSign.svg"
-import ETHIcon from "@/assets/popup/ETH.svg"
-import CustomScrollbar from "@/components/custom/scroll"
-import twitterIcon from "@/assets/home/twitterIcon.svg"
-import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll"
+import Button from "@/components/custom/button";
+import Roll from "@/components/custom/roll";
+import UseProfileView from "@/components/ui/useProfile";
+import CreationTabs from "@/components/ui/useProfile/creation/creationTabs";
+import UserPrice from "@/components/ui/userPrice";
+import Image from "next/image";
+import loveWhiteIcon from "@/assets/cards/loveWhiteIcon.svg";
+import loveBlackIcon from "@/assets/cards/loveBlackIcon.svg";
+import personAddIcon from "@/assets/cards/personAddIcon.svg";
+import champion from "@/assets/cards/champion.svg";
+import secondPlace from "@/assets/cards/secondPlace.svg";
+import thirdWinner from "@/assets/cards/thirdWinner.svg";
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
+import personIcon from "@/assets/cards/personIcon.svg";
+import handLoveSign from "@/assets/home/handLoveSign.svg";
+import ETHIcon from "@/assets/popup/ETH.svg";
+import CustomScrollbar from "@/components/custom/scroll";
+import twitterIcon from "@/assets/home/twitterIcon.svg";
+import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll";
+import closeIcon from "@/assets/cards/closeIcon.svg";
+import searchIcon from "@/assets/cards/searchIcon.svg";
+import "./index.css";
 import {
   getTradeGetAllTradeList,
   getTradeGetHouseGetOrderList,
-} from "@/api/model/card"
-import { formatBalanceNumber } from "@/lib/util"
+} from "@/api/model/card";
+import { formatBalanceNumber } from "@/lib/util";
+import Search from "@/components/custom/search";
 
 interface Props {
   // Define your props here
 }
 
 const Page: React.FC<Props> = () => {
-  const [currentTab, setCurrentTab] = React.useState(0)
+  const [currentTab, setCurrentTab] = React.useState(0);
   const [greaerThenFourOrderlist, setGreaerThenFourOrderlist] = React.useState<
     PartialGetTradeOrderList[]
-  >([])
+  >([]);
 
-  const [twitterFriendList, setTwitterFriendList] = React.useState<any[]>([])
+  const [twitterFriendList, setTwitterFriendList] = React.useState<any[]>([{}]);
   const [paimingList, setPaimingList] = React.useState<
     PartialGetTradeOrderList[]
-  >([])
+  >([]);
   const [scrollItemClientHeight, setScrollItemClientHeight] =
-    React.useState<number>(0)
+    React.useState<number>(0);
 
-  const [danmuList, setDanmuList] = React.useState<any[]>([])
+  const [value, setValue] = React.useState<string>("");
+
+  const [danmuList, setDanmuList] = React.useState<any[]>([]);
+
+  const [showSearchResult, setShowSearchResult] = React.useState<boolean>(true);
 
   const getPageData = () => {
     const params = {
       pageNum: 1,
       pageSize: 20,
-    }
+    };
     getTradeGetAllTradeList(params).then((res) => {
-      console.log(res)
+      console.log(res);
 
-      setDanmuList(res.result)
-    })
-  }
+      setDanmuList(res.result);
+    });
+  };
 
-  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true)
+  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true);
 
   const getLoadOrder = () => {
     const params = {
       pageNum: 1,
       pageSize: 50,
-    }
+    };
     return getTradeGetHouseGetOrderList(params).then((res) => {
-      console.log(res)
-      let { pageList = [], count = 0 } = res.result
-      if (!pageList) pageList = []
+      console.log(res);
+      let { pageList = [], count = 0 } = res.result;
+      if (!pageList) pageList = [];
 
-      setPaimingList(pageList.slice(0, 3))
+      setPaimingList(pageList.slice(0, 3));
 
       const newCardList = [
         ...greaerThenFourOrderlist,
         ...(pageList ? pageList.slice(3) : []),
-      ]
+      ];
 
-      setGreaerThenFourOrderlist(res.result.pageList.slice(3))
+      setGreaerThenFourOrderlist(res.result.pageList.slice(3));
 
       if (newCardList.length >= count) {
-        setOrderHasMore(false)
+        setOrderHasMore(false);
       }
-    })
-  }
+    });
+  };
 
   useEffect(() => {
-    getPageData()
-  }, [])
+    getPageData();
+  }, []);
 
   return (
-    <div className="mt-[24px] w-full">
+    <div className="mt-[24px] w-full flex flex-col flex-1">
       <div className=" flex w-full justify-between pr-[39px] items-center">
         <div className="text-[32px] font-bold mr-[3px]">cards</div>
       </div>
@@ -106,9 +114,9 @@ const Page: React.FC<Props> = () => {
         </div>
       </div>
 
-      <div className="flex">
+      <div className="flex flex-1 pb-[16px]">
         <div
-          className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] h-[600px] w-[563px] mr-[24px] flex-col flex overflow-hidden"
+          className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px]  w-[563px] mr-[24px] flex-col flex overflow-hidden"
           style={{
             background:
               "linear-gradient(128deg, #FDFFF4 0%, #F5FFF2 47%, #FFFEE2 100%)",
@@ -237,7 +245,7 @@ const Page: React.FC<Props> = () => {
                       </div>
                     </div>
                   </div>
-                )
+                );
               })}
             </div>
           </div>
@@ -246,7 +254,7 @@ const Page: React.FC<Props> = () => {
             <InfinietScrollbar
               hasMore={orderHasMore}
               onLoadMore={getLoadOrder}
-              distanceClientHeight={336}
+              distanceClientHeight={"390px"}
             >
               {greaerThenFourOrderlist.map((item, index) => {
                 return (
@@ -263,16 +271,81 @@ const Page: React.FC<Props> = () => {
                     </div>
                     <UserPrice item={item}></UserPrice>
                   </div>
-                )
+                );
               })}
             </InfinietScrollbar>
           </div>
         </div>
 
-        <div className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] h-[600px] w-[563px] pl-[14px] pt-[14px] bg-[#fff] flex flex-col">
-          <div className="text-[20px] font-bold">
-            <div>Polls Ranking</div>
-            <div></div>
+        <div className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] w-[563px] pl-[14px] pt-[14px] bg-[#fff] flex flex-col">
+          <div className="flex w-full justify-between pr-[14px] relative">
+            <div className="text-[20px] font-bold">Polls Ranking</div>
+            <div className="selfStyle">
+              <Search
+                value={value}
+                onChange={setValue}
+                width={165}
+                height={34}
+                borderRadius="17px"
+                placeholder="Twitter Name"
+                leftNode={
+                  <>
+                    <Image
+                      src={searchIcon}
+                      alt=""
+                      width={14}
+                      height={14}
+                      className="ml-[6px]"
+                    ></Image>
+                  </>
+                }
+                rightNode={
+                  <>
+                    <Image
+                      src={closeIcon}
+                      alt=""
+                      width={14}
+                      height={14}
+                      onClick={() => {
+                        setShowSearchResult(false);
+                        setValue("");
+                      }}
+                    ></Image>
+                  </>
+                }
+              ></Search>
+            </div>
+
+            {showSearchResult && (
+              <div className="w-[342px]  min-h-[248px] border-[2px] border-solid border-[#0D0D0D] rounded-[16px] absolute right-[16px] top-[40px] z-[1000] bg-[#fff]">
+                <div className="flex items-center w-full px-[10px] h-[62px]">
+                  <UserPrice showEthHolder={false}></UserPrice>
+                  <div className="ml-[32px]">
+                    <Button
+                      hideBottomBackground={true}
+                      active={false}
+                      width="113px"
+                      height="40px"
+                      text={"0 Polls"}
+                      color={"#fff"}
+                      normalBackGround={"#0D0D0D"}
+                      borderRadius="27px"
+                      border="none"
+                      buttonClick={() => {
+                        console.log("click");
+                      }}
+                    >
+                      <Image
+                        src={loveWhiteIcon}
+                        alt=""
+                        width={20}
+                        height={20}
+                      ></Image>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* <div className="mt-[12px]">
@@ -292,13 +365,13 @@ const Page: React.FC<Props> = () => {
           <div className="mt-[16px] flex-1">
             <InfinietScrollbar
               hasMore={false}
-              distanceClientHeight={498}
+              distanceClientHeight={"498px"}
               onLoadMore={() => {
                 return new Promise((resolve) => {
                   setTimeout(() => {
-                    resolve()
-                  }, 1000)
-                })
+                    resolve();
+                  }, 1000);
+                });
               }}
             >
               <div>
@@ -322,7 +395,7 @@ const Page: React.FC<Props> = () => {
                             borderRadius="27px"
                             border="none"
                             buttonClick={() => {
-                              console.log("click")
+                              console.log("click");
                             }}
                           >
                             <Image
@@ -344,7 +417,7 @@ const Page: React.FC<Props> = () => {
                             borderRadius="27px"
                             border="none"
                             buttonClick={() => {
-                              console.log("click")
+                              console.log("click");
                             }}
                           >
                             <Image
@@ -357,7 +430,7 @@ const Page: React.FC<Props> = () => {
                         )}
                       </div>
                     </div>
-                  )
+                  );
                 })}
               </div>
             </InfinietScrollbar>
@@ -365,8 +438,8 @@ const Page: React.FC<Props> = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
 const renderThumb = ({ ...props }) => {
   //设置滚动条的样式
@@ -376,8 +449,8 @@ const renderThumb = ({ ...props }) => {
     opacity: "0.2",
     borderRadius: "6px",
     right: "4px",
-  }
-  return <div style={{ ...thumbStyle }} {...props} />
-}
+  };
+  return <div style={{ ...thumbStyle }} {...props} />;
+};
 
-export default Page
+export default Page;

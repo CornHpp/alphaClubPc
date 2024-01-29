@@ -59,7 +59,7 @@ const TradeView: React.FC<Props> = () => {
           <InfinietScrollbar
             hasMore={orderHasMore}
             onLoadMore={getPersonTradeListFunc}
-            distanceClientHeight={150}
+            distanceClientHeight={"150px"}
           >
             {lists.map((item, index) => {
               return (

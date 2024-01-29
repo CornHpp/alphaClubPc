@@ -88,7 +88,7 @@ const HoldingsView: React.FC<Props> = () => {
           <InfinietScrollbar
             hasMore={orderHasMore}
             onLoadMore={getkeyholderHoldingFunc}
-            distanceClientHeight={610}
+            distanceClientHeight={"610px"}
           >
             <div className="mx-[14px]">
               {houlderList.map((item, index) => {

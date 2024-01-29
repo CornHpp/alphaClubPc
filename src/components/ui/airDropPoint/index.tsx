@@ -3,6 +3,7 @@ import trophyIcon from "@/assets/airdrop/trophyIcon.svg";
 import diamondIcon2 from "@/assets/airdrop/diamondIcon2.svg";
 import Image from "next/image";
 import rightIcon from "@/assets/popup/rightIcon.svg";
+import Rectangle from "@/assets/cards/Rectangle.svg";
 
 import {
   getUserInviteCode,
@@ -32,9 +33,9 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
     getUserInviteCodeFunc();
   }, []);
   return (
-    <div className="flex w-full">
-      <div>
-        <div className="w-[360px] h-[464px] bg-[#fff] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px]">
+    <div className="flex w-full flex-1">
+      <div className="flex-1 flex flex-col">
+        <div className=" h-[464px] bg-[#fff] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] relative">
           <div className="text-[20px] font-bold">Personal Points Info</div>
           <div className="mt-[12px] flex items-center">
             <Image
@@ -46,7 +47,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
             ></Image>
             <div>
               <div className="font-semibold">My Ranking:</div>
-              <div className="flex items-center italic text-[40px] font-bold leading-[36px]">
+              <div className="flex items-center italic text-[40px]flex w-full font-bold leading-[36px]">
                 <div className="">
                   4<span className="text-[12px] font-medium">th</span>
                 </div>
@@ -69,9 +70,17 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
               </div>
             </div>
           </div>
+
+          <Image
+            src={Rectangle}
+            width={359}
+            height={464}
+            alt=""
+            className=" absolute bottom-0 right-0"
+          ></Image>
         </div>
 
-        <div className="w-[360px] h-[158px] bg-[#00FC6E] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] mt-[24px]">
+        <div className="flex-1 bg-[#00FC6E] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] mt-[24px]">
           <div className="font-bold text-[20px] mb-[20px]">my invite code</div>
           {inviteCodeList.map((item, index) => {
             return (
@@ -111,7 +120,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
         </div>
       </div>
 
-      <div className="mx-[24px] w-[360px] h-[646px] bg-[#D8FCD1] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px]">
+      <div className="mx-[24px] bg-[#D8FCD1] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] flex-1 flex flex-col">
         <div className="text-[20px] font-bold mb-[12px]">Normal Tasks</div>
         <PointsCard
           bottomChild={
@@ -131,7 +140,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
         <PointsCard></PointsCard>
       </div>
 
-      <div className="w-[360px] h-[646px] bg-[#FFFFB3] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px]">
+      <div className=" bg-[#FFFFB3] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] flex-1 mr-[37px] flex flex-col">
         <div className="text-[20px] font-bold mb-[12px]">Normal Tasks</div>
         <PointsCard
           bottomChild={

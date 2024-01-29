@@ -9,7 +9,7 @@ interface PointsCardProps {
 const PointsCard: React.FC<PointsCardProps> = (props) => {
   const { bottomChild } = props;
   return (
-    <div className="p-[10px] bg-[#fff] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] h-[130px]  w-full mb-[16px]">
+    <div className="p-[10px] bg-[#fff] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] flex-1  w-full mb-[16px]">
       <div className="flex items-center font-semibold">
         <Image src={radioIcon} alt="" width={24} height={24}></Image>
         <div className="mx-[3.5px]">Card Holding </div>
