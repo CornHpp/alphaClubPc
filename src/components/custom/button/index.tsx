@@ -40,6 +40,9 @@ const Button: React.FC<ButtonProps> = (props) => {
   return (
     <div
       className="relative"
+      style={{
+        width: width,
+      }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >

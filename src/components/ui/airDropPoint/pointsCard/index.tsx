@@ -4,7 +4,7 @@ import radioIcon from "@/assets/airdrop/radioIcon.svg";
 interface PointsCardProps {
   // Define the props for the PointsCard component here
   bottomChild?: React.ReactNode;
-  titleImage: React.ReactNode;
+  titleImage?: React.ReactNode;
 }
 
 const PointsCard: React.FC<PointsCardProps> = (props) => {

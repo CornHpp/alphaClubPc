@@ -215,7 +215,7 @@ const UserInfoView: React.FC<Props> = (props) => {
           <Button
             hideBottomBackground={true}
             active={false}
-            width="327px"
+            width="100%"
             height="48px"
             text={"Deposit"}
             color={"#fff"}
@@ -227,10 +227,10 @@ const UserInfoView: React.FC<Props> = (props) => {
             }}
           ></Button>
 
-          <div className="mt-[8px] flex items-center h-[48px]">
+          <div className="mt-[8px] flex items-center h-[48px] w-full">
             <Button
               active={false}
-              width="154px"
+              width="45%"
               height={widthDrawHideButtonBg ? "48px" : "46px"}
               text={"Withdraw"}
               background="#fff"
