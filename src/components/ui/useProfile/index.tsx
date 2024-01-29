@@ -100,7 +100,7 @@ const UseProfileView: React.FC<Props> = () => {
       </div> */}
 
       <div className="mt-[12px] flex w-full pr-[37px] flex-1 pb-[24px]">
-        <div className="mr-[24px] h-full flex flex-col">
+        <div className="mr-[24px] h-full flex flex-col flex-1">
           <UserInfoView
             onOpenExportWalletPopup={() => {
               setShowPopupExportWallet(true);
@@ -116,10 +116,10 @@ const UseProfileView: React.FC<Props> = () => {
             <TradeView></TradeView>
           </div>
         </div>
-        <div className="mr-[24px]">
+        <div className="mr-[24px] flex-1">
           <CreationvView></CreationvView>
         </div>
-        <div className="mr-[24px]">
+        <div className="mr-[24px] flex-1">
           <HoldingsView></HoldingsView>
         </div>
       </div>
