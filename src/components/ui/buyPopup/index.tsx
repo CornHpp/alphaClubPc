@@ -10,6 +10,7 @@ import {
   getCurrentEventPriceByKeyNumber,
 } from "@/api/model/home";
 import BigNumber from "bignumber.js";
+import UserHeader from "../userHeader";
 
 export interface eventPriceBykeysTypeAndKeys extends eventPriceBykeysType {
   keys: string;
@@ -18,12 +19,12 @@ export interface eventPriceBykeysTypeAndKeys extends eventPriceBykeysType {
 }
 
 interface Props {
-  // Define your component props here
   showPopupBuy: boolean;
   setShowPopupBuy: (showPopupBuy: boolean) => void;
   price: string;
   holderId: string;
   openOrderPopup: (orderMap: any) => void;
+  item: PartialGetAllHomeType | undefined;
 }
 
 const BuyPopupView: React.FC<Props> = ({
@@ -32,6 +33,7 @@ const BuyPopupView: React.FC<Props> = ({
   price = "0",
   holderId,
   openOrderPopup,
+  item,
 }) => {
   const [selectedPrice, setSelectedPrice] = React.useState(-1);
 
@@ -87,6 +89,18 @@ const BuyPopupView: React.FC<Props> = ({
         setShowPopupBuy(false);
         setSelectedPrice(0);
       }}
+      titleText={
+        <div>
+          <UserHeader
+            userInfo={{
+              username: item?.twitterName,
+              avatar: item?.imageUrl,
+              twitterScreenName: item?.twitterScreenName,
+              followers: 100,
+            }}
+          ></UserHeader>
+        </div>
+      }
     >
       <div className="">
         <div className="font-medium text-[14px]">Card Price</div>

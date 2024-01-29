@@ -6,14 +6,17 @@ import Button from "@/components/custom/button";
 import Search from "@/components/custom/search";
 import TimeLine from "@/components/custom/timeLine";
 import { formatBalanceNumber } from "@/lib/util";
-import { getCurrentEventKeys } from "@/api/model/home";
+import { getCurrentEventKeys, getSellPrice } from "@/api/model/home";
+import { eventPriceBykeysTypeAndKeys } from "../buyPopup";
+import UserHeader from "../userHeader";
 
 interface Props {
-  // Define your component props here
   showPopupBuy: boolean;
   setShowPopupBuy: (showPopupBuy: boolean) => void;
   price: string;
   holderId: string;
+  openOrderPopup: (orderMap: any) => void;
+  item: PartialGetAllHomeType | undefined;
 }
 
 const SellPopupView: React.FC<Props> = ({
@@ -21,10 +24,14 @@ const SellPopupView: React.FC<Props> = ({
   showPopupBuy,
   price,
   holderId,
+  openOrderPopup,
+  item,
 }) => {
   const [balance, setBalance] = React.useState<string>("");
 
-  const [totalPrice, setTotalPrice] = React.useState<number>(0);
+  const [getOrderMap, setGetOrderMap] =
+    React.useState<eventPriceBykeysTypeAndKeys>();
+
   const [value, setValue] = React.useState("");
 
   const getCurrentEventKeysFunc = useCallback(async () => {
@@ -39,12 +46,52 @@ const SellPopupView: React.FC<Props> = ({
     }
   }, [getCurrentEventKeysFunc, showPopupBuy]);
 
+  const getSellPriceFunc = useCallback(
+    async (percent: number) => {
+      const val = percent * Number(balance) + "";
+      setValue(val);
+
+      const res = await getSellPrice(holderId, val);
+      console.log(res);
+      const order = {
+        keys: val,
+        holderId: holderId,
+        orderPrice: res.result,
+        ...res.result,
+      };
+      setGetOrderMap(order);
+    },
+    [balance, holderId]
+  );
+
+  const clickSellButton = () => {
+    const order = {
+      keys: value,
+      holderId: holderId,
+      orderPrice: getOrderMap?.orderPrice,
+      ...getOrderMap,
+    };
+    openOrderPopup(order);
+  };
+
   return (
     <PopupView
       showPopup={showPopupBuy}
       handleCancel={() => {
         setShowPopupBuy(false);
       }}
+      titleText={
+        <div>
+          <UserHeader
+            userInfo={{
+              username: item?.twitterName,
+              avatar: item?.imageUrl,
+              twitterScreenName: item?.twitterScreenName,
+              followers: item?.followersCount,
+            }}
+          ></UserHeader>
+        </div>
+      }
     >
       <div className="">
         <div className="font-medium text-[14px]">Card Price</div>
@@ -56,7 +103,7 @@ const SellPopupView: React.FC<Props> = ({
         <div className="mt-[16px]">
           <TimeLine
             onSelectPrice={(val) => {
-              setValue(val * Number(balance) + "");
+              getSellPriceFunc(val);
             }}
           ></TimeLine>
         </div>
@@ -108,9 +155,9 @@ const SellPopupView: React.FC<Props> = ({
                 <div className="text-[18px] text-[#949694] leading-[24px]">
                   Sell
                 </div>
-                {totalPrice ? (
+                {getOrderMap?.orderPrice != "0" ? (
                   <div className="text-[12px] text-[#00FC6E] leading-[16px]">
-                    2.51 ETH ($2800.3)
+                    {getOrderMap?.orderPrice} ETH
                   </div>
                 ) : (
                   <div className={`text-[12px] text-[#949694] leading-[16px]`}>
@@ -119,11 +166,16 @@ const SellPopupView: React.FC<Props> = ({
                 )}
               </div>
             }
-            normalBackGround={totalPrice ? "#0D0D0D" : "#E9E9E9"}
+            normalBackGround={
+              getOrderMap?.orderPrice != "0" ? "#0D0D0D" : "#E9E9E9"
+            }
             borderRadius="27px"
             border="none"
             buttonClick={() => {
-              console.log("click");
+              // if (getOrderMap?.orderPrice == "0") {
+              //   return;
+              // }
+              clickSellButton();
             }}
           ></Button>
         </div>

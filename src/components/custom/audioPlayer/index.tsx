@@ -43,10 +43,11 @@ interface audioType {
   src: string;
   width?: string;
   height?: string;
+  audioDuration?: number;
 }
 
 export const Audio: React.FC<audioType> = (props) => {
-  const { src, width = "100%", height = "30px" } = props;
+  const { src, width = "100%", height = "30px", audioDuration } = props;
 
   const [playStatus, setPlayStatus] = React.useState(1);
 
@@ -57,7 +58,7 @@ export const Audio: React.FC<audioType> = (props) => {
 
   const [toggle, setToggle] = useState<boolean>(true);
   const [progress, setProgress] = useState<number>(0);
-  const [duration, setDuration] = useState<string>("00 : 00");
+  const [duration, setDuration] = useState<string>("00:00");
   const [currentTime, setCurrentTime] = useState<string>("00:00");
 
   useLayoutEffect(() => {
@@ -199,7 +200,7 @@ export const Audio: React.FC<audioType> = (props) => {
         <div className="">
           <div className="w-full flex justify-between  pr-[8px]">
             <div>{currentTime}</div>
-            <div>{duration}</div>
+            <div>{audioDuration}</div>
           </div>
           <div className="flex items-center mt-[6px]">
             <div

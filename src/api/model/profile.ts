@@ -51,3 +51,14 @@ export const keyholderHolding = async (
 
   return response;
 };
+
+export const keyholderHolders = async (
+  params: holdingType
+): Promise<ResponsePagingType<PartialGetTradeListType>> => {
+  const url = "/keyholder/holders";
+  const response = await request.get<
+    ResponsePagingType<PartialGetTradeListType>
+  >(url, params);
+
+  return response;
+};

@@ -5,6 +5,8 @@ import Header from "@/components/ui/header";
 import Login from "@/app/login/page";
 import { usePathname } from "next/navigation";
 import { Providers } from "./walletProviders";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   const [isLogin, setIsLogin] = React.useState(0);
@@ -20,7 +22,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="flex-1 flex flex-col " style={{}}>
               <Header></Header>
               <div
-                className="flex flex-col border-[2px] border-[#0D0D0D] border-solid "
+                className="flex flex-col border-[2px] border-[#0D0D0D] border-solid"
                 style={{
                   borderLeft: "none",
                   borderRadius: "0 16px 16px 0",
@@ -36,6 +38,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
         ) : (
           <div>{children}</div>
         )}
+        <ToastContainer></ToastContainer>
       </Providers>
     </>
   );

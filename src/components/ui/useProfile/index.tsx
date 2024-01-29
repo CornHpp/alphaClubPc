@@ -34,7 +34,7 @@ const UseProfileView: React.FC<Props> = () => {
   const urlParams = useParams();
 
   return (
-    <div className="mt-[24px] w-full">
+    <div className="mt-[24px] w-full flex-1 flex flex-col">
       <div className=" flex w-full justify-between pr-[39px] items-center">
         <div className="text-[32px] font-bold mr-[3px]">My Profile</div>
 
@@ -99,8 +99,8 @@ const UseProfileView: React.FC<Props> = () => {
         <HoldingsView></HoldingsView>
       </div> */}
 
-      <div className="mt-[12px] flex w-full pr-[37px] ">
-        <div className="mr-[24px]">
+      <div className="mt-[12px] flex w-full pr-[37px] flex-1 pb-[24px]">
+        <div className="mr-[24px] h-full flex flex-col">
           <UserInfoView
             onOpenExportWalletPopup={() => {
               setShowPopupExportWallet(true);
@@ -112,7 +112,7 @@ const UseProfileView: React.FC<Props> = () => {
               setShowPopupDeposit(true);
             }}
           ></UserInfoView>
-          <div className="mt-[24px]">
+          <div className="mt-[24px] flex-1">
             <TradeView></TradeView>
           </div>
         </div>

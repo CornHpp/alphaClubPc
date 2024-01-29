@@ -130,6 +130,7 @@ const Card: React.FC<CardProps> = ({
             setHideButtonBg(true);
           }}
           buttonClick={() => {
+            console.log(item);
             onClickSell(item.price as string, item.houseId as string);
           }}
           onMouseLeave={() => {

@@ -20,15 +20,15 @@ export const service = axios.create({
 service.interceptors.request.use(
   (config: any) => {
     // 根据custom参数中配置的是否需要显示loading
-    // if (config.custom && config.custom.loading === true) {
-    //   if (config.url == "Auth/twitterlogin?") {
-    //     showFullScreenLoading(
-    //       "Just a moment, it is a little slow to log in for the first time"
-    //     );
-    //   } else {
-    //     showFullScreenLoading();
-    //   }
-    // }
+    if (config.custom && config.custom.loading === true) {
+      if (config.url == "Auth/twitterlogin?") {
+        showFullScreenLoading(
+          "Just a moment, it is a little slow to log in for the first time"
+        );
+      } else {
+        showFullScreenLoading();
+      }
+    }
 
     config.headers["Content-Type"] = "application/json;charset=utf-8";
 

@@ -1,57 +1,57 @@
-import React, { useCallback, useEffect } from "react"
-import Image from "next/image"
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
-import { getPersonTradeList } from "@/api/model/profile"
-import { useSelector } from "react-redux"
-import clockIcon from "@/assets/profile/clockIcon.svg"
-import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll"
-import { useParams } from "next/navigation"
-import nothingIcon from "@/assets/home/nothingIcon.svg"
+import React, { useCallback, useEffect } from "react";
+import Image from "next/image";
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
+import { getPersonTradeList } from "@/api/model/profile";
+import { useSelector } from "react-redux";
+import clockIcon from "@/assets/profile/clockIcon.svg";
+import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll";
+import { useParams } from "next/navigation";
+import nothingIcon from "@/assets/home/nothingIcon.svg";
 
 interface Props {
   // Add your props here
 }
 
 const TradeView: React.FC<Props> = () => {
-  const { userinfo } = useSelector((state: any) => state.user)
-  const [lists, setLists] = React.useState<PartialGetTradeListType[]>([])
+  const { userinfo } = useSelector((state: any) => state.user);
+  const [lists, setLists] = React.useState<PartialGetTradeListType[]>([]);
 
-  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true)
+  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true);
 
-  const urlParams = useParams()
+  const urlParams = useParams();
 
-  const houseId = urlParams.id ? urlParams.id : "1128532098262765568"
-  console.log(houseId)
+  const houseId = urlParams.id ? urlParams.id : userinfo.twitterUidStr;
+  console.log(houseId);
 
   const queryParams = {
     pageNum: 1,
     pageSize: 50,
-  }
+  };
 
   const getPersonTradeListFunc = useCallback(async () => {
     const params = {
       pageNum: queryParams.pageNum,
       pageSize: queryParams.pageSize,
       houseId: houseId,
-    }
-    const res = await getPersonTradeList(params)
-
-    let { pageList = [], count = 0 } = res.result
-    if (!pageList) pageList = []
-    const newCardList = [...lists, ...(pageList ? pageList : [])]
+    };
+    const res = await getPersonTradeList(params);
+    console.log(res);
+    let { pageList = [], count = 0 } = res.result;
+    if (!pageList) pageList = [];
+    const newCardList = [...lists, ...(pageList ? pageList : [])];
     if (newCardList.length >= count) {
-      setOrderHasMore(false)
+      setOrderHasMore(false);
     }
-    setLists(newCardList)
-    queryParams.pageNum++
-  }, [houseId, lists, queryParams.pageNum, queryParams.pageSize])
+    setLists(newCardList);
+    queryParams.pageNum++;
+  }, [houseId, lists, queryParams.pageNum, queryParams.pageSize]);
 
   useEffect(() => {
-    getPersonTradeListFunc()
-  }, [getPersonTradeListFunc])
-  // Add your component logic here
+    getPersonTradeListFunc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
-    <div className="border-[2px] min-w-[355px] rounded-[16px] h-[227px] border-[#0D0D0D] border-solid py-[14px] bg-white">
+    <div className="border-[2px] min-w-[355px] rounded-[16px] h-full border-[#0D0D0D] border-solid py-[14px] bg-white">
       <div className="text-[20px] font-bold mx-[14px]">Trade</div>
 
       <div className="mt-[12px]">
@@ -78,14 +78,14 @@ const TradeView: React.FC<Props> = () => {
                     <div className="ml-[4px] ">
                       <div className="text-[#004D22] text-[12px]">
                         {item.twitterName} bought{" "}
-                        <span className="font-semibold">{item.keys}</span> key
+                        <span className="font-semibold">{item.keys}</span> card
                       </div>
                       <div className="text-[#005A0E] text-[16px] font-semibold">
-                        0.42 ETH
+                        {item.moneyCount} ETH
                       </div>
                     </div>
                   </div>
-                  <div className="flex ">
+                  {/* <div className="flex ">
                     <Image
                       src={clockIcon}
                       alt=""
@@ -94,9 +94,9 @@ const TradeView: React.FC<Props> = () => {
                       className="w-[12px] h-[12px] mr-[2px] mt-[3px]"
                     ></Image>
                     <div className=" text-[#404140]">2023.12.12</div>
-                  </div>
+                  </div> */}
                 </div>
-              )
+              );
             })}
           </InfinietScrollbar>
         )}
@@ -115,7 +115,7 @@ const TradeView: React.FC<Props> = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default TradeView
+export default TradeView;

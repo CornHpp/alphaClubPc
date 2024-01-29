@@ -13,7 +13,7 @@ import React from "react";
 
 interface PressRecordProps {
   // Add props here
-  toFatherAudioFile: (audioUrl: FormData) => void;
+  toFatherAudioFile: (audioUrl: FormData, audioDuration: number) => void;
 }
 
 let wavesurfer: any, record: any;
@@ -25,7 +25,6 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
 
   useEffect(() => {
     const createWaveSurfer = () => {
-      // Create an instance of WaveSurfer
       if (wavesurfer) {
         wavesurfer.destroy();
       }
@@ -53,10 +52,10 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
       );
       // Render recorded audio
       record.on("record-end", (blob: any) => {
-        console.log(blob);
+        const audioDuration = wavesurfer.getDuration();
         const formData = new FormData();
         formData.append("file", blob, "recording.webm");
-        toFatherAudioFile(formData);
+        toFatherAudioFile(formData, audioDuration);
 
         const recordedUrl = URL.createObjectURL(blob);
 
@@ -65,11 +64,11 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
           container: "#recordings",
           waveColor: "#949694",
           progressColor: "#000000",
-          url: "http://localhost:3000/demo.wav",
+          url: recordedUrl,
           height: 76,
           barGap: 3,
           barWidth: 2,
-          cursorColor: "#FF4141",
+          cursorColor: "#FFC700",
           cursorWidth: 2,
         });
       });
@@ -150,7 +149,8 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
       ></div>
       <div
         id="recordings"
-        className={`w-[368px] h-[80px] rounded-[10px] border-[2px] border-solid border-[#0D0D0D]  disableRecordingAudio bg-[#E9E9E9] overflow-hidden} 
+        className={`w-[368px] h-[80px] rounded-[10px] border-[2px] border-solid border-[#0D0D0D]  bg-[#E9E9E9] overflow-hidden} 
+        ${recordStatus != 4 ? "disableRecording" : ""}
         `}
         style={{
           marginTop: "1rem 0",

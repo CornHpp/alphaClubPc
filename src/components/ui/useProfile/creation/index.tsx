@@ -1,21 +1,23 @@
-"use client"
+"use client";
 
-import React, { useCallback } from "react"
-import PlusCricleIcon from "@/assets/profile/PlusCricleIcon.svg"
-import Image from "next/image"
-import Tabs from "@/components/custom/tabs"
-import CreationTabs from "./creationTabs"
-import ProfileCard from "../../profileCard"
-import CreateEventPopupView from "../../createEventPopup"
-import ChooseSpeakerPopup from "../../chooseSpeakerPopup"
-import ChooseTimePopup from "../../chooseTimePopup"
-import AcceptCoHostPopup from "../../coHostPopup"
-import { getAudioPersonList } from "@/api/model/profile"
-import microphoneIcon from "@/assets/home/microphoneIcon.svg"
-import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll"
-import nocreationIcon from "@/assets/home/nocreationIcon.svg"
-import AudioCard from "../../Carousel/audioCard"
-import { useParams } from "next/navigation"
+import React, { useCallback } from "react";
+import PlusCricleIcon from "@/assets/profile/PlusCricleIcon.svg";
+import Image from "next/image";
+import Tabs from "@/components/custom/tabs";
+import CreationTabs from "./creationTabs";
+import ProfileCard from "../../profileCard";
+import CreateEventPopupView from "../../createEventPopup";
+import ChooseSpeakerPopup from "../../chooseSpeakerPopup";
+import ChooseTimePopup from "../../chooseTimePopup";
+import AcceptCoHostPopup from "../../coHostPopup";
+import { getAudioPersonList } from "@/api/model/profile";
+import microphoneIcon from "@/assets/home/microphoneIcon.svg";
+import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll";
+import nocreationIcon from "@/assets/home/nocreationIcon.svg";
+import AudioCard from "../../Carousel/audioCard";
+import { useParams } from "next/navigation";
+import { useSelector } from "react-redux";
+import ChooseVoiceNotePopup from "../../createVoiceNotePopup";
 
 interface Props {
   // Add your props here
@@ -23,67 +25,71 @@ interface Props {
 
 const CreationvView: React.FC<Props> = () => {
   // Add your component logic here
-  const [showPopupCreateEvent, setShowPopupCreateEvent] = React.useState(false)
+  const { userinfo } = useSelector((state: any) => state.user);
+
+  const [showPopupCreateEvent, setShowPopupCreateEvent] = React.useState(false);
   const [showPopupChooseSpeaker, setShowPopupChooseSpeaker] =
-    React.useState(false)
-  const [showPopupChooseTime, setShowPopupChooseTime] = React.useState(false)
-  let [currentTab, setCurrentTab] = React.useState(0)
+    React.useState(false);
+  const [showPopupChooseTime, setShowPopupChooseTime] = React.useState(false);
+  let [currentTab, setCurrentTab] = React.useState(0);
   const [showPopupAcceptCoHost, setShowPopupAcceptCoHost] =
-    React.useState(false)
+    React.useState(false);
 
   const [audioPersonList, setAudioPersonList] = React.useState<
     creatAudioType[]
-  >([])
+  >([]);
 
-  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true)
+  const [showCreatVoiceNotePopup, setShowCreatVoiceNotePopup] =
+    React.useState(false);
+
+  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const queryParams = {
     pageNum: 1,
     pageSize: 50,
-  }
+  };
 
-  const urlParams = useParams()
+  const urlParams = useParams();
 
-  const houseId = urlParams.id ? urlParams.id : "1128532098262765568"
+  const houseId = urlParams.id ? urlParams.id : userinfo.twitterUidStr;
 
-  const getAudioPersonListFunc = useCallback(
-    async (isReset?: boolean) => {
-      const params = {
-        pageNum: queryParams.pageNum,
-        pageSize: queryParams.pageSize,
-        source: currentTab,
-        houseId: houseId as string,
-      }
-      if (isReset) {
-        queryParams.pageNum = 1
-        setAudioPersonList([])
-      }
-      const res = await getAudioPersonList(params)
+  const params = {
+    pageNum: queryParams.pageNum,
+    pageSize: queryParams.pageSize,
+    source: currentTab,
+    houseId: houseId as string,
+  };
 
-      let { pageList = [], count = 0 } = res.result
-      if (!pageList) pageList = []
+  const getAudioPersonListFunc = async (isReset?: boolean) => {
+    if (isReset) {
+      queryParams.pageNum = 1;
+      setAudioPersonList([]);
+    }
+    const res = await getAudioPersonList(params);
 
-      const newCardList = [
-        ...(isReset ? [] : audioPersonList),
-        ...(pageList ? pageList : []),
-      ]
-      setAudioPersonList(newCardList)
+    let { pageList = [], count = 0 } = res.result;
+    if (!pageList) pageList = [];
 
-      if (newCardList.length >= count) {
-        setOrderHasMore(false)
-      }
-      queryParams.pageNum++
-    },
-    [audioPersonList, currentTab, houseId, queryParams]
-  )
+    const newCardList = [
+      ...(isReset ? [] : audioPersonList),
+      ...(pageList ? pageList : []),
+    ];
+    setAudioPersonList(newCardList);
+
+    if (newCardList.length >= count) {
+      setOrderHasMore(false);
+    }
+    queryParams.pageNum++;
+  };
 
   React.useEffect(() => {
-    getAudioPersonListFunc()
-  }, [getAudioPersonListFunc])
+    getAudioPersonListFunc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid h-[684px]  py-[16px] bg-white">
+    <div className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid py-[16px] bg-white h-full flex flex-col">
       <div className="w-full flex items-center text-[#0D0D0D] justify-between font-semibold px-[14px]">
         <div className="text-[20px] ">Creation</div>
         <div
@@ -91,7 +97,7 @@ const CreationvView: React.FC<Props> = () => {
           cursor-pointer
           "
           onClick={() => {
-            setShowPopupCreateEvent(true)
+            setShowCreatVoiceNotePopup(true);
           }}
         >
           <Image
@@ -109,19 +115,19 @@ const CreationvView: React.FC<Props> = () => {
         <CreationTabs
           currentTab={currentTab}
           setCurrentTab={(val) => {
-            setCurrentTab(val)
-            currentTab = val
-            getAudioPersonListFunc(true)
+            setCurrentTab(val);
+            currentTab = val;
+            getAudioPersonListFunc(true);
           }}
         ></CreationTabs>
       </div>
 
-      <div className="mt-[12px] w-full">
+      <div className="mt-[12px] w-full flex-1">
         {audioPersonList.length > 0 && (
           <InfinietScrollbar
             hasMore={orderHasMore}
             onLoadMore={getAudioPersonListFunc}
-            distanceClientHeight={554}
+            distanceClientHeight={639}
           >
             <div>
               <div className="mx-[14px]">
@@ -136,9 +142,10 @@ const CreationvView: React.FC<Props> = () => {
                         audioUrl={item.fileUrl}
                         audioSource={item.source}
                         title={item.title}
+                        audioDuration={item.audioDuration}
                       ></AudioCard>
                     </div>
-                  )
+                  );
                 })}
               </div>
             </div>
@@ -168,22 +175,35 @@ const CreationvView: React.FC<Props> = () => {
         )} */}
       </div>
 
+      <ChooseVoiceNotePopup
+        showPopup={showCreatVoiceNotePopup}
+        setShowPopup={setShowCreatVoiceNotePopup}
+        onSuccess={() => {
+          setShowCreatVoiceNotePopup(false);
+          setTimeout(() => {
+            // setShowHomeToast(true);
+            // setTotastMessage("Create Voice Note Success");
+            getAudioPersonListFunc(true);
+          }, 1000);
+        }}
+      ></ChooseVoiceNotePopup>
+
       <CreateEventPopupView
         showPopupBuy={showPopupCreateEvent}
         setShowPopupBuy={setShowPopupCreateEvent}
         onClickSchedule={() => {
-          setShowPopupCreateEvent(false)
+          setShowPopupCreateEvent(false);
         }}
         onClickSelectCoHost={() => {
-          setShowPopupCreateEvent(false)
+          setShowPopupCreateEvent(false);
         }}
         isEdit={true}
       ></CreateEventPopupView>
 
       <ChooseSpeakerPopup
         onClickBack={() => {
-          setShowPopupChooseSpeaker(false)
-          setShowPopupCreateEvent(true)
+          setShowPopupChooseSpeaker(false);
+          setShowPopupCreateEvent(true);
         }}
         showPopupBuy={showPopupChooseSpeaker}
         setShowPopupBuy={setShowPopupChooseSpeaker}
@@ -191,12 +211,12 @@ const CreationvView: React.FC<Props> = () => {
 
       <ChooseTimePopup
         onClickConfirm={() => {
-          setShowPopupChooseTime(false)
+          setShowPopupChooseTime(false);
         }}
         showPopupBuy={showPopupChooseTime}
         setShowPopupBuy={setShowPopupChooseTime}
         onClickBack={() => {
-          console.log("back")
+          console.log("back");
         }}
       ></ChooseTimePopup>
 
@@ -204,14 +224,14 @@ const CreationvView: React.FC<Props> = () => {
         showPopup={showPopupAcceptCoHost}
         setShowPopup={setShowPopupAcceptCoHost}
         onClickSelectCoHost={() => {
-          console.log("onClickSelectCoHost")
+          console.log("onClickSelectCoHost");
         }}
         onClickSchedule={() => {
-          console.log("onClickSchedule")
+          console.log("onClickSchedule");
         }}
       ></AcceptCoHostPopup>
     </div>
-  )
-}
+  );
+};
 
-export default CreationvView
+export default CreationvView;

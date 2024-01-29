@@ -11,12 +11,13 @@ import "./index.css";
 
 interface uploadProps {
   setUrltoParent: (url: string) => void;
+  setAudioDuration: (duration: number) => void;
 }
 
 const { Dragger } = Upload;
 
 const DragUpload: React.FC<uploadProps> = (props) => {
-  const { setUrltoParent } = props;
+  const { setUrltoParent, setAudioDuration } = props;
   const [files, setFiles] = React.useState([null]);
   const [fileName, setFileName] = React.useState("");
   const [percent, setPercent] = React.useState(0);
@@ -37,6 +38,20 @@ const DragUpload: React.FC<uploadProps> = (props) => {
         return pre + 5;
       });
     }, 100);
+  };
+
+  const getAudioLength = (audioFile: File | undefined) => {
+    if (!audioFile) return;
+    // 创建一个新的音频元素
+    const audio = new Audio();
+    audio.src = URL.createObjectURL(audioFile);
+    // 监听 loadedmetadata 事件，获取音频长度
+    audio.addEventListener("loadedmetadata", () => {
+      // 获取音频长度（以秒为单位）
+      const lengthInSeconds = Number(audio.duration.toFixed(2));
+      console.log("lengthInSeconds", lengthInSeconds);
+      setAudioDuration(lengthInSeconds);
+    });
   };
 
   const uploadAttruite: UploadProps = {
@@ -69,6 +84,8 @@ const DragUpload: React.FC<uploadProps> = (props) => {
             formdata.append("file", file?.originFileObj);
           }
         });
+
+        getAudioLength(info.fileList[0].originFileObj);
         audioUpload(formdata).then((res) => {
           console.log("res", res);
           isHasFile = true;

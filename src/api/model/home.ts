@@ -68,3 +68,33 @@ export const buyKey = async (params: {
 
   return response;
 };
+
+// 获取卖出的价格
+export const getSellPrice = async (
+  houseId?: string,
+  Keys?: string
+): Promise<ResponseBaseType<any>> => {
+  const url = "/house/getSellPrice?houseId=" + houseId + "&keys=" + Keys;
+  const response = await request.get<ResponseBaseType<any>>(url);
+
+  return response;
+};
+
+interface balanceInfoResonseType {
+  balance: string;
+  holdingValue: string;
+  score: string;
+  totalBalance: string;
+}
+
+// 获取自己的钱包
+export const getSelfUsersBalanceinfo = async (): Promise<
+  ResponseBaseType<balanceInfoResonseType>
+> => {
+  const url = "/secret/users/balance/info";
+  const response = await request.get<ResponseBaseType<balanceInfoResonseType>>(
+    url
+  );
+
+  return response;
+};

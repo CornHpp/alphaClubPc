@@ -4,19 +4,23 @@ import Image from "next/image";
 import playIcon from "@/assets/home/playIcon.svg";
 import stopIcon from "@/assets/home/stopIcon.svg";
 import stopWatchIcon from "@/assets/home/stopWatchIcon.svg";
+import audioWaveSurfer from "@/assets/home/audioWaveSurfer.svg";
 
 import "./index.css";
 
 interface PlayAudioProps {
   shortAudio?: boolean;
   src: string;
+  audioDuration?: number;
 }
 
 let wavesurfer: any;
 let timer: any;
 const PlayAudio: React.FC<PlayAudioProps> = (props) => {
+  const { shortAudio = false, src, audioDuration } = props;
   const [playStatus, setPlayStatus] = React.useState(1);
-  const [countTime, setCountTime] = React.useState<number | string>(0);
+
+  const [audioStatus, setAudioStatus] = React.useState(1); // 1: 隐藏 2: 播放
 
   useEffect(() => {
     const createWaveSurfer = () => {
@@ -28,7 +32,7 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
         container: "#container",
         waveColor: "#949694",
         progressColor: "##FFFFB3",
-        url: props.src,
+        url: "",
         barGap: 2,
         barRadius: 4,
         barWidth: 2,
@@ -53,15 +57,10 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
         //   });
         // }, 1000);
       });
-
-      wavesurfer.on("ready", () => {
-        const alltime = wavesurfer.getDuration();
-        setCountTime(alltime.toFixed(2));
-      });
     };
 
-    createWaveSurfer();
-  }, [props.src]);
+    // createWaveSurfer();
+  }, [props.src, src]);
 
   const clickPlayAudio = () => {
     wavesurfer.playPause();
@@ -83,7 +82,7 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
         ></Image>
 
         <div className="text-[11px] font-medium text-[#0D0D0D]">
-          {countTime}
+          {audioDuration} {"'"}s
         </div>
       </div>
 
@@ -91,7 +90,18 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
         <div
           id="container"
           className="w-[259px] flex-shrink-0 h-[32px] rounded-[6px] border-[1px] border-solid border-[#0D0D0D] bg-[#E9E9E9] mr-[12px]"
+          style={{
+            display: audioStatus === 1 ? "none" : "block",
+          }}
         ></div>
+        <div
+          className="w-[259px] flex-shrink-0 h-[32px] rounded-[6px] border-[1px] border-solid border-[#0D0D0D] bg-[#E9E9E9] mr-[12px] flex items-center justify-center"
+          style={{
+            display: audioStatus === 2 ? "none" : "flex",
+          }}
+        >
+          <Image src={audioWaveSurfer} alt="" width={234} height={22}></Image>
+        </div>
         {playStatus === 1 ? (
           <Image
             src={playIcon}

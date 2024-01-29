@@ -39,6 +39,7 @@ import { Player, Controls } from "@lottiefiles/react-lottie-player";
 import loadingAnimation from "@/lib/animation/loadingfinal.json";
 import nothingIcon from "@/assets/home/nothingIcon.svg";
 import BuyOrderPopup from "@/components/ui/buyOrderPopup";
+import HomeToast from "@/components/custom/homeToast";
 
 const tabsList = [
   {
@@ -71,6 +72,10 @@ const Home: React.FC = () => {
 
   const [showBuyOrderPopup, setShowBuyOrderPopup] = React.useState(false);
 
+  const [showHomeToast, setShowHomeToast] = React.useState(false);
+  const [totastMessage, setTotastMessage] = React.useState("");
+  const [cacheCurrentAudioData, setCacheCurrentAudioData] =
+    React.useState<creatAudioType>();
   const [hasMore, setHasMore] = React.useState(true);
 
   let [paramsData, setParamsData] = React.useState({
@@ -102,7 +107,6 @@ const Home: React.FC = () => {
       }
 
       return getHomeList(parmas).then((res) => {
-        console.log(res);
         setIsLoading(false);
         let { pageList = [], count = 0 } = res.result;
         if (!pageList) pageList = [];
@@ -143,6 +147,8 @@ const Home: React.FC = () => {
   const [eventSinglePrice, setEventSinglePrice] = React.useState("");
   const [clickCurrentHolderId, setClickCurrentHolderId] = React.useState("");
   const [orderMap, setOrderMap] = React.useState<eventPriceBykeysTypeAndKeys>();
+  const [currentClickItem, setCurrentClickItem] =
+    React.useState<PartialGetAllHomeType>();
 
   const clickBuy = (price: string, holderId: string) => {
     setShowPopupBuy(true);
@@ -156,8 +162,8 @@ const Home: React.FC = () => {
     setShowPopupSell(true);
   };
   return (
-    <div className="relative flex-col flex h-[794px]">
-      <div className=" flex pt-[18px] h-[76px]">
+    <div className="relative flex-col flex w-full h-full">
+      <div className=" flex pt-[18px] h-[76px] w-full items-center justify-between">
         <div className="flex items-center">
           <div className="text-[32px] font-bold mr-[3px]">
             Pick Clubs To Join In!
@@ -170,6 +176,16 @@ const Home: React.FC = () => {
             className="w-[29px] h-[26px]"
           ></Image>
         </div>
+        <div className="mr-[38px]">
+          <HomeToast
+            showHomeToast={showHomeToast}
+            message={totastMessage}
+            type="warning"
+            setShowHomeToast={(val) => {
+              setShowHomeToast(val);
+            }}
+          ></HomeToast>
+        </div>
       </div>
 
       <div className="pt-[4px]  pb-[16px]">
@@ -177,7 +193,6 @@ const Home: React.FC = () => {
           tabList={tabsList}
           activeIndex={tabsActive}
           tabClick={(val) => {
-            console.log(val);
             tabsActive = val;
             setTabsActive(val);
             loadMore(true);
@@ -200,8 +215,8 @@ const Home: React.FC = () => {
       )}
 
       {!isLoading && cardList.length > 0 && (
-        <div className="flex-1 pb-[10px] overflow-y-scroll">
-          <div className="flex flex-wrap flex-1 overflow-y-scroll">
+        <div className="flex-1 overflow-hidden">
+          <div className="flex flex-wrap h-full overflow-y-scroll">
             {cardList.map((item, index) => {
               return (
                 <div
@@ -216,9 +231,11 @@ const Home: React.FC = () => {
                     }}
                     onClickBuy={(price, holderId) => {
                       clickBuy(price, holderId);
+                      setCurrentClickItem(item);
                     }}
                     onClickSell={(price, holderId) => {
                       clickSell(price, holderId);
+                      setCurrentClickItem(item);
                     }}
                     item={item}
                   ></Card>
@@ -320,6 +337,7 @@ const Home: React.FC = () => {
           setShowPopupBuy(false);
           setShowBuyOrderPopup(true);
         }}
+        item={currentClickItem}
       ></BuyPopupView>
 
       <SellPopipView
@@ -327,6 +345,12 @@ const Home: React.FC = () => {
         setShowPopupBuy={setShowPopupSell}
         price={eventSinglePrice}
         holderId={clickCurrentHolderId}
+        openOrderPopup={(val) => {
+          setOrderMap(val);
+          setShowPopupSell(false);
+          setShowBuyOrderPopup(true);
+        }}
+        item={currentClickItem}
       ></SellPopipView>
 
       <CreateEventPopupView
@@ -356,12 +380,13 @@ const Home: React.FC = () => {
           setShowPopupChooseTime(false);
           setShowPopupSuccess(true);
         }}
+        audioData={cacheCurrentAudioData}
         showPopupBuy={showPopupChooseTime}
         setShowPopupBuy={setShowPopupChooseTime}
         onClickBack={() => {
           console.log("back");
           setShowPopupChooseTime(false);
-          setShowPopupCreateEvent(true);
+          setShowUploadAudioPopup(true);
         }}
       ></ChooseTimePopup>
 
@@ -397,20 +422,32 @@ const Home: React.FC = () => {
       <ChooseVoiceNotePopup
         showPopup={showCreatVoiceNotePopup}
         setShowPopup={setShowCreatVoiceNotePopup}
-        onClickBack={() => {
-          setShowPopupInviteSpeak(false);
+        onSuccess={() => {
+          setShowCreatVoiceNotePopup(false);
+          setTimeout(() => {
+            setShowHomeToast(true);
+            setTotastMessage("Create Voice Note Success");
+          }, 1000);
         }}
       ></ChooseVoiceNotePopup>
       <UploadAudioPopup
         showPopup={showUploadAudioPopup}
         setShowPopup={setShowUploadAudioPopup}
-        onClickSchedule={() => {
-          setShowPopupCreateEvent(false);
+        onClickSchedule={(val) => {
+          setCacheCurrentAudioData(val);
+          setShowUploadAudioPopup(false);
           setShowPopupChooseTime(true);
         }}
         onClickSelectCoHost={() => {
           setShowPopupCreateEvent(false);
           setShowPopupChooseSpeaker(true);
+        }}
+        onSuccess={() => {
+          setShowUploadAudioPopup(false);
+          setTimeout(() => {
+            setShowHomeToast(true);
+            setTotastMessage("Upload Voice Note Success");
+          }, 1000);
         }}
       ></UploadAudioPopup>
 

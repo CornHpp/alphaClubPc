@@ -1,37 +1,38 @@
-import React, { useCallback } from "react"
-import HoldTabs from "./holdTabs"
-import HoldCard from "./holdCard"
-import HoldersCard from "./holdersCard"
-import { keyholderHolding } from "@/api/model/profile"
-import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll"
-import Image from "next/image"
-import nothingIcon from "@/assets/home/nothingIcon.svg"
-import { useParams } from "next/navigation"
+import React, { useCallback } from "react";
+import HoldTabs from "./holdTabs";
+import HoldCard from "./holdCard";
+import HoldersCard from "./holdersCard";
+import { keyholderHolding, keyholderHolders } from "@/api/model/profile";
+import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll";
+import Image from "next/image";
+import nothingIcon from "@/assets/home/nothingIcon.svg";
+import { useParams } from "next/navigation";
+import { useSelector } from "react-redux";
 
 interface Props {
   // Add your props here
 }
 
 const HoldingsView: React.FC<Props> = () => {
-  // Add your component logic here
+  const { userinfo } = useSelector((state: any) => state.user);
 
-  const [tabIndex, setTabIndex] = React.useState(0)
+  let [tabIndex, setTabIndex] = React.useState(0);
 
   const [houlderList, setHoulderList] = React.useState<
     PartialGetTradeListType[]
-  >([])
+  >([]);
 
-  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true)
+  const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true);
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const queryParams = {
     pageNum: 1,
     pageSize: 50,
-  }
+  };
 
-  const urlParams = useParams()
+  const urlParams = useParams();
 
-  const houseId = urlParams.id ? urlParams.id : "1128532098262765568"
+  const houseId = urlParams.id ? urlParams.id : userinfo.twitterUidStr;
 
   const getkeyholderHoldingFunc = useCallback(
     async (isReset?: boolean) => {
@@ -39,40 +40,45 @@ const HoldingsView: React.FC<Props> = () => {
         pageNum: 1,
         pageSize: 50,
         twitterUid: houseId as string,
-      }
+      };
       if (isReset) {
-        queryParams.pageNum = 1
-        setHoulderList([])
+        queryParams.pageNum = 1;
+        setHoulderList([]);
       }
-      const res = await keyholderHolding(params)
-      console.log(res)
-      let { pageList = [], count = 0 } = res.result
-      if (!pageList) pageList = []
+
+      const keyholderFunc =
+        tabIndex === 0 ? keyholderHolding : keyholderHolders;
+
+      const res = await keyholderFunc(params);
+      let { pageList = [], count = 0 } = res.result;
+      if (!pageList) pageList = [];
       const newCardList = [
         ...(isReset ? [] : houlderList),
         ...(pageList ? pageList : []),
-      ]
+      ];
       if (newCardList.length >= count) {
-        setOrderHasMore(false)
+        setOrderHasMore(false);
       }
 
-      setHoulderList(newCardList || [])
+      setHoulderList(newCardList || []);
     },
-    [houlderList, houseId, queryParams]
-  )
+    [houlderList, houseId, queryParams, tabIndex]
+  );
 
   React.useEffect(() => {
-    getkeyholderHoldingFunc()
-  }, [getkeyholderHoldingFunc])
+    getkeyholderHoldingFunc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
-    <div className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid h-[684px]  py-[14px] bg-white">
+    <div className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid h-full py-[14px] bg-white">
       <div className="px-[14px]">
         <HoldTabs
           currentTab={tabIndex}
           setCurrentTab={(val) => {
-            getkeyholderHoldingFunc(true)
-            setTabIndex(val)
+            tabIndex = val;
+            getkeyholderHoldingFunc(true);
+            setTabIndex(val);
           }}
         ></HoldTabs>
       </div>
@@ -90,7 +96,7 @@ const HoldingsView: React.FC<Props> = () => {
                   <div className="mb-[16px]" key={index + "fff"}>
                     <HoldersCard item={item}></HoldersCard>
                   </div>
-                )
+                );
               })}
             </div>
           </InfinietScrollbar>
@@ -110,7 +116,7 @@ const HoldingsView: React.FC<Props> = () => {
         )}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default HoldingsView
+export default HoldingsView;

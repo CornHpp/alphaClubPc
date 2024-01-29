@@ -1,6 +1,7 @@
 import { toast, Flip, ToastOptions } from "react-toastify";
-// import "./Toast.scss";
-
+import Image from "next/image";
+import successfulIcon from "@/assets/popup/successfulIcon.svg";
+import "./Toast.css";
 const options: ToastOptions = {
   position: "top-right",
   autoClose: 2000,
@@ -13,9 +14,25 @@ const options: ToastOptions = {
   transition: Flip,
 };
 
-const toaster = {
+const Toaster = {
   success: (msg: string) => {
-    toast.success(msg);
+    toast.success(msg, {
+      className:
+        "bg-[#C0FFD2] text-[#0D0D0D] rounded-[8px] text-[16px] font-bold min-w-[283px] h-[56px] border-[2px] border-solid border-[#0D0D0D] flex justify-center items-center",
+      autoClose: 100000,
+      hideProgressBar: true,
+      icon: (
+        <>
+          <Image
+            src={successfulIcon}
+            alt=""
+            width={24}
+            height={24}
+            className="w-[24px] h-[24px] mr-[-10px]"
+          ></Image>
+        </>
+      ),
+    });
   },
   error: (msg: string) => {
     console.log("msg", msg);
@@ -39,4 +56,4 @@ const toaster = {
   },
 };
 
-export default toaster;
+export default Toaster;

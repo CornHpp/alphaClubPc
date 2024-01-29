@@ -1,19 +1,20 @@
-import React from "react"
-import { SmallButton } from ".."
-import Image from "next/image"
-import audioIcon from "@/assets/home/audio.svg"
-import machine from "@/assets/home/machine.svg"
-import person from "@/assets/home/person.svg"
-import volumeIcon from "@/assets/home/volumeIcon.svg"
-import timeIcon from "@/assets/popup/timeIcon.svg"
-import PlayAudio from "@/components/custom/playAudio"
-import AudioPlayer from "@/components/custom/audioPlayer"
+import React from "react";
+import { SmallButton } from "..";
+import Image from "next/image";
+import audioIcon from "@/assets/home/audio.svg";
+import machine from "@/assets/home/machine.svg";
+import person from "@/assets/home/person.svg";
+import volumeIcon from "@/assets/home/volumeIcon.svg";
+import timeIcon from "@/assets/popup/timeIcon.svg";
+import PlayAudio from "@/components/custom/playAudio";
+import AudioPlayer from "@/components/custom/audioPlayer";
 
 interface CarouselProps {
-  time: string | undefined
-  audioUrl: string
-  audioSource: number
-  title?: string
+  time: string | undefined;
+  audioUrl: string;
+  audioSource: number;
+  title?: string;
+  audioDuration?: number;
 }
 
 const AudioCard: React.FC<CarouselProps> = (props) => {
@@ -22,7 +23,8 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
     audioUrl = "/demo.wav",
     audioSource,
     title,
-  } = props
+    audioDuration,
+  } = props;
   return (
     <div>
       <div className="flex">
@@ -52,14 +54,13 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
       </div>
 
       <div className="text-[18px] font-semibold mt-[2px]">{title}</div>
-
-      {audioSource === 0 ? (
-        <PlayAudio src={audioUrl}></PlayAudio>
+      {audioSource === 1 ? (
+        <PlayAudio audioDuration={audioDuration} src={audioUrl}></PlayAudio>
       ) : (
-        <AudioPlayer src={audioUrl}></AudioPlayer>
+        <AudioPlayer audioDuration={audioDuration} src={audioUrl}></AudioPlayer>
       )}
     </div>
-  )
-}
+  );
+};
 
-export default AudioCard
+export default AudioCard;

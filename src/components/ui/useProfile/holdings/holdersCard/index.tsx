@@ -12,18 +12,19 @@ const HoldersCard: React.FC<Props> = (props) => {
   const { item } = props;
   return (
     <div className="flex items-center justify-between">
-      <UserHeader></UserHeader>
+      <UserHeader
+        userInfo={{
+          username: item?.twitterName,
+          avatar: item?.imageUrl,
+          twitterScreenName: item?.twitterScreenName,
+          followers: 100,
+        }}
+        headerWidth={40}
+      ></UserHeader>
 
-      <div className="">
-        <div className="text-[12px] text-[#404140] font-medium">Keys</div>
+      <div className=" text-right">
+        <div className="text-[12px] text-[#404140] font-medium">Cards</div>
         <div className="text-[#0D0D0D] flex justify-end text-[18px] font-semibold">
-          <Image
-            src={keyIcon}
-            alt=""
-            width={18}
-            height={18}
-            className="mr-[1px]"
-          ></Image>
           {item.keys}
         </div>
       </div>

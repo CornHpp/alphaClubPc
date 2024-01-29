@@ -8,24 +8,29 @@ import CalendarView from "@/components/custom/calendar";
 import Search from "@/components/custom/search";
 import { audioCreate, audioUpload } from "@/api/model/audio";
 import PressRecord from "./pressRecord";
+import { formatDate } from "@/lib/util";
+import Toaster from "@/components/custom/Toast/Toast";
 
 interface Props {
   // Define your component props here
   showPopup: boolean;
   setShowPopup: (showPopup: boolean) => void;
-  onClickBack: () => void;
+  onSuccess: () => void;
 }
 
 const ChooseVoiceNotePopup: React.FC<Props> = ({
   setShowPopup,
   showPopup,
-  onClickBack,
+  onSuccess,
 }) => {
   const [formData, setFormData] = useState<FormData>();
+  const [audioDuration, setAudioDuration] = useState<number>(0);
 
   const [value, setValue] = React.useState("");
 
   const onClickConfirm = () => {
+    const currentTime = formatDate(new Date(), "yyyy-MM-dd hh:mm:ss");
+    console.log("currentTime", currentTime);
     if (value && formData) {
       audioUpload(formData).then((res) => {
         console.log("res", res);
@@ -33,11 +38,20 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
           title: value,
           fileUrl: res.result,
           source: 0,
-          showTime: "2021-09-01 12:00:00",
+          showTime: currentTime,
+          audioDuration: audioDuration,
         };
-        audioCreate(params).then((res) => {
-          console.log("res", res);
-        });
+        audioCreate(params)
+          .then((res) => {
+            console.log("res", res);
+            setShowPopup(false);
+            setValue("");
+            setFormData(undefined);
+            onSuccess();
+          })
+          .catch((err) => {
+            setFormData(undefined);
+          });
       });
     }
   };
@@ -66,9 +80,9 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
       </div>
 
       <PressRecord
-        toFatherAudioFile={(formData) => {
-          console.log("audioVal", formData);
+        toFatherAudioFile={(formData, audioDuration) => {
           setFormData(formData);
+          setAudioDuration(audioDuration);
         }}
       ></PressRecord>
 

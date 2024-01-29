@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PopupView from "../popup";
 import Image from "next/image";
 import Button from "@/components/custom/button";
@@ -7,8 +7,11 @@ import "./index.css";
 import redDelete from "@/assets/popup/redDelete.svg";
 import { Input } from "antd";
 import { audioCreate, audioUpload } from "@/api/model/audio";
+import Emitter from "@/lib/emitter";
 
 import DragUpload from "./dragUpload";
+import { formatDate } from "@/lib/util";
+import Toaster from "@/components/custom/Toast/Toast";
 
 const { TextArea } = Input;
 interface Props {
@@ -17,7 +20,8 @@ interface Props {
   setShowPopup: (showPopup: boolean) => void;
   onClickSelectCoHost: () => void;
   isEdit?: boolean;
-  onClickSchedule: () => void;
+  onClickSchedule: (data: creatAudioType) => void;
+  onSuccess: () => void;
 }
 
 const UploadAudioPopup: React.FC<Props> = ({
@@ -26,34 +30,75 @@ const UploadAudioPopup: React.FC<Props> = ({
   onClickSelectCoHost,
   onClickSchedule,
   isEdit = false,
+  onSuccess,
 }) => {
   const [selectedPrice, setSelectedPrice] = React.useState(0);
+  const [describe, setDescribe] = React.useState("");
   const [value, setValue] = React.useState("");
   const [saveAudioUrl, setSaveAudioUrl] = React.useState("");
+  const [saveAudioDuration, setSaveAudioDuration] = React.useState(0);
 
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
-  const clickStartingNow = () => {
+  useEffect(() => {
+    Emitter.on("createAudioSuccess", (url: string) => {
+      setValue("");
+      setDescribe("");
+      setSaveAudioUrl("");
+      onSuccess();
+    });
+    return () => {
+      Emitter.off("createAudioSuccess");
+    };
+  }, [isEdit, onSuccess]);
+
+  const onClickScheduleFunc = () => {
+    if (!value) {
+      Toaster.error("Please enter an audio title");
+      return;
+    }
+    if (!saveAudioUrl) {
+      Toaster.error("Please upload an audio");
+      return;
+    }
+
     const data: creatAudioType = {
       title: value,
-      descr: "",
+      descr: describe,
       fileUrl: saveAudioUrl,
-      showTime: "2024-01-22 10:00:00",
-      source: 0,
+      showTime: "",
+      source: 1,
+      audioDuration: saveAudioDuration,
+    };
+    onClickSchedule(data);
+  };
+
+  const clickStartingNow = () => {
+    const currentTime = formatDate(new Date(), "yyyy-MM-dd hh:mm:ss");
+
+    if (!value) {
+      return;
+    }
+    if (!saveAudioUrl) {
+      Toaster.error("Please upload an audio");
+      return;
+    }
+    const data: creatAudioType = {
+      title: value,
+      descr: describe,
+      fileUrl: saveAudioUrl,
+      showTime: currentTime,
+      source: 1,
+      audioDuration: saveAudioDuration,
     };
 
-    const test = {
-      title: "test",
-      source: 0,
-      fileUrl:
-        "http://abs.twimg.com/sticky/default_profile_images/default_profile_normal.png",
-      showTime: "2024-01-22 10:00:00",
-    };
-
-    audioCreate(test).then((res) => {
+    audioCreate(data).then((res) => {
       console.log(res);
       setShowPopup(false);
       setSelectedPrice(0);
+      setDescribe("");
+      setValue("");
+      onSuccess();
     });
   };
 
@@ -89,6 +134,10 @@ const UploadAudioPopup: React.FC<Props> = ({
         <div className="mt-[4px]">
           <TextArea
             showCount
+            value={describe}
+            onChange={(e) => {
+              setDescribe(e.target.value);
+            }}
             maxLength={120}
             style={{ height: 120, resize: "none" }}
             className="border-[#0D0D0D] border-[2px] :hover:border-[#0D0D0D] :focus:border-[#0D0D0D] rounded-[12px]"
@@ -101,7 +150,12 @@ const UploadAudioPopup: React.FC<Props> = ({
         <div>Upload Audio</div>
         <div className=" w-full flex items-center ">
           <div className="mt-[4px] flex  h-[100px] ">
-            <DragUpload setUrltoParent={setSaveAudioUrl}></DragUpload>
+            <DragUpload
+              setAudioDuration={(val) => {
+                setSaveAudioDuration(val);
+              }}
+              setUrltoParent={setSaveAudioUrl}
+            ></DragUpload>
           </div>
         </div>
       </div>
@@ -121,7 +175,7 @@ const UploadAudioPopup: React.FC<Props> = ({
             setHideButtonBg(true);
           }}
           buttonClick={() => {
-            onClickSchedule();
+            onClickScheduleFunc();
           }}
           onMouseLeave={() => {
             setHideButtonBg(false);

@@ -1,18 +1,18 @@
-import React, { useEffect } from "react"
-import PopupView from "../popup"
-import Image from "next/image"
-import Button from "@/components/custom/button"
-import Search from "@/components/custom/search"
-import { useAccount, useDisconnect, useEnsName } from "wagmi"
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
-import { useWeb3Modal, useWeb3ModalTheme } from "@web3modal/wagmi/react"
+import React, { useEffect } from "react";
+import PopupView from "../popup";
+import Image from "next/image";
+import Button from "@/components/custom/button";
+import Search from "@/components/custom/search";
+import { useAccount, useDisconnect, useEnsName } from "wagmi";
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
+import { useWeb3Modal, useWeb3ModalTheme } from "@web3modal/wagmi/react";
 
 interface Props {
   // Define your component props here
-  showPopup: boolean
-  setShowPopup: (showPopup: boolean) => void
-  onClickSelectCoHost: () => void
-  onClickSchedule: () => void
+  showPopup: boolean;
+  setShowPopup: (showPopup: boolean) => void;
+  onClickSelectCoHost: () => void;
+  onClickSchedule: () => void;
 }
 
 const DepositPopup: React.FC<Props> = ({
@@ -21,35 +21,35 @@ const DepositPopup: React.FC<Props> = ({
   onClickSelectCoHost,
   onClickSchedule,
 }) => {
-  const [selectedPrice, setSelectedPrice] = React.useState(0)
+  const [selectedPrice, setSelectedPrice] = React.useState(0);
 
-  const [hideButtonBg, setHideButtonBg] = React.useState(false)
+  const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
-  const [value, setValue] = React.useState("")
-  const { isConnected, address } = useAccount()
+  const [value, setValue] = React.useState("");
+  const { isConnected, address } = useAccount();
 
-  const { setThemeVariables } = useWeb3ModalTheme()
+  // const { setThemeVariables } = useWeb3ModalTheme()
 
-  useEffect(() => {
-    setThemeVariables({
-      "--w3m-z-index": 1001,
-    })
-  }, [setThemeVariables])
+  // useEffect(() => {
+  //   setThemeVariables({
+  //     "--w3m-z-index": 1001,
+  //   })
+  // }, [setThemeVariables])
 
-  const { open } = useWeb3Modal()
+  // const { open } = useWeb3Modal()
 
   const clickConnectWallet = () => {
-    console.log("clickConnectWallet")
-    open()
-  }
+    console.log("clickConnectWallet");
+    // open()
+  };
 
   return (
     <PopupView
       width={396}
       showPopup={showPopup}
       handleCancel={() => {
-        setShowPopup(false)
-        setSelectedPrice(0)
+        setShowPopup(false);
+        setSelectedPrice(0);
       }}
       titleText="Deposit ETH On Base  (Layer 2)"
     >
@@ -103,7 +103,7 @@ const DepositPopup: React.FC<Props> = ({
         </div>
       </div>
     </PopupView>
-  )
-}
+  );
+};
 
-export default DepositPopup
+export default DepositPopup;

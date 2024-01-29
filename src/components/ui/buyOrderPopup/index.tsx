@@ -48,7 +48,7 @@ const BuyOrderPopup: React.FC<Props> = ({
       handleCancel={() => {
         setShowPopup(false);
       }}
-      titleText="Upload Audio"
+      titleText="Order Confirmation "
     >
       <div className="text-[24px] font-semibold">
         <span className="text-[#005A0E]">Buy</span> Gooy {orderMap?.keys} card

@@ -17,7 +17,12 @@ import { formatDate } from "@/lib/util/index";
 
 dayjs.extend(dayLocaleData);
 
-const App: React.FC = () => {
+interface CalendarViewProps {
+  setMergeedTime: (value: string) => void;
+}
+
+const CalendarView: React.FC<CalendarViewProps> = (props) => {
+  const { setMergeedTime } = props;
   const onPanelChange = (value: Dayjs, mode: CalendarProps<Dayjs>["mode"]) => {
     console.log(value.format("YYYY-MM-DD"), mode);
   };
@@ -25,6 +30,12 @@ const App: React.FC = () => {
 
   const [timeList, setTimeList] = React.useState<any[]>([]);
   const [time, setTime] = React.useState(formatDate(new Date(), "yyyy/MM/dd"));
+
+  const [cacheCurrentTime, setCacheCurrentTime] = React.useState<any>(
+    new Date()
+  );
+
+  const [specificTime, setSpecificTime] = React.useState(timeList[0]?.value);
 
   useEffect(() => {
     const list = generateTimeArray();
@@ -38,6 +49,13 @@ const App: React.FC = () => {
     setTimeList(lists);
   }, []);
 
+  const onChangeFunc = (days: Date, hours: string) => {
+    const currentDay = formatDate(days, "yyyy-MM-dd");
+    var currentHour = (hours || timeList[0]?.value) + ":00";
+    const mergeTime = currentDay + " " + currentHour;
+    setMergeedTime(mergeTime);
+  };
+
   return (
     <div className="w-full">
       <Calendar
@@ -49,6 +67,8 @@ const App: React.FC = () => {
           console.log(value);
           const val = formatDate(value, "yyyy/MM/dd");
           setTime(val);
+          setCacheCurrentTime(value);
+          onChangeFunc(value, specificTime);
         }}
       />
 
@@ -73,7 +93,10 @@ const App: React.FC = () => {
               defaultValue={timeList[0]?.value}
               getPopupContainer={(triggerNode) => triggerNode.parentNode}
               style={{ width: 105, height: 50, borderRadius: "27px" }}
-              onChange={() => {}}
+              onChange={(val) => {
+                setSpecificTime(val);
+                onChangeFunc(cacheCurrentTime, val);
+              }}
               options={timeList}
             />
           )}
@@ -120,4 +143,4 @@ export const generateTimeArray = () => {
   return result;
 };
 
-export default App;
+export default CalendarView;

@@ -5,4 +5,5 @@ interface creatAudioType {
   showTime?: string;
   source: number;
   id?: number;
+  audioDuration?: number;
 }
