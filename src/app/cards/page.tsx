@@ -60,7 +60,6 @@ const Page: React.FC<Props> = () => {
     };
     getTradeGetAllTradeList(params).then((res) => {
       console.log(res);
-
       setDanmuList(res.result);
     });
   };
@@ -101,7 +100,7 @@ const Page: React.FC<Props> = () => {
       <div className=" flex w-full justify-between pr-[39px] items-center">
         <div className="text-[32px] font-bold mr-[3px]">cards</div>
       </div>
-      <div className="flex items-center mt-[12px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] w-full h-[58px] bg-white px-[14px]">
+      <div className="flex items-center mt-[12px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px]  h-[58px] bg-white px-[14px] mr-[37px]">
         <div className="font-bold text-[18px] w-[65px] leading-[20px]">
           Recent Trade
         </div>

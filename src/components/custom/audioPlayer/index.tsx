@@ -9,6 +9,8 @@ import React, {
 import Image from "next/image";
 import playIcon from "@/assets/home/playIcon.svg";
 import stopIcon from "@/assets/home/stopIcon.svg";
+import beforeFifteen from "@/assets/profile/beforeFifteen.svg";
+import afterFifteen from "@/assets/profile/afterFifteen.svg";
 // import "./Audio.css";
 
 function transTime(value: number) {
@@ -44,10 +46,17 @@ interface audioType {
   width?: string;
   height?: string;
   audioDuration?: number;
+  isProfile?: boolean;
 }
 
 export const Audio: React.FC<audioType> = (props) => {
-  const { src, width = "100%", height = "30px", audioDuration } = props;
+  const {
+    src,
+    width = "100%",
+    height = "30px",
+    audioDuration,
+    isProfile = true,
+  } = props;
 
   const [playStatus, setPlayStatus] = React.useState(1);
 
@@ -196,21 +205,33 @@ export const Audio: React.FC<audioType> = (props) => {
       <audio controls={false} src={src} preload="metadata" ref={audioRef}>
         您的浏览器不支持 audio 标签
       </audio>
-      <div className="flex items-center">
-        <div className="">
+      <div
+        className="flex items-center w-full"
+        style={{
+          flexDirection: isProfile ? "column" : "row",
+        }}
+      >
+        <div
+          className=""
+          style={{
+            width: isProfile ? "100%" : "90%",
+          }}
+        >
           <div className="w-full flex justify-between  pr-[8px]">
             <div>{currentTime}</div>
             <div>{audioDuration}</div>
           </div>
-          <div className="flex items-center mt-[6px]">
+          <div className="flex items-center mt-[6px] w-full">
             <div
-              className="w-[261px] border-[1px] border-soild border-[#000] rounded-[6px] h-[6px] bg-[#E9E9E9] relative mr-[8px]"
+              className="w-full border-[1px] border-soild border-[#000] rounded-[6px] h-[6px] bg-[#E9E9E9] relative mr-[8px]"
               ref={barBgRef}
             >
               <span
                 ref={dotRef}
                 className="w-[4px] h-[10px] border-[1px] border-soild border-[#000] rounded-[2px] bg-[#00FC6E] inline-block absolute top-[-3px]"
-                style={{ left: `${progress - 1}%` }}
+                style={{
+                  left: isProfile ? `${progress}%` : `${progress - 1}%`,
+                }}
               ></span>
               <div
                 ref={barRef}
@@ -222,30 +243,63 @@ export const Audio: React.FC<audioType> = (props) => {
             </div>
           </div>
         </div>
-        {toggle && src && playStatus === 1 && (
+
+        {isProfile && (
+          <div className="mt-[12px] flex">
+            <Image
+              src={beforeFifteen}
+              alt=""
+              width={32}
+              height={32}
+              onClick={() => {
+                setPlayStatus(2);
+                handlePaly();
+              }}
+            ></Image>
+            <Image
+              src={playStatus == 1 ? playIcon : stopIcon}
+              alt=""
+              width={32}
+              height={32}
+              className="mx-[16px]"
+              onClick={() => {
+                if (playStatus === 1) {
+                  setPlayStatus(2);
+                } else {
+                  setPlayStatus(1);
+                }
+                handlePaly();
+              }}
+            ></Image>
+            <Image
+              src={afterFifteen}
+              alt=""
+              width={32}
+              height={32}
+              onClick={() => {
+                setPlayStatus(2);
+                handlePaly();
+              }}
+            ></Image>
+          </div>
+        )}
+
+        {/* {toggle && src && (
           <Image
-            src={playIcon}
+            src={playStatus == 1 ? playIcon : stopIcon}
             alt=""
             width={32}
             height={32}
             onClick={() => {
-              setPlayStatus(2);
+              if (playStatus === 1) {
+                setPlayStatus(2);
+              } else {
+                setPlayStatus(1);
+              }
               handlePaly();
             }}
           ></Image>
-        )}
-        {playStatus === 2 && (
-          <Image
-            src={stopIcon}
-            alt=""
-            width={32}
-            height={32}
-            onClick={() => {
-              setPlayStatus(1);
-              handlePaly();
-            }}
-          ></Image>
-        )}
+        )} */}
       </div>
     </>
   );

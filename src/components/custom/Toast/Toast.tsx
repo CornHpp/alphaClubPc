@@ -18,8 +18,8 @@ const Toaster = {
   success: (msg: string) => {
     toast.success(msg, {
       className:
-        "bg-[#C0FFD2] text-[#0D0D0D] rounded-[8px] text-[16px] font-bold min-w-[283px] h-[56px] border-[2px] border-solid border-[#0D0D0D] flex justify-center items-center",
-      autoClose: 100000,
+        "bg-[#C0FFD2] text-[#0D0D0D] rounded-[8px] text-[16px] font-bold min-w-[283px] min-h-[56px] pb-[] border-[2px] border-solid border-[#0D0D0D] flex justify-center items-center",
+      autoClose: 2000,
       hideProgressBar: true,
       icon: (
         <>

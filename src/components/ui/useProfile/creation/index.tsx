@@ -138,6 +138,7 @@ const CreationvView: React.FC<Props> = () => {
                       key={index + "1"}
                     >
                       <AudioCard
+                        id={item.id}
                         time={item.showTime}
                         audioUrl={item.fileUrl}
                         audioSource={item.source}

@@ -114,7 +114,7 @@ const UserInfoView: React.FC<Props> = (props) => {
           <div className="w-full flex items-center justify-between h-[44px] mt-[16px]">
             <Button
               active={false}
-              width="154px"
+              width="48%"
               height={hideButtonBg ? "46px" : "44px"}
               text={"Sell"}
               background="#fff"
@@ -134,7 +134,7 @@ const UserInfoView: React.FC<Props> = (props) => {
             ></Button>
             <Button
               active={false}
-              width="154px"
+              width="48%"
               height="44px"
               text={"buy"}
               background="#0D0D0D"
@@ -151,9 +151,8 @@ const UserInfoView: React.FC<Props> = (props) => {
       )}
 
       {!houseId && (
-        <div className="pt-[12px] pl-[14px] flex items-center bg-white">
-          <div className=""></div>
-          <div className="w-[114px]">
+        <div className="pt-[12px] pl-[14px] flex items-center bg-white w-full">
+          <div className="w-[30%]">
             <div className="text-[14px] text-[#404140] font-medium">
               Holders
             </div>
@@ -166,7 +165,7 @@ const UserInfoView: React.FC<Props> = (props) => {
           </div>
           <div className="w-[2px] h-[12px] mx-[16px] bg-[#0D0D0D] rounded-[2px]"></div>
 
-          <div className="">
+          <div className="ml-[8px]">
             <div className="text-[14px] text-[#404140] font-medium">
               room price
             </div>
@@ -188,7 +187,7 @@ const UserInfoView: React.FC<Props> = (props) => {
           }}
         >
           <div className="flex items-center mb-[16px]">
-            <div className="">
+            <div className="w-[30%]">
               <div className="flex font-medium">
                 <Image
                   src={baseChainIcon}
@@ -204,7 +203,7 @@ const UserInfoView: React.FC<Props> = (props) => {
               </div>
             </div>
             <div className="mx-[16px] w-[2px] h-[12px] rounded-[1px] bg-[#0D0D0D] flex-shrink-0"></div>
-            <div className="">
+            <div className="ml-[8px]">
               <div className="flex font-medium">Balance</div>
               <div className="mt-[3px] font-semibold text-[18px]">
                 {formatBalanceNumber(useProfileMap?.walletBalance)}
@@ -227,10 +226,10 @@ const UserInfoView: React.FC<Props> = (props) => {
             }}
           ></Button>
 
-          <div className="mt-[8px] flex items-center h-[48px] w-full">
+          <div className="mt-[8px] flex items-center h-[48px] w-full justify-between">
             <Button
               active={false}
-              width="45%"
+              width="48%"
               height={widthDrawHideButtonBg ? "48px" : "46px"}
               text={"Withdraw"}
               background="#fff"
@@ -248,27 +247,25 @@ const UserInfoView: React.FC<Props> = (props) => {
               }}
             ></Button>
 
-            <div className="ml-[7px]">
-              <Button
-                active={false}
-                width="154px"
-                height={exportWalletHideButtonBg ? "48px" : "46px"}
-                text={"Export wallet"}
-                background="#fff"
-                borderRadius="24px"
-                border="2px solid #0D0D0D"
-                hideBottomBackground={exportWalletHideButtonBg}
-                onMouseEnter={() => {
-                  setExportWalletHideButtonBg(true);
-                }}
-                buttonClick={() => {
-                  onOpenExportWalletPopup();
-                }}
-                onMouseLeave={() => {
-                  setExportWalletHideButtonBg(false);
-                }}
-              ></Button>
-            </div>
+            <Button
+              active={false}
+              width="48%"
+              height={exportWalletHideButtonBg ? "48px" : "46px"}
+              text={"Export wallet"}
+              background="#fff"
+              borderRadius="24px"
+              border="2px solid #0D0D0D"
+              hideBottomBackground={exportWalletHideButtonBg}
+              onMouseEnter={() => {
+                setExportWalletHideButtonBg(true);
+              }}
+              buttonClick={() => {
+                onOpenExportWalletPopup();
+              }}
+              onMouseLeave={() => {
+                setExportWalletHideButtonBg(false);
+              }}
+            ></Button>
           </div>
         </div>
       )}

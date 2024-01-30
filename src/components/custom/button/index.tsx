@@ -51,7 +51,7 @@ const Button: React.FC<ButtonProps> = (props) => {
         style={{
           left: active ? "-2px" : "2px",
           top: active ? "-2px" : "2px",
-          width: width,
+          width: "100%",
           height: height,
           borderRadius: borderRadius,
           background: "#0D0D0D",
@@ -62,7 +62,7 @@ const Button: React.FC<ButtonProps> = (props) => {
         className="cursor-pointer flex items-center justify-center relative z-10"
         onClick={buttonClick}
         style={{
-          width: width,
+          width: "100%",
           height: height,
           border: border,
           borderRadius: borderRadius,

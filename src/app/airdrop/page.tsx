@@ -28,7 +28,7 @@ const Page: React.FC<Props> = () => {
   const [showPopupInviteCode, setShowPopupInviteCode] = React.useState(false);
 
   return (
-    <div className="mt-[24px] w-full flex-1 flex flex-col pb-[16px]">
+    <div className="mt-[24px] w-full h-full overflow-hidden flex flex-col pb-[16px]">
       <div className=" flex w-full justify-between pr-[39px] items-center">
         <div className="text-[32px] font-bold mr-[3px]">Airdrop</div>
         <div

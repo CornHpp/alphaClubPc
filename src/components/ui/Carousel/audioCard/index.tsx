@@ -15,6 +15,7 @@ interface CarouselProps {
   audioSource: number;
   title?: string;
   audioDuration?: number;
+  id: number | undefined;
 }
 
 const AudioCard: React.FC<CarouselProps> = (props) => {
@@ -24,6 +25,7 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
     audioSource,
     title,
     audioDuration,
+    id,
   } = props;
   return (
     <div>
@@ -55,7 +57,11 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
 
       <div className="text-[18px] font-semibold mt-[2px]">{title}</div>
       {audioSource === 1 ? (
-        <PlayAudio audioDuration={audioDuration} src={audioUrl}></PlayAudio>
+        <PlayAudio
+          id={id as number}
+          audioDuration={audioDuration}
+          src={audioUrl}
+        ></PlayAudio>
       ) : (
         <AudioPlayer audioDuration={audioDuration} src={audioUrl}></AudioPlayer>
       )}

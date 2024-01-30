@@ -50,3 +50,8 @@ type UserInfoType = {
   walletAddress: string;
   twitterUidStr: string;
 };
+
+type paramsType = {
+  pageNum: number;
+  pageSize: number;
+};

@@ -7,17 +7,19 @@ import stopWatchIcon from "@/assets/home/stopWatchIcon.svg";
 import audioWaveSurfer from "@/assets/home/audioWaveSurfer.svg";
 
 import "./index.css";
+import { audioQueryAccess } from "@/api/model/audio";
 
 interface PlayAudioProps {
   shortAudio?: boolean;
   src: string;
   audioDuration?: number;
+  id: number;
 }
 
 let wavesurfer: any;
 let timer: any;
 const PlayAudio: React.FC<PlayAudioProps> = (props) => {
-  const { shortAudio = false, src, audioDuration } = props;
+  const { shortAudio = false, src, audioDuration, id } = props;
   const [playStatus, setPlayStatus] = React.useState(1);
 
   const [audioStatus, setAudioStatus] = React.useState(1); // 1: 隐藏 2: 播放
@@ -63,7 +65,10 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
   }, [props.src, src]);
 
   const clickPlayAudio = () => {
-    wavesurfer.playPause();
+    audioQueryAccess(id).then((res) => {
+      console.log("res", res);
+    });
+    // wavesurfer.playPause();
   };
 
   const clickPlayStop = () => {
