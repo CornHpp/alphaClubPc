@@ -459,7 +459,7 @@ const Page: React.FC<Props> = () => {
                           twitterScreenName: item?.twitterScreenName,
                           followersCount: item?.followersCount,
                           price: item?.price,
-                          holders: item?.holders,
+                          holders: item?.holdings,
                         }}
                       ></UserPrice>
                       <div className="ml-[32px]">
