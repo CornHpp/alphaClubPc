@@ -96,7 +96,7 @@ const BuyPopupView: React.FC<Props> = ({
               username: item?.twitterName,
               avatar: item?.imageUrl,
               twitterScreenName: item?.twitterScreenName,
-              followers: 100,
+              followers: item?.followersCount,
             }}
           ></UserHeader>
         </div>

@@ -6,12 +6,16 @@ import logo from "@/assets/home/logo.svg";
 import Button from "@/components/custom/button";
 import smallHouse from "@/assets/home/smallHouse.svg";
 import key from "@/assets/home/key.svg";
+import leftIcon from "@/assets/cards/leftIcon.svg";
 import airdropIcon from "@/assets/home/airdropIcon.svg";
 import leftBg from "@/assets/home/leftBG.svg";
 import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
 import twitterIcon from "@/assets/home/twitterIcon.svg";
 import { useRouter, usePathname } from "next/navigation";
 import { useSelector } from "react-redux";
+import closeHover from "@/assets/popup/closeHover.svg";
+import showOpenTreasure from "@/assets/home/showOpenTreasure.svg";
+import closeIcon from "@/assets/popup/close.svg";
 
 interface LeftNavProps {
   // Add any props you need for your component here
@@ -24,7 +28,7 @@ const buttonLists = [
     router: "/home",
   },
   {
-    img: key,
+    img: leftIcon,
     text: "Cards",
     router: "/cards",
   },
@@ -40,12 +44,20 @@ const LeftNav: React.FC<LeftNavProps> = () => {
   const router = useRouter();
   const pathName = usePathname();
   const { userinfo } = useSelector((state: any) => state.user);
+
+  const [hoverCloseImage, setHoverCloseImage] = React.useState(
+    localStorage.getItem("closeTreasureTip") === "true" ? true : false
+  );
   useEffect(() => {
     const index = buttonLists.findIndex((item) => {
       return item.router === pathName;
     });
     setButtonActive(index);
   }, [pathName]);
+
+  const closeTreasureTip = () => {
+    localStorage.setItem("closeTreasureTip", "true");
+  };
   return (
     <div
       className=" mt-[16px]  relative"
@@ -126,6 +138,52 @@ const LeftNav: React.FC<LeftNavProps> = () => {
                 </div>
               );
             })}
+          </div>
+
+          <div className="mb-[24px] relative">
+            <Image
+              src={showOpenTreasure}
+              alt=""
+              width={148}
+              height={201}
+              onClick={() => {
+                router.push("/airdrop");
+              }}
+              className="cursor-pointer"
+            ></Image>
+
+            <div className=" absolute top-[-32px] right-0">
+              {hoverCloseImage ? (
+                <Image
+                  src={closeHover}
+                  alt=""
+                  width={22}
+                  height={22}
+                  className="cursor-pointer"
+                  onMouseEnter={() => {
+                    setHoverCloseImage(true);
+                  }}
+                  onClick={closeTreasureTip}
+                  onMouseLeave={() => {
+                    setHoverCloseImage(false);
+                  }}
+                ></Image>
+              ) : (
+                <Image
+                  src={closeIcon}
+                  alt=""
+                  width={22}
+                  height={22}
+                  className="cursor-pointer"
+                  onMouseEnter={() => {
+                    setHoverCloseImage(true);
+                  }}
+                  onMouseLeave={() => {
+                    setHoverCloseImage(false);
+                  }}
+                ></Image>
+              )}
+            </div>
           </div>
 
           <div

@@ -77,14 +77,26 @@ const AirDropRank: React.FC<AirDropRankProps> = () => {
                   ? "#FFD601"
                   : item.rank == 2
                   ? "#A1B8B3"
-                  : item.rank == 2
+                  : item.rank == 3
                   ? "#DDAA7A"
                   : "#949694",
             }}
             className="border-solid border-[2px] border-[#949694] h-[74px] rounded-[8px] flex items-center pl-[64px] pr-[64px] w-full mb-[16px]"
           >
             <div className="w-[15%] flex items-center italic text-[24px] ">
-              <div className="">
+              <div
+                className=""
+                style={{
+                  color:
+                    item.rank == 1
+                      ? "#FFD601"
+                      : item.rank == 2
+                      ? "#A1B8B3"
+                      : item.rank == 3
+                      ? "#DDAA7A"
+                      : "#0d0d0d",
+                }}
+              >
                 {item.rank}
                 <span className="text-[12px]">th</span>
               </div>

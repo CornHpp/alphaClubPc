@@ -12,6 +12,7 @@ import { setSearchValue } from "@/redux/features/headSearchValue";
 import { usePathname } from "next/navigation";
 import Emitter from "@/lib/emitter";
 import { getSelfUsersBalanceinfo } from "@/api/model/home";
+import { setBalance } from "@/redux/features/userSlice";
 
 import { setEtherObject } from "@/redux/features/userSlice";
 
@@ -53,6 +54,7 @@ const Header: React.FC<Props> = (props) => {
   const getSelfUsersBalanceFunc = async () => {
     const res = await getSelfUsersBalanceinfo();
     console.log(res);
+    dispatch(setBalance(res?.result?.balance));
     iconLists[0].value = res?.result?.totalBalance;
     iconLists[1].value = res?.result?.holdingValue;
     iconLists[2].value = res?.result?.balance;

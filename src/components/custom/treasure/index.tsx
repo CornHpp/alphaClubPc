@@ -33,7 +33,7 @@ const OpenTreasure: React.FC<Props> = (props) => {
               keepLastFrame
               src={transureOne}
               style={{ width: "280px", height: "186px" }}
-              className="absolute top-[12px] left-[66px] z-[9999]"
+              className="absolute top-[12px] left-[48px] z-[9999]"
             ></Player>
 
             <Player
@@ -61,7 +61,7 @@ const OpenTreasure: React.FC<Props> = (props) => {
               ></Image>
             </div>
 
-            <div className="absolute right-[48px] top-[18px]">
+            <div className="absolute right-[48px] top-[18px] z-100001">
               {hoverCloseImage ? (
                 <Image
                   src={closeHover}

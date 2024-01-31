@@ -26,3 +26,6 @@ body {
 ::-webkit-scrollbar {
   display: none;
 }
+w3m-modal {
+  z-index: 9999;
+}

@@ -5,42 +5,51 @@ import Button from "@/components/custom/button";
 import Search from "@/components/custom/search";
 import { useAccount, useDisconnect, useEnsName } from "wagmi";
 import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
-import { useWeb3Modal, useWeb3ModalTheme } from "@web3modal/wagmi/react";
-
+import { useWeb3Modal } from "@web3modal/wagmi/react";
+import { useSelector, useDispatch } from "react-redux";
+import { copyTextToClipboardSafari, filterString } from "@/lib/util";
+import { setWalletAddress } from "@/redux/features/cryptoSlice";
 interface Props {
   // Define your component props here
   showPopup: boolean;
   setShowPopup: (showPopup: boolean) => void;
-  onClickSelectCoHost: () => void;
-  onClickSchedule: () => void;
+  openTransferPopup: () => void;
 }
 
 const DepositPopup: React.FC<Props> = ({
   setShowPopup,
   showPopup,
-  onClickSelectCoHost,
-  onClickSchedule,
+  openTransferPopup,
 }) => {
   const [selectedPrice, setSelectedPrice] = React.useState(0);
+  const dispatch = useDispatch();
+  const { userinfo, balance } = useSelector((state: any) => state.user);
+  console.log("walletBalance", balance);
+
+  console.log("userinfo", userinfo);
 
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
-  const [value, setValue] = React.useState("");
+  const [value, setValue] = React.useState(userinfo.walletAddress);
   const { isConnected, address } = useAccount();
 
-  // const { setThemeVariables } = useWeb3ModalTheme()
+  const { open } = useWeb3Modal();
 
-  // useEffect(() => {
-  //   setThemeVariables({
-  //     "--w3m-z-index": 1001,
-  //   })
-  // }, [setThemeVariables])
-
-  // const { open } = useWeb3Modal()
+  useEffect(() => {
+    if (address) {
+      dispatch(setWalletAddress(address));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address]);
 
   const clickConnectWallet = () => {
-    console.log("clickConnectWallet");
-    // open()
+    if (address && isConnected) {
+      dispatch(setWalletAddress(address));
+      openTransferPopup();
+      return;
+    }
+
+    open();
   };
 
   return (
@@ -51,7 +60,7 @@ const DepositPopup: React.FC<Props> = ({
         setShowPopup(false);
         setSelectedPrice(0);
       }}
-      titleText="Deposit ETH On Base  (Layer 2)"
+      titleText="Deposit ETH On Blast  (Layer 2)"
     >
       <div className="w-full flex flex-col items-center">
         <div className="text-[14px] font-medium text-center">
@@ -75,15 +84,16 @@ const DepositPopup: React.FC<Props> = ({
 
         <div className="mt-[12px] flex items-center">
           <Search
-            value={value}
-            onChange={setValue}
+            value={filterString(userinfo.walletAddress)}
+            onChange={() => {}}
             width={364}
             height={50}
             placeholder="min 0.001"
             leftNode={
               <div>
                 <Image
-                  src={defaultHeaderIcon}
+                  className=" rounded-full  border-[2px] border-[#0D0D0D] border-solid"
+                  src={userinfo.imageUrl || defaultHeaderIcon}
                   alt=""
                   width={40}
                   height={40}
@@ -91,7 +101,12 @@ const DepositPopup: React.FC<Props> = ({
               </div>
             }
             rightNode={
-              <div className="mr-[-5px] ml-[6px] text-[14px]  font-semibold w-[76px] h-[40px] border-[2px] border-[#0D0D0D] cursor-pointer border-solid flex items-center justify-center rounded-[20px]">
+              <div
+                onClick={() => {
+                  copyTextToClipboardSafari(userinfo.walletAddress);
+                }}
+                className="mr-[-5px] ml-[6px] text-[14px]  font-semibold w-[76px] h-[40px] border-[2px] border-[#0D0D0D] cursor-pointer border-solid flex items-center justify-center rounded-[20px]"
+              >
                 Copy
               </div>
             }
@@ -99,7 +114,7 @@ const DepositPopup: React.FC<Props> = ({
         </div>
 
         <div className="mt-[16px] text-[16px]">
-          Balance: <span className="font-semibold ">$3138(0.074 eTH)</span>
+          Balance: <span className="font-semibold ">{balance} ETH</span>
         </div>
       </div>
     </PopupView>

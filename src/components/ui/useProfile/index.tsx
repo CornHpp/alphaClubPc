@@ -16,6 +16,7 @@ import AcceptCoHostPopup from "../coHostPopup";
 import logoutIcon from "@/assets/profile/logoutIcon.svg";
 import LoginPopupView from "../loginPopup";
 import { useParams } from "next/navigation";
+import TransferPopup from "../transferPopup";
 interface Props {
   // Add your props here
 }
@@ -29,6 +30,8 @@ const UseProfileView: React.FC<Props> = () => {
   const [showPopupWithdraw, setShowPopupWithdraw] = React.useState(false);
   const [showPopupExportWallet, setShowPopupExportWallet] =
     React.useState(false);
+
+  const [showPopupTransfer, setShowPopupTransfer] = React.useState(false);
 
   const [showPopupLoginView, setShowPopupLoginView] = React.useState(false);
   const urlParams = useParams();
@@ -143,11 +146,8 @@ const UseProfileView: React.FC<Props> = () => {
       <DepositPopup
         showPopup={showPopupDeposit}
         setShowPopup={setShowPopupDeposit}
-        onClickSelectCoHost={() => {
-          console.log("onClickSelectCoHost");
-        }}
-        onClickSchedule={() => {
-          console.log("onClickSchedule");
+        openTransferPopup={() => {
+          setShowPopupTransfer(true);
         }}
       ></DepositPopup>
 
@@ -176,6 +176,11 @@ const UseProfileView: React.FC<Props> = () => {
         showPopup={showPopupLoginView}
         setShowPopup={setShowPopupLoginView}
       ></LoginPopupView>
+
+      <TransferPopup
+        showPopup={showPopupTransfer}
+        setShowPopup={setShowPopupTransfer}
+      ></TransferPopup>
     </div>
   );
 };

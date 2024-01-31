@@ -268,7 +268,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
               className="mr-[8px]"
             ></Image>
             <div>
-              <div className="font-semibold">Total Points::</div>
+              <div className="font-semibold">Total Points:</div>
               <div className="flex items-center italic text-[40px] font-bold leading-[36px]">
                 <div className="">{selfInfo.points}</div>
               </div>
@@ -395,8 +395,8 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
                   <div
                     style={{
                       background: item.canOpen ? "#FFF96D" : "#E9E9E9",
-                      color: item.canOpen ? "#000" : "#949694",
-                      border: item.canOpen ? "2px solid #000" : "none",
+                      color: item.unFinished > 0 ? "#000" : "#949694",
+                      border: item.unFinished > 0 ? "2px solid #000" : "none",
                     }}
                     onClick={() => {
                       if (item.canOpen) {
@@ -404,9 +404,16 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
                         openTreasureBoxFunc(item.id);
                       }
                     }}
-                    className="w-[63px] cursor-pointer h-[25px] rounded-[12px] bg-[#E9E9E9] text-[#949694] text-[14px] font-semibold flex justify-center items-center"
+                    className=" relative w-[63px] cursor-pointer h-[25px] rounded-[12px] bg-[#E9E9E9] text-[#949694] text-[14px] font-semibold flex justify-center items-center"
                   >
-                    Open
+                    <div
+                      className=" absolute bg-[#FFF96D] left-0 top-0 h-full"
+                      style={{
+                        width: `${(item.unFinished / item.allNum) * 100}%`,
+                        borderRadius: `12px 0 0 12px`,
+                      }}
+                    ></div>
+                    <div className=" relative">Open</div>
                   </div>
                 </div>
               }

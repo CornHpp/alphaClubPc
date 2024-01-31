@@ -4,12 +4,12 @@ import { createSlice } from "@reduxjs/toolkit";
 
 export interface cryptoState {
   ethPrice: number;
-  walletAddress: string;
+  otherWalletAddress: string;
   walletBalance: number;
 }
 const initialState: cryptoState = {
-  ethPrice: 1700,
-  walletAddress: "",
+  ethPrice: 0,
+  otherWalletAddress: "",
   walletBalance: 0,
 };
 
@@ -24,7 +24,7 @@ export const cryptoSlice = createSlice({
       state.ethPrice = action.payload;
     },
     setWalletAddress: (state, action) => {
-      state.walletAddress = action.payload;
+      state.otherWalletAddress = action.payload;
     },
     setWalletBalance: (state, action) => {
       state.walletBalance = action.payload;
@@ -32,7 +32,8 @@ export const cryptoSlice = createSlice({
   },
 });
 // 导出加减的方法
-export const { setEthPrice, setWalletAddress, setWalletBalance } = cryptoSlice.actions;
+export const { setEthPrice, setWalletAddress, setWalletBalance } =
+  cryptoSlice.actions;
 
 // 默认导出
 export default cryptoSlice.reducer;

@@ -9,7 +9,13 @@ import { useSelector } from "react-redux";
 import ethereum from "@/assets/home/ethereum.svg";
 import { useParams } from "next/navigation";
 import { getUserInfoByTwitterId } from "@/api/model/userService";
+import firstThreePurchase from "@/assets/profile/firstThreePurchase.svg";
 import { filterString, formatBalanceNumber } from "@/lib/util";
+import tipThreeDays from "@/assets/profile/tipThreeDays.svg";
+import closeHover from "@/assets/popup/closeHover.svg";
+import showOpenTreasure from "@/assets/home/showOpenTreasure.svg";
+import closeIcon from "@/assets/popup/close.svg";
+
 interface Props {
   onOpenDepositPopup: () => void;
   onOpenWithdrawPopup: () => void;
@@ -38,6 +44,9 @@ const UserInfoView: React.FC<Props> = (props) => {
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
   const [useProfileMap, setUseProfileMap] = React.useState<any>({});
+
+  const [showTipThreeDays, setShowTipThreeDays] = React.useState(false);
+  const [hoverCloseImage, setHoverCloseImage] = React.useState(false);
 
   const getUserInfoByTwitterIdFunc = async () => {
     const twitterId = houseId || userinfo.twitterUidStr;
@@ -180,6 +189,18 @@ const UserInfoView: React.FC<Props> = (props) => {
       )}
 
       {!houseId && (
+        <div className="bg-[#fff] pl-[14px] cursor-pointer">
+          <Image
+            src={firstThreePurchase}
+            className="pt-[6px]"
+            alt=""
+            width={327}
+            height={58}
+          ></Image>
+        </div>
+      )}
+
+      {!houseId && (
         <div
           className="w-full px-[16px] py-[12px] border-[#0D0D0D] border-solid border-b-[2px] bg-white"
           style={{
@@ -266,6 +287,94 @@ const UserInfoView: React.FC<Props> = (props) => {
                 setExportWalletHideButtonBg(false);
               }}
             ></Button>
+          </div>
+        </div>
+      )}
+
+      {showTipThreeDays && (
+        <div className=" fixed left-0 top-0 z-[1000]  w-[100vw] h-[100vh]">
+          <div
+            className="absolute w-[100vw] h-[100vh] left-0 top-0 bg-[#0D0D0D99] "
+            onClick={() => {
+              setShowTipThreeDays(false);
+            }}
+          ></div>
+          <div className=" z-[1001] pb-[24px]  absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <div className="relative">
+              <Image
+                src={tipThreeDays}
+                className="mr-[3px]"
+                alt=""
+                width={400}
+                height={310}
+              ></Image>
+              <div className="absolute left-0 bottom-0 w-full h-[203px] p-[14px] ">
+                <div className="text-[14px] mb-[20px]">
+                  The first <span className="font-bold">three cards</span> you
+                  own can only be purchased by yourself at one time. And in can
+                  only be sold <span className="font-bold">after 7 days.</span>
+                </div>
+
+                <Button
+                  hideBottomBackground={true}
+                  active={false}
+                  width="368px"
+                  height="50px"
+                  text={"Buy Now"}
+                  color={"#fff"}
+                  normalBackGround={"#0D0D0D"}
+                  borderRadius="27px"
+                  border="none"
+                  buttonClick={() => {
+                    console.log("click");
+                  }}
+                ></Button>
+
+                <div
+                  className="mt-[16px] font-semibold text-center cursor-pointer"
+                  onClick={() => {
+                    setShowTipThreeDays(false);
+                  }}
+                >
+                  Maybe Later
+                </div>
+              </div>
+            </div>
+
+            <div className=" absolute top-[-6px] right-0">
+              {hoverCloseImage ? (
+                <Image
+                  src={closeHover}
+                  alt=""
+                  width={36}
+                  height={36}
+                  className="cursor-pointer"
+                  onMouseEnter={() => {
+                    setHoverCloseImage(true);
+                  }}
+                  onClick={() => {
+                    setShowTipThreeDays(false);
+                  }}
+                  onMouseLeave={() => {
+                    setHoverCloseImage(false);
+                  }}
+                ></Image>
+              ) : (
+                <Image
+                  src={closeIcon}
+                  alt=""
+                  width={36}
+                  height={36}
+                  className="cursor-pointer"
+                  onMouseEnter={() => {
+                    setHoverCloseImage(true);
+                  }}
+                  onMouseLeave={() => {
+                    setHoverCloseImage(false);
+                  }}
+                ></Image>
+              )}
+            </div>
           </div>
         </div>
       )}
