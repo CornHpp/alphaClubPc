@@ -4,15 +4,15 @@ import "./index.css";
 
 interface SwitchProps {
   checked?: boolean;
-  onChange?: (checked: boolean) => void;
+  onChange: (checked: boolean) => void;
 }
 
 const Switch: React.FC<SwitchProps> = ({ checked, onChange }) => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange ? event.target.checked : null;
+  const handleChange = (checked: boolean) => {
+    onChange(checked);
   };
 
-  return <SwitchAntd></SwitchAntd>;
+  return <SwitchAntd checked={checked} onChange={handleChange}></SwitchAntd>;
 };
 
 export default Switch;

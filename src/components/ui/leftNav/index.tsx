@@ -11,6 +11,7 @@ import leftBg from "@/assets/home/leftBG.svg";
 import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
 import twitterIcon from "@/assets/home/twitterIcon.svg";
 import { useRouter, usePathname } from "next/navigation";
+import { useSelector } from "react-redux";
 
 interface LeftNavProps {
   // Add any props you need for your component here
@@ -38,6 +39,7 @@ const LeftNav: React.FC<LeftNavProps> = () => {
   const [buttonActive, setButtonActive] = React.useState(0);
   const router = useRouter();
   const pathName = usePathname();
+  const { userinfo } = useSelector((state: any) => state.user);
   useEffect(() => {
     const index = buttonLists.findIndex((item) => {
       return item.router === pathName;
@@ -133,14 +135,16 @@ const LeftNav: React.FC<LeftNavProps> = () => {
             }}
           >
             <Image
-              src={defaultHeaderIcon}
+              src={userinfo.imageUrl || defaultHeaderIcon}
               alt=""
               width={56}
-              className="w-[56px] h-[56px]"
+              className="w-[56px] h-[56px] rounded-full border-solid border-[#0D0D0D] border-[2px]"
               height={56}
             ></Image>
             <div className="ml-[8px]">
-              <div className="text-[20px] font-bold">Dekid</div>
+              <div className="text-[20px] font-bold overflow-hidden text-ellipsis whitespace-normal  w-[70px]  h-[30px]">
+                {userinfo.twitterName}
+              </div>
               <div className="flex items-center text-[12px] text-[#404140]">
                 <Image
                   src={twitterIcon}
@@ -149,7 +153,9 @@ const LeftNav: React.FC<LeftNavProps> = () => {
                   width={16}
                   height={16}
                 ></Image>
-                <div className="ml-[2px] font-medium">@Dekid</div>
+                <div className="ml-[2px] font-medium overflow-hidden text-ellipsis whitespace-normal  w-[70px]">
+                  @{userinfo.twitterScreenName}
+                </div>
               </div>
             </div>
           </div>

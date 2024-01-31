@@ -11,7 +11,7 @@ import Emitter from "@/lib/emitter";
 
 import DragUpload from "./dragUpload";
 import { formatDate } from "@/lib/util";
-import Toaster from "@/components/custom/Toast/Toast";
+import Toaster from "@/components/custom/Toast";
 
 const { TextArea } = Input;
 interface Props {

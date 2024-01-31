@@ -9,7 +9,7 @@ import Search from "@/components/custom/search";
 import { audioCreate, audioUpload } from "@/api/model/audio";
 import PressRecord from "./pressRecord";
 import { formatDate } from "@/lib/util";
-import Toaster from "@/components/custom/Toast/Toast";
+import Toaster from "@/components/custom/Toast";
 
 interface Props {
   // Define your component props here

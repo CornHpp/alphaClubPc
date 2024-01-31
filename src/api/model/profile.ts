@@ -62,3 +62,30 @@ export const keyholderHolders = async (
 
   return response;
 };
+
+// 获取个人门槛信息
+export const getPersonThreshold = async (
+  houseId: string
+): Promise<ResponseBaseType<any>> => {
+  const url = "/house/get/threshold?houseId=" + houseId;
+  const response = await request.get<ResponseBaseType<any>>(url);
+
+  return response;
+};
+
+// 设置个人门槛
+export const setPersonThreshold = async (
+  houseId: string,
+  threshold: number,
+  thresholdFlag: boolean
+): Promise<ResponseBaseType<any>> => {
+  const url = "/house/updateThreshold";
+
+  const response = await request.post<ResponseBaseType<any>>(url, {
+    houseId,
+    threshold,
+    thresholdFlag,
+  });
+
+  return response;
+};

@@ -138,12 +138,6 @@ const UseProfileView: React.FC<Props> = () => {
       <SettingPopup
         showPopup={showPopupSetting}
         setShowPopup={setShowPopupSetting}
-        onClickSelectCoHost={() => {
-          console.log("onClickSelectCoHost");
-        }}
-        onClickSchedule={() => {
-          console.log("onClickSchedule");
-        }}
       ></SettingPopup>
 
       <DepositPopup

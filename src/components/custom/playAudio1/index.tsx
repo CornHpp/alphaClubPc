@@ -8,7 +8,7 @@ import audioWaveSurfer from "@/assets/home/audioWaveSurfer.svg";
 
 import "./index.css";
 import { audioQueryAccess } from "@/api/model/audio";
-import Toaster from "../Toast/Toast";
+import Toaster from "../Toast";
 
 interface PlayAudioProps {
   shortAudio?: boolean;

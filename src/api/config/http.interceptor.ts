@@ -1,6 +1,6 @@
 import axios from "axios";
 import { showFullScreenLoading, hideFullScreenLoading } from "./serviceLoading";
-import toast from "@/components/custom/Toast/Toast";
+import toast from "@/components/custom/Toast";
 axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
 
 // 创建axios实例

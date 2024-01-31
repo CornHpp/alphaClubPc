@@ -1,5 +1,5 @@
 "use client";
-import toaster from "@/components/custom/Toast/Toast";
+import toaster from "@/components/custom/Toast";
 
 // 拷贝字符串到剪贴板
 export const copyTextToClipboard = (value: string) => {
