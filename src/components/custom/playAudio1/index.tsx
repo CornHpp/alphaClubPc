@@ -8,6 +8,7 @@ import audioWaveSurfer from "@/assets/home/audioWaveSurfer.svg";
 
 import "./index.css";
 import { audioQueryAccess } from "@/api/model/audio";
+import Toaster from "../Toast/Toast";
 
 interface PlayAudioProps {
   shortAudio?: boolean;
@@ -16,8 +17,8 @@ interface PlayAudioProps {
   id: number;
 }
 
-let wavesurfer: any;
-let timer: any;
+var wavesurfer: any;
+var timer: any;
 const PlayAudio: React.FC<PlayAudioProps> = (props) => {
   const { shortAudio = false, src, audioDuration, id } = props;
   const [playStatus, setPlayStatus] = React.useState(1);
@@ -26,16 +27,19 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
 
   let [audioSrc, setAudioSrc] = React.useState("");
 
-  const createWaveSurfer = () => {
+  const createWaveSurfer = (audioUrl: string) => {
     // Create an instance of WaveSurfer
     if (wavesurfer) {
       wavesurfer.destroy();
     }
+    const contentId = document.getElementById("container" + id);
+    console.log("contentId", contentId);
+    if (!contentId) return;
     wavesurfer = WaveSurfer.create({
-      container: "#container",
+      container: contentId,
       waveColor: "#949694",
       progressColor: "##FFFFB3",
-      url: "https://alphaclubstorage.blob.core.windows.net/aphaclub-media/recording.webm?sv=2023-11-03&se=2024-01-31T04%3A00%3A14Z&sr=b&sp=r&sig=hOh%2B7ERNXCeAyPCGaFvyDR59jPyjdbIiL%2BOVN5u6v4E%3D",
+      url: audioUrl,
       barGap: 2,
       barRadius: 4,
       barWidth: 2,
@@ -46,40 +50,42 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
       dragToSeek: true,
     });
 
-    wavesurfer.on("timeupdate", () => {
-      // const currentTime = wavesurfer.getCurrentTime();
-      // if (timer) return;
-      // timer = setTimeout(() => {
-      //   // console.log("currentTime", currentTime);
-      //   setCountTime((val) => {
-      //     const time = Number(val) - currentTime;
-      //     console.log("time", time);
-      //     clearTimeout(timer);
-      //     timer = null;
-      //     return time;
-      //   });
-      // }, 1000);
+    // 监听结束事件
+    wavesurfer.on("finish", () => {
+      setPlayStatus(1);
     });
   };
 
-  useEffect(() => {}, [props.src, src]);
+  const [cacheAudioUrl, setCacheAudioUrl] = React.useState("");
 
   const clickPlayAudio = () => {
+    if (cacheAudioUrl) {
+      createWaveSurfer(cacheAudioUrl);
+      setTimeout(() => {
+        wavesurfer.playPause();
+      }, 500);
+      return;
+    }
     audioQueryAccess(id).then((res) => {
-      console.log("res", res);
+      console.log(res);
+      if (res.code == "200") {
+        setAudioStatus(2);
 
-      const newSrc = src + "?" + res.result;
-      console.log(src);
-      console.log("newSrc", newSrc);
-      audioSrc = newSrc;
-      setAudioSrc(newSrc);
-      createWaveSurfer();
+        const newSrc = src + "?" + res.result;
+        createWaveSurfer(newSrc);
+        setCacheAudioUrl(newSrc);
+        setTimeout(() => {
+          wavesurfer.playPause();
+        }, 500);
+      } else {
+        Toaster.error("Cards not enough!");
+      }
     });
-    // wavesurfer.playPause();
   };
 
   const clickPlayStop = () => {
-    // wavesurfer.playPause();
+    wavesurfer.playPause();
+    setPlayStatus(1);
   };
 
   return (
@@ -99,14 +105,9 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
       </div>
 
       <div className="w-full  mt-[11px] flex items-center justify-between">
-        <audio
-          id="song"
-          //src={this.props.audioURL}
-          src="https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a"
-        />
         <div
-          id="container"
-          className="w-[85%] flex-shrink-0 h-[32px] rounded-[6px] border-[1px] border-solid border-[#0D0D0D] bg-[#E9E9E9] mr-[12px]"
+          id={"container" + id}
+          className="flex-1 flex-shrink-0 h-[32px] rounded-[6px] border-[1px] border-solid border-[#0D0D0D] bg-[#E9E9E9] mr-[12px]"
           style={{
             display: audioStatus === 1 ? "none" : "block",
           }}
@@ -128,7 +129,6 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
             className="cursor-pointer"
             onClick={() => {
               clickPlayAudio();
-              setPlayStatus(2);
             }}
           ></Image>
         ) : (
@@ -140,7 +140,6 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
             className="cursor-pointer"
             onClick={() => {
               clickPlayStop();
-              setPlayStatus(1);
             }}
           ></Image>
         )}

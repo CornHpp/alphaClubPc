@@ -1,23 +1,36 @@
-import React from "react"
-import Image from "next/image"
-import DanmuButton from "@/components/custom/danmuButton"
-import Roll from "@/components/custom/roll"
+import React, { useCallback, useEffect } from "react";
+import Image from "next/image";
+import DanmuButton from "@/components/custom/danmuButton";
+import Roll from "@/components/custom/roll";
+import { getPersonTradeList } from "@/api/model/profile";
 
 interface Props {
-  // Define your component props here
+  lists: PartialGetTradeListType[];
 }
 
-const Danmu: React.FC<Props> = () => {
+const Danmu: React.FC<Props> = (props) => {
+  const { lists } = props;
+
   return (
     <div className="w-full h-full">
-      <div className="h-[50%] pt-[4px] relative">
-        <Roll danmuList={[]} leftOrRight={true}></Roll>
+      <div className="h-[50%]  relative flex items-center">
+        <Roll
+          isCardsDanmu={false}
+          top={"16px"}
+          danmuList={lists}
+          leftOrRight={true}
+        ></Roll>
       </div>
       <div className="h-[50%] relative">
-        <Roll danmuList={[]} leftOrRight={false}></Roll>
+        <Roll
+          isCardsDanmu={false}
+          top={"6px"}
+          danmuList={lists}
+          leftOrRight={false}
+        ></Roll>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Danmu
+export default React.memo(Danmu);

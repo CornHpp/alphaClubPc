@@ -25,3 +25,25 @@ export const getTradeGetHouseGetOrderList = async (
 
   return response;
 };
+
+// 搜索twitter的内容
+export const getTwitterSearch = async (
+  screenName: string | undefined
+): Promise<ResponseBaseType<PartialResponseScreenNameType>> => {
+  const url = "/secret/twitter/byScreenName?screenName=" + screenName;
+  const response = await request.get<
+    ResponseBaseType<PartialResponseScreenNameType>
+  >(url);
+  return response;
+};
+
+// 获取用户的twitter列表
+export const getTwitterList = async (
+  params: paramsType
+): Promise<ResponsePagingType<PartialResponseTwitterListType>> => {
+  const url = "/secret/twitter/pollsrank/list";
+  const response = await request.get<
+    ResponsePagingType<PartialResponseTwitterListType>
+  >(url, params);
+  return response;
+};

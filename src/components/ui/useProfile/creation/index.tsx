@@ -24,7 +24,6 @@ interface Props {
 }
 
 const CreationvView: React.FC<Props> = () => {
-  // Add your component logic here
   const { userinfo } = useSelector((state: any) => state.user);
 
   const [showPopupCreateEvent, setShowPopupCreateEvent] = React.useState(false);
@@ -54,18 +53,18 @@ const CreationvView: React.FC<Props> = () => {
 
   const houseId = urlParams.id ? urlParams.id : userinfo.twitterUidStr;
 
-  const params = {
-    pageNum: queryParams.pageNum,
-    pageSize: queryParams.pageSize,
-    source: currentTab,
-    houseId: houseId as string,
-  };
-
   const getAudioPersonListFunc = async (isReset?: boolean) => {
     if (isReset) {
       queryParams.pageNum = 1;
       setAudioPersonList([]);
     }
+    const params = {
+      pageNum: queryParams.pageNum,
+      pageSize: queryParams.pageSize,
+      source: currentTab,
+      houseId: houseId as string,
+    };
+    console.log("params", params);
     const res = await getAudioPersonList(params);
 
     let { pageList = [], count = 0 } = res.result;

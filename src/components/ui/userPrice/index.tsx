@@ -28,7 +28,7 @@ const UserPrice: React.FC<Props> = (props) => {
 
       {showEthHolder && (
         <div className="flex flex-col items-end">
-          <div className="flex text-[18px] font-semibold">
+          <div className="flex text-[18px] font-semibold items-center">
             <Image
               className="mr-[2px] w-[16px] h-[17px]"
               src={ethIcon}
@@ -36,10 +36,10 @@ const UserPrice: React.FC<Props> = (props) => {
               width={16}
               height={17}
             ></Image>
-            {formatBalanceNumber(item?.price)} ETH
+            {item?.price?.toString()?.slice(0, 6)} ETH
           </div>
           <div className="flex text-[#404140] text-[12px] font-medium ">
-            Holder：{item?.holdcount}
+            Holder：{item?.holders}
           </div>
         </div>
       )}

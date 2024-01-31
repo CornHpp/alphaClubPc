@@ -10,3 +10,5 @@ interface getAllHomeType {
 }
 
 type PartialGetAllHomeType = Partial<getAllHomeType>;
+
+type uniteHomeAlltype = creatAudioType & PartialGetAllHomeType;

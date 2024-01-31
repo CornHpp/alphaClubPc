@@ -1,19 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Carousel } from "antd";
 
 import Danmu from "./danmu";
 import Live from "./live";
 import CardBeginView from "./begin";
 import AudioCard from "./audioCard";
+import { getPersonTradeList } from "@/api/model/profile";
 
 interface CarouselProps {
   // Define your props here
   onOpenEventPopup: () => void;
-  item: creatAudioType;
+  item: uniteHomeAlltype;
+  houseId?: string;
 }
 
 const CarouselView: React.FC<CarouselProps> = (props) => {
-  const { onOpenEventPopup, item } = props;
+  const { onOpenEventPopup, item, houseId } = props;
   const carouseRef = React.useRef(null);
   const [currentSlide, setCurrentSlide] = React.useState(0);
 
@@ -24,15 +26,36 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
     }
   };
 
-  const contentStyle: React.CSSProperties = {
-    margin: 0,
-    height: "160px",
-    color: "#fff",
-    lineHeight: "160px",
-    textAlign: "center",
-    background: "#364d79",
+  const [isShowDanmu, setIsShowDanmu] = React.useState<boolean>(false);
+
+  const [showDanmuList, setShowDanmuList] = React.useState<
+    PartialGetTradeListType[]
+  >([]);
+
+  const queryParams = {
+    pageNum: 1,
+    pageSize: 50,
   };
-  const [showDanmu, setShowDanmu] = React.useState(true);
+
+  const getPersonTradeListFunc = async () => {
+    const params = {
+      pageNum: queryParams.pageNum,
+      pageSize: queryParams.pageSize,
+      houseId: houseId,
+    };
+    const res = await getPersonTradeList(params);
+    console.log(res);
+    let { pageList = [], count = 0 } = res.result;
+    if (!pageList) pageList = [];
+    const newCardList = [...showDanmuList, ...(pageList ? pageList : [])];
+    setShowDanmuList(newCardList);
+  };
+
+  useEffect(() => {
+    getPersonTradeListFunc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   const onChange1 = (currentSlide: number) => {
     console.log(currentSlide);
   };
@@ -40,7 +63,7 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
   return (
     <div className="w-full px-[16px] py-[16px] ">
       <div className="border-[2px] border-[#0D0D0D] border-solid overflow-hidden rounded-[10px] w-full h-[129px]">
-        <Carousel ref={carouseRef} dots={false}>
+        <Carousel ref={carouseRef} dots={false} afterChange={onChange1}>
           <div
             className="w-full rounded-[10px] bg-[#fff] h-[129px] px-[10px] py-[10px] cursor-pointer"
             onClick={() => {
@@ -49,19 +72,24 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
             }}
           >
             <AudioCard
+              id={item.id}
               time={item.showTime}
               audioUrl={item.fileUrl}
               audioSource={item.source}
               title={item.title}
             ></AudioCard>
           </div>
-          {!showDanmu ? (
-            <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[129px] block px-[10px] py-[10px]">
-              <CardBeginView></CardBeginView>
-            </div>
-          ) : (
-            <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[129px] block overflow-hidden">
-              <Danmu></Danmu>
+          {showDanmuList.length > 0 && (
+            <div>
+              {isShowDanmu ? (
+                <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[129px] block px-[10px] py-[10px]">
+                  <CardBeginView></CardBeginView>
+                </div>
+              ) : (
+                <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[129px] block overflow-hidden">
+                  {item && <Danmu lists={showDanmuList}></Danmu>}
+                </div>
+              )}
             </div>
           )}
         </Carousel>
@@ -111,4 +139,4 @@ export const SmallButton: React.FC<ButtonProps> = (props) => {
   );
 };
 
-export default CarouselView;
+export default React.memo(CarouselView);

@@ -7,11 +7,13 @@ interface RollProps {
   leftOrRight: boolean; // true: left, false: right
   isCardsDanmu?: boolean;
   danmuList: PartialGetTradeListType[];
+  top?: string;
 }
 
 const Roll: React.FC<RollProps> = ({
   leftOrRight,
   isCardsDanmu,
+  top = "7px",
   danmuList,
 }) => {
   const [danmuLeft, setDanmuLeft] = React.useState<number>(0); // 弹幕的整体宽度
@@ -24,7 +26,7 @@ const Roll: React.FC<RollProps> = ({
       id="danmu"
       style={{
         left: danmuLeft + "px",
-        top: isCardsDanmu ? "7px" : "4px",
+        top: top,
       }}
     >
       <div
@@ -32,39 +34,37 @@ const Roll: React.FC<RollProps> = ({
           leftOrRight ? "scrollLeft" : "scrollRight"
         }  flex  relative`}
       >
-        {danmuList?.length &&
+        {danmuList?.length ? (
           danmuList.map((item, index) => {
             return (
               <div
                 key={index + "s"}
                 className="flex-shrink-0 mr-[8px] cursor-pointer"
               >
-                {isCardsDanmu ? (
-                  <DanmuButtonCards item={item}></DanmuButtonCards>
-                ) : (
-                  <DanmuButton></DanmuButton>
-                )}
+                <DanmuButtonCards item={item}></DanmuButtonCards>
               </div>
             );
-          })}
+          })
+        ) : (
+          <></>
+        )}
       </div>
       <div
         className={`${
           leftOrRight ? "scrollLeft" : "scrollRight"
         }  flex relative`}
       >
-        {danmuList?.length &&
+        {danmuList?.length ? (
           danmuList.map((item, index) => {
             return (
               <div key={index + "s"} className="flex-shrink-0 mr-[8px]">
-                {isCardsDanmu ? (
-                  <DanmuButtonCards item={item}></DanmuButtonCards>
-                ) : (
-                  <DanmuButton></DanmuButton>
-                )}
+                <DanmuButtonCards item={item}></DanmuButtonCards>
               </div>
             );
-          })}
+          })
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );

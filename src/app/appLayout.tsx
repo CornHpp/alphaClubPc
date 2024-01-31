@@ -11,7 +11,6 @@ import "react-toastify/dist/ReactToastify.css";
 function AppLayout({ children }: { children: React.ReactNode }) {
   const [isLogin, setIsLogin] = React.useState(0);
   const pathname = usePathname();
-  console.log("pathname", pathname);
   return (
     <>
       <Providers>

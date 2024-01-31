@@ -11,6 +11,7 @@ import playIcon from "@/assets/home/playIcon.svg";
 import stopIcon from "@/assets/home/stopIcon.svg";
 import beforeFifteen from "@/assets/profile/beforeFifteen.svg";
 import afterFifteen from "@/assets/profile/afterFifteen.svg";
+import { audioQueryAccess } from "@/api/model/audio";
 // import "./Audio.css";
 
 function transTime(value: number) {
@@ -47,6 +48,7 @@ interface audioType {
   height?: string;
   audioDuration?: number;
   isProfile?: boolean;
+  id: number;
 }
 
 export const Audio: React.FC<audioType> = (props) => {
@@ -56,6 +58,7 @@ export const Audio: React.FC<audioType> = (props) => {
     height = "30px",
     audioDuration,
     isProfile = true,
+    id,
   } = props;
 
   const [playStatus, setPlayStatus] = React.useState(1);
@@ -70,44 +73,14 @@ export const Audio: React.FC<audioType> = (props) => {
   const [duration, setDuration] = useState<string>("00:00");
   const [currentTime, setCurrentTime] = useState<string>("00:00");
 
+  let [audioSrc, setAudioSrc] = useState<string>("");
+
   useLayoutEffect(() => {
-    if (audioRef.current && src) {
-      audioRef.current.addEventListener("play", (e: Event) => {
-        const pid = (e.target as HTMLAudioElement).getAttribute("pid");
-        const audios = document.querySelectorAll("audio");
-        console.log("pid", pid);
-        audios.forEach((element, index) => {
-          if (element.getAttribute("pid") === pid) return;
-          element.pause();
-        });
-      });
-
-      audioRef.current.addEventListener("loadedmetadata", (e) => {
-        const duration = transTime(
-          (e.target as HTMLAudioElement).duration as number
-        );
-        setDuration(duration);
-      });
-      audioRef.current.addEventListener("play", (_res) => {
-        setToggle(false);
-      });
-      audioRef.current.addEventListener("pause", () => {
-        setToggle(true);
-      });
-      audioRef.current.addEventListener("timeupdate", (e) => {
-        let value =
-          (e.target as HTMLAudioElement).currentTime /
-          (audioRef.current as HTMLAudioElement).duration;
-        setProgress(value * 100);
-        setCurrentTime(transTime((e.target as HTMLAudioElement).currentTime));
-        // console.log('timeupdate res', res.target.currentTime);
-      });
-    }
     return () => {};
-  }, [src]);
+  }, [audioSrc]);
 
-  useEffect(() => {
-    if (dotRef.current && src) {
+  const initAudioFunc = () => {
+    if (dotRef.current && audioSrc) {
       const position = {
         oriOffestLeft: 0, // 移动开始时进度条的点距离进度条的偏移值
         oriX: 0, // 移动开始时的x坐标
@@ -189,20 +162,101 @@ export const Audio: React.FC<audioType> = (props) => {
       document.addEventListener("mouseup", end, false);
       barBgRef.current?.addEventListener("touchend", end, false);
     }
-  }, [src]);
+  };
+  const initAudioFunc2 = () => {
+    if (audioRef.current && audioSrc) {
+      audioRef.current.addEventListener("play", (e: Event) => {
+        const pid = (e.target as HTMLAudioElement).getAttribute("pid");
+        const audios = document.querySelectorAll("audio");
+        audios.forEach((element, index) => {
+          if (element.getAttribute("pid") === pid) return;
+          element.pause();
+        });
+      });
 
-  const handlePaly = () => {
-    if (toggle && src) {
+      audioRef.current.addEventListener("loadedmetadata", (e) => {
+        const duration = transTime(
+          (e.target as HTMLAudioElement).duration as number
+        );
+        setDuration(duration);
+      });
+      audioRef.current.addEventListener("play", (_res) => {
+        setToggle(false);
+      });
+      audioRef.current.addEventListener("pause", () => {
+        setToggle(true);
+      });
+
+      audioRef.current.addEventListener("ended", function () {
+        setToggle(true);
+        setPlayStatus(1);
+      });
+
+      audioRef.current.addEventListener("timeupdate", (e) => {
+        let value =
+          (e.target as HTMLAudioElement).currentTime /
+          (audioRef.current as HTMLAudioElement).duration;
+        setProgress(value * 100);
+        setCurrentTime(transTime((e.target as HTMLAudioElement).currentTime));
+        // console.log('timeupdate res', res.target.currentTime);
+      });
+    }
+  };
+
+  const handleClickBackFifteenSeconds = () => {
+    let currentTime = audioRef.current?.currentTime;
+    if (currentTime && audioRef.current) {
+      currentTime -= 15;
+      if (currentTime < 0) {
+        currentTime = 0;
+      }
+      audioRef.current.currentTime = currentTime;
+      if (playStatus === 2) {
+        audioRef.current.play();
+      }
+    }
+  };
+
+  const handleClickAfterFifteenSeconds = () => {
+    let currentTime = audioRef.current?.currentTime;
+    const totalDuration = audioRef.current?.duration;
+    if (currentTime && audioRef.current && totalDuration) {
+      currentTime += 15;
+      if (currentTime > totalDuration) {
+        currentTime = totalDuration;
+        setPlayStatus(1);
+      }
+      audioRef.current.currentTime = currentTime;
+      if (playStatus === 2) {
+        audioRef.current.play();
+      }
+    }
+  };
+
+  const handleClickPaly = () => {
+    if (audioSrc && playStatus === 1) {
       audioRef.current?.play();
       return;
+    } else if (audioSrc && playStatus === 2) {
+      audioRef.current?.pause();
+      return;
     }
-    audioRef.current?.pause();
-    return;
+
+    audioQueryAccess(id).then((res) => {
+      const newSrc = src + "?" + res.result;
+      audioSrc = newSrc;
+      setAudioSrc(newSrc);
+      initAudioFunc();
+      initAudioFunc2();
+      setTimeout(() => {
+        audioRef.current?.play();
+      }, 500);
+    });
   };
 
   return (
     <>
-      <audio controls={false} src={src} preload="metadata" ref={audioRef}>
+      <audio controls={false} src={audioSrc} preload="metadata" ref={audioRef}>
         您的浏览器不支持 audio 标签
       </audio>
       <div
@@ -252,8 +306,7 @@ export const Audio: React.FC<audioType> = (props) => {
               width={32}
               height={32}
               onClick={() => {
-                setPlayStatus(2);
-                handlePaly();
+                handleClickBackFifteenSeconds();
               }}
             ></Image>
             <Image
@@ -268,7 +321,7 @@ export const Audio: React.FC<audioType> = (props) => {
                 } else {
                   setPlayStatus(1);
                 }
-                handlePaly();
+                handleClickPaly();
               }}
             ></Image>
             <Image
@@ -277,8 +330,7 @@ export const Audio: React.FC<audioType> = (props) => {
               width={32}
               height={32}
               onClick={() => {
-                setPlayStatus(2);
-                handlePaly();
+                handleClickAfterFifteenSeconds();
               }}
             ></Image>
           </div>

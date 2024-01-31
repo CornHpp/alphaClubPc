@@ -63,6 +63,7 @@ const Card: React.FC<CardProps> = ({
             // setShowEventPopup(true);
           }}
           item={item.audioEventDomain}
+          houseId={item.houseId}
         ></Carousel>
       ) : (
         <div className="w-full px-[16px] py-[16px] mb-[10px]">
@@ -169,4 +170,4 @@ const Card: React.FC<CardProps> = ({
   );
 };
 
-export default Card;
+export default React.memo(Card);

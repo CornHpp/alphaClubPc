@@ -1,0 +1,11 @@
+#container ::part(progress) {
+  background: #ffffb3 !important;
+  border-radius: 8px 0 0 8px !important;
+}
+.rhap_container {
+  box-shadow: none;
+  padding: 0;
+}
+.rhap_controls-section {
+  display: none;
+}

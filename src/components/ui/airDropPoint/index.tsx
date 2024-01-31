@@ -13,15 +13,21 @@ import icon6 from "@/assets/airdrop/icon6.svg";
 import icon7 from "@/assets/airdrop/icon7.svg";
 import icon8 from "@/assets/airdrop/icon8.svg";
 
-import { getAllTaskInfo, openTreasureBox } from "@/api/model/airdrop";
+import {
+  getAllTaskInfo,
+  openTreasureBox,
+  taskInfoType,
+} from "@/api/model/airdrop";
 
 import {
+  getUserInfoByTwitterId,
   getUserInviteCode,
   inviteCodeResponseType,
 } from "@/api/model/userService";
 import { copyTextToClipboardSafari } from "@/lib/util";
 import PointsCard from "./pointsCard";
 import OpenTreasure from "@/components/custom/treasure";
+import { useSelector } from "react-redux";
 interface AirDropPointProps {
   // Define the props for the AirDropRank component here
 }
@@ -36,6 +42,8 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
     setInviteCodeList(res.result);
     console.log(res);
   };
+
+  const { userinfo } = useSelector((state: any) => state.user);
 
   const [OpenTreasureShow, setOpenTreasureShow] = React.useState(false);
 
@@ -100,6 +108,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
       ),
       EarnedPoints: 0,
       canOpen: false,
+      scoreCount: 0,
       id: 0,
     },
     {
@@ -115,6 +124,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
       ),
       EarnedPoints: 250,
       id: 0,
+      scoreCount: 0,
       canOpen: false,
     },
     {
@@ -131,6 +141,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
       ),
       EarnedPoints: 0,
       id: 0,
+      scoreCount: 0,
       canOpen: false,
     },
     {
@@ -148,8 +159,16 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
       EarnedPoints: 0,
       id: 0,
       canOpen: false,
+      scoreCount: 0,
     },
   ]);
+
+  const copyAttriaute = (index: number, item: taskInfoType) => {
+    treasureBoxLists[index].unFinished = Number(item.currentMount);
+    treasureBoxLists[index].canOpen = item.canOpen;
+    treasureBoxLists[index].id = item.scoreType;
+    treasureBoxLists[index].scoreCount = item.scoreCount;
+  };
 
   const getAllTaskInfoFunc = async () => {
     getAllTaskInfo().then((res) => {
@@ -165,21 +184,13 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
         } else if (item.scoreType == 8) {
           pointsHuntList[3].EarnedPoints = item.scoreCount;
         } else if (item.scoreType == 9) {
-          treasureBoxLists[0].unFinished = Number(item.currentMount);
-          treasureBoxLists[0].canOpen = item.canOpen;
-          treasureBoxLists[0].id = item.scoreType;
+          copyAttriaute(0, item);
         } else if (item.scoreType == 10) {
-          treasureBoxLists[1].unFinished = Number(item.currentMount);
-          treasureBoxLists[1].canOpen = item.canOpen;
-          treasureBoxLists[1].id = item.scoreType;
+          copyAttriaute(1, item);
         } else if (item.scoreType == 4) {
-          treasureBoxLists[2].unFinished = Number(item.currentMount);
-          treasureBoxLists[2].canOpen = item.canOpen;
-          treasureBoxLists[2].id = item.scoreType;
+          copyAttriaute(2, item);
         } else if (item.scoreType == 5) {
-          treasureBoxLists[3].unFinished = Number(item.currentMount);
-          treasureBoxLists[3].canOpen = item.canOpen;
-          treasureBoxLists[3].id = item.scoreType;
+          copyAttriaute(3, item);
         }
       });
       setPointsHuntList([...pointsHuntList]);
@@ -191,29 +202,37 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
     openTreasureBox(id).then((res) => {
       getAllTaskInfoFunc();
       const item = res.result;
+      setOpenTreasureShow(true);
       if (id == 9) {
-        treasureBoxLists[0].unFinished = Number(item.currentMount);
-        treasureBoxLists[0].canOpen = item.canOpen;
-        treasureBoxLists[0].id = item.scoreType;
+        copyAttriaute(1, item);
       } else if (item.scoreType == 10) {
-        treasureBoxLists[1].unFinished = Number(item.currentMount);
-        treasureBoxLists[1].canOpen = item.canOpen;
-        treasureBoxLists[1].id = item.scoreType;
+        copyAttriaute(2, item);
       } else if (item.scoreType == 4) {
-        treasureBoxLists[2].unFinished = Number(item.currentMount);
-        treasureBoxLists[2].canOpen = item.canOpen;
-        treasureBoxLists[2].id = item.scoreType;
+        copyAttriaute(3, item);
       } else if (item.scoreType == 5) {
-        treasureBoxLists[3].unFinished = Number(item.currentMount);
-        treasureBoxLists[3].canOpen = item.canOpen;
-        treasureBoxLists[3].id = item.scoreType;
+        copyAttriaute(4, item);
       }
+    });
+  };
+
+  const [currentScore, setCurrentScore] = React.useState(0);
+
+  const [selfInfo, setSelfInfo] = React.useState<any>({});
+
+  const getUserInfoByTwitterIdFunc = async () => {
+    const twitterId = userinfo.twitterUidStr;
+    const res = await getUserInfoByTwitterId(twitterId);
+    setSelfInfo({
+      rank: res.result.rank,
+      points: res.result.score,
     });
   };
 
   useEffect(() => {
     getUserInviteCodeFunc();
     getAllTaskInfoFunc();
+
+    getUserInfoByTwitterIdFunc();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
@@ -233,7 +252,8 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
               <div className="font-semibold">My Ranking:</div>
               <div className="flex items-center italic text-[40px]flex w-full font-bold leading-[36px]">
                 <div className="">
-                  4<span className="text-[12px] font-medium">th</span>
+                  {selfInfo.rank}
+                  <span className="text-[12px] font-medium">th</span>
                 </div>
               </div>
             </div>
@@ -250,7 +270,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
             <div>
               <div className="font-semibold">Total Points::</div>
               <div className="flex items-center italic text-[40px] font-bold leading-[36px]">
-                <div className="">3200</div>
+                <div className="">{selfInfo.points}</div>
               </div>
             </div>
           </div>
@@ -380,7 +400,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
                     }}
                     onClick={() => {
                       if (item.canOpen) {
-                        setOpenTreasureShow(true);
+                        setCurrentScore(item.scoreCount);
                         openTreasureBoxFunc(item.id);
                       }
                     }}
@@ -398,6 +418,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
       </div>
 
       <OpenTreasure
+        scores={currentScore}
         showPopup={OpenTreasureShow}
         handleCancel={() => {
           setOpenTreasureShow(false);

@@ -12,6 +12,7 @@ export interface usersAirdropRequestType {
   twitterName: string;
   twitterScreenName: string;
   twitterUid: string;
+  rank: number;
 }
 
 export type PartialUsersAirdropRequestType = Partial<usersAirdropRequestType>;

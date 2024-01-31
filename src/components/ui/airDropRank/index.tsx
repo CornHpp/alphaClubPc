@@ -71,11 +71,22 @@ const AirDropRank: React.FC<AirDropRankProps> = () => {
         return (
           <div
             key={index + "1"}
+            style={{
+              borderColor:
+                item.rank == 1
+                  ? "#FFD601"
+                  : item.rank == 2
+                  ? "#A1B8B3"
+                  : item.rank == 2
+                  ? "#DDAA7A"
+                  : "#949694",
+            }}
             className="border-solid border-[2px] border-[#949694] h-[74px] rounded-[8px] flex items-center pl-[64px] pr-[64px] w-full mb-[16px]"
           >
             <div className="w-[15%] flex items-center italic text-[24px] ">
               <div className="">
-                29999<span className="text-[12px]">th</span>
+                {item.rank}
+                <span className="text-[12px]">th</span>
               </div>
             </div>
 
@@ -108,48 +119,11 @@ const AirDropRank: React.FC<AirDropRankProps> = () => {
                 height={24}
                 className="mr-[2px]"
               ></Image>
-              12
+              {item.score}
             </div>
           </div>
         );
       })}
-
-      <div className="mt-[4px] w-full">
-        <div className="border-solid border-[2px] border-[#FFD601] h-[74px] rounded-[8px] flex items-center pl-[64px] pr-[64px] w-full">
-          <div className="w-[15%] flex items-center italic text-[24px] ">
-            <div
-              className="text-[40px]"
-              style={{
-                background: "linear-gradient(151deg, #F8C30F 0%, #F7A300 100%)",
-                WebkitBackgroundClip: "text",
-                display: "inline-block",
-                color: "transparent",
-              }}
-            >
-              <span style={{}}>1</span>
-              <span className="text-[12px]">th</span>
-            </div>
-          </div>
-
-          <div className="w-[35%]">
-            <UserHeader></UserHeader>
-          </div>
-          <div className="w-[35%]">
-            <UserHeader></UserHeader>
-          </div>
-
-          <div className="w-[15%] flex items-center">
-            <Image
-              src={diamondIcon}
-              alt=""
-              width={24}
-              height={24}
-              className="mr-[2px]"
-            ></Image>
-            12111
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

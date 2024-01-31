@@ -426,6 +426,8 @@ const Home: React.FC = () => {
           setShowCreatVoiceNotePopup(false);
           setTimeout(() => {
             setShowHomeToast(true);
+            loadMore(true);
+
             setTotastMessage("Create Voice Note Success");
           }, 1000);
         }}
@@ -446,6 +448,7 @@ const Home: React.FC = () => {
           setShowUploadAudioPopup(false);
           setTimeout(() => {
             setShowHomeToast(true);
+            loadMore(true);
             setTotastMessage("Upload Voice Note Success");
           }, 1000);
         }}

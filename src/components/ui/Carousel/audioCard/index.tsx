@@ -6,7 +6,7 @@ import machine from "@/assets/home/machine.svg";
 import person from "@/assets/home/person.svg";
 import volumeIcon from "@/assets/home/volumeIcon.svg";
 import timeIcon from "@/assets/popup/timeIcon.svg";
-import PlayAudio from "@/components/custom/playAudio";
+import PlayAudio from "@/components/custom/playAudio1";
 import AudioPlayer from "@/components/custom/audioPlayer";
 
 interface CarouselProps {
@@ -27,6 +27,7 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
     audioDuration,
     id,
   } = props;
+
   return (
     <div>
       <div className="flex">
@@ -56,14 +57,18 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
       </div>
 
       <div className="text-[18px] font-semibold mt-[2px]">{title}</div>
-      {audioSource === 1 ? (
+      {audioSource === 0 ? (
         <PlayAudio
           id={id as number}
           audioDuration={audioDuration}
           src={audioUrl}
         ></PlayAudio>
       ) : (
-        <AudioPlayer audioDuration={audioDuration} src={audioUrl}></AudioPlayer>
+        <AudioPlayer
+          id={id as number}
+          audioDuration={audioDuration}
+          src={audioUrl}
+        ></AudioPlayer>
       )}
     </div>
   );

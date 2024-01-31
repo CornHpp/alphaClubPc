@@ -22,10 +22,13 @@ import twitterIcon from "@/assets/home/twitterIcon.svg";
 import InfinietScrollbar from "@/components/custom/scrollInfiniteScroll";
 import closeIcon from "@/assets/cards/closeIcon.svg";
 import searchIcon from "@/assets/cards/searchIcon.svg";
+import arrivedIcon from "@/assets/cards/arrivedIcon.svg";
 import "./index.css";
 import {
   getTradeGetAllTradeList,
   getTradeGetHouseGetOrderList,
+  getTwitterList,
+  getTwitterSearch,
 } from "@/api/model/card";
 import { formatBalanceNumber } from "@/lib/util";
 import Search from "@/components/custom/search";
@@ -40,18 +43,18 @@ const Page: React.FC<Props> = () => {
     PartialGetTradeOrderList[]
   >([]);
 
-  const [twitterFriendList, setTwitterFriendList] = React.useState<any[]>([{}]);
+  const [twitterFriendList, setTwitterFriendList] = React.useState<
+    PartialResponseTwitterListType[]
+  >([]);
   const [paimingList, setPaimingList] = React.useState<
     PartialGetTradeOrderList[]
   >([]);
   const [scrollItemClientHeight, setScrollItemClientHeight] =
     React.useState<number>(0);
 
-  const [value, setValue] = React.useState<string>("");
+  let [value, setValue] = React.useState<string>("");
 
   const [danmuList, setDanmuList] = React.useState<any[]>([]);
-
-  const [showSearchResult, setShowSearchResult] = React.useState<boolean>(true);
 
   const getPageData = () => {
     const params = {
@@ -91,16 +94,50 @@ const Page: React.FC<Props> = () => {
     });
   };
 
+  const [searchMap, setSearchMap] =
+    React.useState<PartialResponseScreenNameType>();
+
+  const getTwitterSearchData = (value: string | undefined) => {
+    getTwitterSearch(value).then((res) => {
+      console.log(res);
+      setSearchMap(res.result);
+    });
+  };
+
+  const twitterParams = {
+    pageNum: 1,
+    pageSize: 50,
+  };
+
+  const getTwitterListFunc = () => {
+    getTwitterList(twitterParams).then((res) => {
+      console.log(res);
+      let { pageList = [], count = 0 } = res.result;
+      if (!pageList) pageList = [];
+
+      const newCardList = [...twitterFriendList, ...(pageList ? pageList : [])];
+
+      setTwitterFriendList(newCardList);
+
+      if (newCardList.length >= count) {
+        // setOrderHasMore(false);
+      }
+    });
+  };
+
   useEffect(() => {
     getPageData();
+    getTwitterListFunc();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <div className="mt-[24px] w-full flex flex-col flex-1">
+    <div className="mt-[24px] w-full flex flex-col flex-1 pr-[37px]">
       <div className=" flex w-full justify-between pr-[39px] items-center">
         <div className="text-[32px] font-bold mr-[3px]">cards</div>
       </div>
-      <div className="flex items-center mt-[12px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px]  h-[58px] bg-white px-[14px] mr-[37px]">
+      <div className="flex items-center mt-[12px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px]  h-[58px] bg-white px-[14px]">
         <div className="font-bold text-[18px] w-[65px] leading-[20px]">
           Recent Trade
         </div>
@@ -113,22 +150,22 @@ const Page: React.FC<Props> = () => {
         </div>
       </div>
 
-      <div className="flex flex-1 pb-[16px]">
+      <div className="flex flex-1 pb-[16px] w-full">
         <div
-          className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px]  w-[563px] mr-[24px] flex-col flex overflow-hidden"
+          className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px]  flex-1 mr-[24px] flex-col flex overflow-hidden"
           style={{
             background:
               "linear-gradient(128deg, #FDFFF4 0%, #F5FFF2 47%, #FFFEE2 100%)",
           }}
         >
-          <div className="p-[14px]">
+          <div className=" pb-[0px]">
             <div className="text-[20px] font-bold">Top Clubs</div>
 
-            <div className="flex items-end justify-between">
+            <div className="flex items-end">
               {paimingList.map((item, index) => {
                 return (
                   <div
-                    className=" relative"
+                    className=" relative w-[33%] flex justify-center min-w-[173px]"
                     key={index + "w"}
                     style={{
                       marginRight: index == 2 ? "0px" : "8px",
@@ -144,14 +181,18 @@ const Page: React.FC<Props> = () => {
                       }
                       alt=""
                       style={{
-                        width: "auto",
                         height: index == 1 ? "229px" : "200px",
                       }}
-                      width={173}
+                      width={index == 1 ? 200 : 173}
                       priority={true}
                       height={index == 1 ? 229 : 200}
                     ></Image>
-                    <div className="absolute left-0 top-0 w-full h-full">
+                    <div
+                      className="absolute left-[50%] translate-x-[-50%] top-0"
+                      style={{
+                        width: "173px",
+                      }}
+                    >
                       <div
                         className="mt-[32px] ml-[8px] flex items-end"
                         style={{
@@ -237,7 +278,7 @@ const Page: React.FC<Props> = () => {
                               height={12}
                             ></Image>
                             <div className="text-[#404140]  ml-[2px] text-[12px]">
-                              Holder:{item.holdcount}
+                              Holder:{item.holders}
                             </div>
                           </div>
                         </div>
@@ -249,7 +290,7 @@ const Page: React.FC<Props> = () => {
             </div>
           </div>
 
-          <div className="box-border pl-[12px] bg-[#fff]  rounded-[12px] w-[563px] ml-[-2px] border-[2px] border-[#0D0D0D] border-solid flex-1 mb-[-2px]">
+          <div className="mt-[-2px] box-border pl-[12px] bg-[#fff] rounded-[12px]  ml-[-2px] border-[2px] border-[#0D0D0D] border-solid flex-1 mb-[-2px]">
             <InfinietScrollbar
               hasMore={orderHasMore}
               onLoadMore={getLoadOrder}
@@ -276,13 +317,24 @@ const Page: React.FC<Props> = () => {
           </div>
         </div>
 
-        <div className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px] w-[563px] pl-[14px] pt-[14px] bg-[#fff] flex flex-col">
+        <div className="mt-[24px] border-[2px] flex-1 border-[#0D0D0D] border-solid rounded-[12px] w-[563px] pl-[14px] pt-[14px] bg-[#fff] flex flex-col">
           <div className="flex w-full justify-between pr-[14px] relative">
             <div className="text-[20px] font-bold">Polls Ranking</div>
             <div className="selfStyle">
               <Search
                 value={value}
-                onChange={setValue}
+                onChange={(val) => {
+                  if (val == "") {
+                    setSearchMap({});
+                  }
+                  value = val;
+                  setValue(val);
+                }}
+                onClickSerchIcon={(val) => {
+                  console.log(val);
+
+                  getTwitterSearchData(val);
+                }}
                 width={165}
                 height={34}
                 borderRadius="17px"
@@ -306,8 +358,8 @@ const Page: React.FC<Props> = () => {
                       width={14}
                       height={14}
                       onClick={() => {
-                        setShowSearchResult(false);
                         setValue("");
+                        setSearchMap({});
                       }}
                     ></Image>
                   </>
@@ -315,27 +367,47 @@ const Page: React.FC<Props> = () => {
               ></Search>
             </div>
 
-            {showSearchResult && (
-              <div className="w-[342px]  min-h-[248px] border-[2px] border-solid border-[#0D0D0D] rounded-[16px] absolute right-[16px] top-[40px] z-[1000] bg-[#fff]">
+            {searchMap?.twitterScreenName && (
+              <div className="min-w-[342px] border-[2px] border-solid border-[#0D0D0D] rounded-[16px] absolute right-[16px] top-[40px] z-[1000] bg-[#fff]">
                 <div className="flex items-center w-full px-[10px] h-[62px]">
-                  <UserPrice showEthHolder={false}></UserPrice>
+                  <UserPrice
+                    item={{
+                      imageUrl: searchMap?.imageUrl,
+                      twitterName: searchMap?.twitterName,
+                      twitterScreenName: searchMap?.twitterScreenName,
+                      followersCount: searchMap?.followersCount,
+                    }}
+                    showEthHolder={false}
+                  ></UserPrice>
                   <div className="ml-[32px]">
                     <Button
                       hideBottomBackground={true}
                       active={false}
                       width="113px"
                       height="40px"
-                      text={"0 Polls"}
+                      text={
+                        searchMap?.arrived == 1
+                          ? "arrived"
+                          : searchMap?.started == 1
+                          ? "0 Polls"
+                          : "0 Polls"
+                      }
                       color={"#fff"}
-                      normalBackGround={"#0D0D0D"}
+                      normalBackGround={
+                        searchMap?.arrived == 1 ? "#E9E9E9" : "#0D0D0D"
+                      }
                       borderRadius="27px"
-                      border="none"
+                      border={
+                        searchMap?.arrived == 1 ? "none" : "2px solid #0D0D0D"
+                      }
                       buttonClick={() => {
                         console.log("click");
                       }}
                     >
                       <Image
-                        src={loveWhiteIcon}
+                        src={
+                          searchMap?.arrived == 1 ? arrivedIcon : loveWhiteIcon
+                        }
                         alt=""
                         width={20}
                         height={20}
@@ -364,7 +436,7 @@ const Page: React.FC<Props> = () => {
           <div className="mt-[16px] flex-1">
             <InfinietScrollbar
               hasMore={false}
-              distanceClientHeight={"498px"}
+              distanceClientHeight={"606px"}
               onLoadMore={() => {
                 return new Promise((resolve) => {
                   setTimeout(() => {
@@ -377,56 +449,57 @@ const Page: React.FC<Props> = () => {
                 {twitterFriendList.map((item, index) => {
                   return (
                     <div
-                      className="flex items-center mb-[16px] pr-[16px]"
-                      key={index + "r"}
+                      className="flex items-center mb-[16px] pr-[16px] pl-[4px]"
+                      key={index + "1r"}
                     >
-                      <UserPrice></UserPrice>
+                      <UserPrice
+                        item={{
+                          imageUrl: item?.imageUrl,
+                          twitterName: item?.twitterName,
+                          twitterScreenName: item?.twitterScreenName,
+                          followersCount: item?.followersCount,
+                          price: item?.price,
+                          holders: item?.holders,
+                        }}
+                      ></UserPrice>
                       <div className="ml-[32px]">
-                        {index % 2 == 0 ? (
-                          <Button
-                            hideBottomBackground={true}
-                            active={false}
-                            width="113px"
-                            height="40px"
-                            text={"0 Polls"}
-                            color={"#fff"}
-                            normalBackGround={"#0D0D0D"}
-                            borderRadius="27px"
-                            border="none"
-                            buttonClick={() => {
-                              console.log("click");
-                            }}
-                          >
-                            <Image
-                              src={loveWhiteIcon}
-                              alt=""
-                              width={20}
-                              height={20}
-                            ></Image>
-                          </Button>
-                        ) : (
-                          <Button
-                            hideBottomBackground={true}
-                            active={false}
-                            width="113px"
-                            height="40px"
-                            text={"24 Polls"}
-                            color={"#0D0D0D"}
-                            normalBackGround={"#00FC6E"}
-                            borderRadius="27px"
-                            border="none"
-                            buttonClick={() => {
-                              console.log("click");
-                            }}
-                          >
-                            <Image
-                              src={loveBlackIcon}
-                              alt=""
-                              width={20}
-                              height={20}
-                            ></Image>
-                          </Button>
-                        )}
+                        <Button
+                          hideBottomBackground={true}
+                          active={false}
+                          width="113px"
+                          height="40px"
+                          text={
+                            searchMap?.arrived == 1
+                              ? "arrived"
+                              : searchMap?.started == 1
+                              ? "0 Polls"
+                              : "0 Polls"
+                          }
+                          color={"#fff"}
+                          normalBackGround={
+                            searchMap?.arrived == 1 ? "#E9E9E9" : "#0D0D0D"
+                          }
+                          borderRadius="27px"
+                          border={
+                            searchMap?.arrived == 1
+                              ? "none"
+                              : "2px solid #0D0D0D"
+                          }
+                          buttonClick={() => {
+                            console.log("click");
+                          }}
+                        >
+                          <Image
+                            src={
+                              searchMap?.arrived == 1
+                                ? arrivedIcon
+                                : loveWhiteIcon
+                            }
+                            alt=""
+                            width={20}
+                            height={20}
+                          ></Image>
+                        </Button>
                       </div>
                     </div>
                   );

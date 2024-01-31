@@ -69,8 +69,9 @@ service.interceptors.response.use(
     }, 200);
 
     if (code != 200) {
-      console.log("error", res);
-      console.error(`[${res.config.url}]: ` + msg);
+      if (code == "90019") {
+        return Promise.resolve(res.data);
+      }
 
       if (
         res.config.url == "/secret/users/getLogin?" ||
