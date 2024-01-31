@@ -112,7 +112,7 @@ const CreateEventPopupView: React.FC<Props> = ({
       <div className="my-[32px]">
         <div className="font-medium text-[14px]">Record Event</div>
         <div className="mt-[4px]">
-          <Switch></Switch>
+          <Switch onChange={() => {}}></Switch>
         </div>
       </div>
 
