@@ -12,6 +12,7 @@ import { eventPriceBykeysTypeAndKeys } from "../buyPopup";
 import { filterString } from "@/lib/util";
 import { buyKey, sellKey } from "@/api/model/home";
 import Toast from "@/components/custom/Toast";
+import { buySelfcard } from "@/api/model/userService";
 interface Props {
   showPopup: boolean;
   setShowPopup: (showPopup: boolean) => void;
@@ -27,10 +28,19 @@ const BuyOrderPopup: React.FC<Props> = ({
 }) => {
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
-  console.log(orderMap);
+  const buySelfThreeCardsFunc = () => {
+    buySelfcard().then((res) => {
+      console.log(res);
+      setShowPopup(false);
+      Toast.success("Buy Success");
+    });
+  };
+
   const onClickOrderConfirm = () => {
     if (orderMap?.action == 1) {
       buyKeyFunc();
+    } else if (orderMap?.action == 3) {
+      buySelfThreeCardsFunc();
     } else {
       sellKeyFunc();
     }
@@ -78,7 +88,7 @@ const BuyOrderPopup: React.FC<Props> = ({
     >
       <div className="text-[24px] font-semibold">
         <span className="text-[#005A0E]">
-          {orderMap?.action == 1 ? "Buy" : "Sell"}
+          {orderMap?.action == 1 || orderMap?.action == 3 ? "Buy" : "Sell"}
         </span>{" "}
         Gooy {orderMap?.keys} card
       </div>
@@ -104,7 +114,7 @@ const BuyOrderPopup: React.FC<Props> = ({
       <div className="mt-[8px] text-[#404140]">Action</div>
 
       <div className="mt-[4px] flex items-center w-[55px] h-[24px] rounded-[12px] bg-[#C0FFD2] justify-center text-[#005A0E] font-semibold text-[16px]">
-        {orderMap?.action == 1 ? "Buy" : "Sell"}
+        {orderMap?.action == 1 || orderMap?.action == 3 ? "Buy" : "Sell"}
       </div>
 
       <div className="mt-[16px] text-[#404140]">From:</div>

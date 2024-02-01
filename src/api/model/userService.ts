@@ -49,3 +49,17 @@ export const exportWallet = async (): Promise<string> => {
   const privateKey = await decryptWithPrivateKey(keys.privateKey, res.result);
   return privateKey;
 };
+
+// 获取前三张cards购买信息
+export const getSelfcardMessage = async (): Promise<ResponseBaseType<any>> => {
+  const url = "/house/selfcard/getBuyPrice";
+  const res = await request.get<ResponseBaseType<any>>(url);
+  return res;
+};
+
+// 购买自己的前三张cards
+export const buySelfcard = async (): Promise<ResponseBaseType<any>> => {
+  const url = "/house/selfcard/buy";
+  const response = await request.post<ResponseBaseType<any>>(url);
+  return response;
+};

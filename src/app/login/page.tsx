@@ -1,95 +1,95 @@
-"use client"
-import React, { useCallback, useEffect } from "react"
-import logo from "@/assets/home/logo.svg"
-import Image from "next/image"
-import titterIcon from "@/assets/home/twitterIcon.svg"
-import Button from "@/components/custom/button"
-import twitterBorderWhite from "@/assets/login/twitterBorderWhite.svg"
-import xIcon from "@/assets/login/xIcon.svg"
-import agreeIcon from "@/assets/login/agreeIcon.svg"
-import textAnimation from "@/assets/login/textAnimation.svg"
-import firstAnimation from "@/assets/login/firstAnimation.svg"
-import secondAnimation from "@/assets/login/secondAnimation.svg"
-import wrongIcon from "@/assets/login/wrongIcon.svg"
-import "./index.css"
-import Search from "@/components/custom/search"
-import { verifyTwitterToken, bindInviteCode } from "@/api/model/login"
-import { useRouter } from "next/navigation"
-import { getUserInfo } from "@/api/model/userService"
-import Loading from "@/components/custom/Loading"
-import { useDispatch } from "react-redux"
-import { setUserInfo } from "@/redux/features/userSlice"
+"use client";
+import React, { useCallback, useEffect } from "react";
+import logo from "@/assets/home/logo.svg";
+import Image from "next/image";
+import titterIcon from "@/assets/home/twitterIcon.svg";
+import Button from "@/components/custom/button";
+import twitterBorderWhite from "@/assets/login/twitterBorderWhite.svg";
+import xIcon from "@/assets/login/xIcon.svg";
+import agreeIcon from "@/assets/login/agreeIcon.svg";
+import textAnimation from "@/assets/login/textAnimation.svg";
+import firstAnimation from "@/assets/login/firstAnimation.svg";
+import secondAnimation from "@/assets/login/secondAnimation.svg";
+import wrongIcon from "@/assets/login/wrongIcon.svg";
+import "./index.css";
+import Search from "@/components/custom/search";
+import { verifyTwitterToken, bindInviteCode } from "@/api/model/login";
+import { useRouter } from "next/navigation";
+import { getUserInfo } from "@/api/model/userService";
+import Loading from "@/components/custom/Loading";
+import { useDispatch } from "react-redux";
+import { setUserInfo } from "@/redux/features/userSlice";
 interface LoginProps {
   // Add any props you need for the Login component
 }
 
 const Login: React.FC<LoginProps> = () => {
-  const [isShowInviteCode, setIsShowInviteCode] = React.useState(false)
+  const [isShowInviteCode, setIsShowInviteCode] = React.useState(false);
 
-  const [inviteCodeIsWrong, setInviteCodeIsWrong] = React.useState(false)
-  const [value, setValue] = React.useState("")
-  const router = useRouter()
+  const [inviteCodeIsWrong, setInviteCodeIsWrong] = React.useState(false);
+  const [value, setValue] = React.useState("");
+  const router = useRouter();
 
   const getTwitterLinkFunc = async () => {
     window.location.href =
-      process.env.NEXT_PUBLIC_APP_URL + "/open/x/oauth/request_token"
-  }
+      process.env.NEXT_PUBLIC_APP_URL + "/open/x/oauth/request_token";
+  };
 
   const getQueryParams = useCallback((): any => {
     if (typeof window === "undefined") {
-      return
+      return;
     }
-    const urlParams: any = new URLSearchParams(window.location.search)
-    const paramsObj: { [key: string]: string } = {}
+    const urlParams: any = new URLSearchParams(window.location.search);
+    const paramsObj: { [key: string]: string } = {};
     for (const [key, value] of urlParams.entries()) {
-      paramsObj[key] = value
+      paramsObj[key] = value;
     }
-    return paramsObj
-  }, [])
-  const params = getQueryParams()
+    return paramsObj;
+  }, []);
+  const params = getQueryParams();
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const validateTwitterToken = useCallback(async () => {
-    console.log("validating twitter token")
+    console.log("validating twitter token");
     verifyTwitterToken({
       oauth_token: params.oauth_token,
       oauth_verifier: params.oauth_verifier,
     })
       .then(async (res: any) => {
         if (res.result) {
-          localStorage.setItem("token", res.result)
+          localStorage.setItem("token", res.result);
           getUserInfo().then((res) => {
-            console.log(res)
-            dispatch(setUserInfo(res.result))
+            console.log(res);
+            dispatch(setUserInfo(res.result));
             if (res.result.bindInviteCode) {
-              router.push("/home")
+              router.push("/home");
             } else {
-              setIsShowInviteCode(true)
+              setIsShowInviteCode(true);
             }
-          })
+          });
         } else {
         }
       })
-      .finally(() => {})
-  }, [dispatch, params.oauth_token, params.oauth_verifier, router])
+      .finally(() => {});
+  }, [dispatch, params.oauth_token, params.oauth_verifier, router]);
 
   useEffect(() => {
     if (params?.oauth_token && params?.oauth_verifier) {
-      validateTwitterToken()
+      validateTwitterToken();
     } else {
-      console.log("no token")
+      console.log("no token");
     }
-  }, [params?.oauth_token, params?.oauth_verifier, validateTwitterToken])
+  }, [params?.oauth_token, params?.oauth_verifier, validateTwitterToken]);
 
   const clickBindInviteCode = async () => {
-    const res = await bindInviteCode(value)
+    const res = await bindInviteCode(value);
     if (res) {
-      router.push("/home")
+      router.push("/home");
     } else {
-      setInviteCodeIsWrong(true)
+      setInviteCodeIsWrong(true);
     }
-  }
+  };
 
   return (
     <div className="w-[100vw] h-[100vh] flex flex-col items-center">
@@ -98,7 +98,7 @@ const Login: React.FC<LoginProps> = () => {
         <div
           className="flex items-center cursor-pointer"
           onClick={() => {
-            window.open("https://twitter.com/tryalpha_club")
+            window.open("https://twitter.com/tryalpha_club");
           }}
         >
           <Image src={titterIcon} alt="" width={20} height={20}></Image>
@@ -249,7 +249,7 @@ const Login: React.FC<LoginProps> = () => {
         <Image src={textAnimation} alt="" width={129} height={129}></Image>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;

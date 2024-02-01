@@ -8,7 +8,11 @@ import handLoveSign from "@/assets/home/handLoveSign.svg";
 import { useSelector } from "react-redux";
 import ethereum from "@/assets/home/ethereum.svg";
 import { useParams } from "next/navigation";
-import { getUserInfoByTwitterId } from "@/api/model/userService";
+import tradeIcon from "@/assets/profile/tradeIcon.svg";
+import {
+  getSelfcardMessage,
+  getUserInfoByTwitterId,
+} from "@/api/model/userService";
 import firstThreePurchase from "@/assets/profile/firstThreePurchase.svg";
 import { filterString, formatBalanceNumber } from "@/lib/util";
 import tipThreeDays from "@/assets/profile/tipThreeDays.svg";
@@ -20,6 +24,7 @@ import BuyPopupView, {
 } from "@/components/ui/buyPopup";
 import SellPopipView from "@/components/ui/sellPopup";
 import BuyOrderPopup from "../../buyOrderPopup";
+import TradeSelfPopup from "../../tradeSelfPopup";
 
 interface Props {
   onOpenDepositPopup: () => void;
@@ -66,23 +71,29 @@ const UserInfoView: React.FC<Props> = (props) => {
   const [clickCurrentHolderId, setClickCurrentHolderId] = React.useState("");
   const [showBuyOrderPopup, setShowBuyOrderPopup] = React.useState(false);
 
+  const [showSelfTradePopup, setShowSelfTradePopup] = React.useState(false);
+
   const [orderMap, setOrderMap] = React.useState<eventPriceBykeysTypeAndKeys>();
+  const [isCanBuySelf, setIsCanBuySelf] = React.useState(false);
 
   const onClickSell = (price: string) => {
     setEventSinglePrice(price);
     console.log(houseId);
-    setClickCurrentHolderId(houseId as string);
+    const twitterId = houseId || userinfo.twitterUidStr;
+    setClickCurrentHolderId(twitterId);
     setShowPopupSell(true);
   };
   const onClickBuy = (price: string) => {
     setEventSinglePrice(price);
-    setClickCurrentHolderId(houseId as string);
+    const twitterId = houseId || userinfo.twitterUidStr;
+    setClickCurrentHolderId(twitterId);
     setShowPopupBuy(true);
   };
   const getUserInfoByTwitterIdFunc = async () => {
     const twitterId = houseId || userinfo.twitterUidStr;
     const res = await getUserInfoByTwitterId(twitterId);
-    console.log(res);
+    console.log(res, "");
+    setIsCanBuySelf(res.result.selfCardCanBuy);
     setUseHeaderInforMap({
       username: res.result.twitterName,
       avatar: res.result.imageUrl,
@@ -102,9 +113,22 @@ const UserInfoView: React.FC<Props> = (props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const clickBuyThreeCards = () => {
+    getSelfcardMessage().then((res) => {
+      console.log(res);
+      setOrderMap({
+        keys: "3",
+        action: 3, //1:buy 2:sell
+        ...res.result,
+      });
+      setShowBuyOrderPopup(true);
+      setShowTipThreeDays(false);
+    });
+  };
+
   return (
     <div
-      className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid "
+      className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid relative"
       style={{
         background: houseId ? "#fff" : "#D8FCD1",
       }}
@@ -217,8 +241,28 @@ const UserInfoView: React.FC<Props> = (props) => {
           </div>
         </div>
       )}
-
       {!houseId && (
+        <div
+          className="absolute right-0 top-[98px] bg-[#0D0D0D] w-[64px] h-[21px] text-[#fff] flex items-center justify-center text-[12px] cursor-pointer"
+          style={{
+            borderRadius: "10px 0 0 10px",
+          }}
+          onClick={() => {
+            setShowSelfTradePopup(true);
+          }}
+        >
+          <Image
+            src={tradeIcon}
+            alt=""
+            className="mr-[2px]"
+            width={12}
+            height={12}
+          ></Image>
+          Trade
+        </div>
+      )}
+
+      {!houseId && isCanBuySelf && (
         <div className="bg-[#fff] pl-[14px] cursor-pointer">
           <Image
             src={firstThreePurchase}
@@ -226,6 +270,9 @@ const UserInfoView: React.FC<Props> = (props) => {
             alt=""
             width={327}
             height={58}
+            onClick={() => {
+              setShowTipThreeDays(true);
+            }}
           ></Image>
         </div>
       )}
@@ -356,7 +403,7 @@ const UserInfoView: React.FC<Props> = (props) => {
                   borderRadius="27px"
                   border="none"
                   buttonClick={() => {
-                    console.log("click");
+                    clickBuyThreeCards();
                   }}
                 ></Button>
 
@@ -457,6 +504,19 @@ const UserInfoView: React.FC<Props> = (props) => {
           setShowPopupBuy(true);
         }}
       ></BuyOrderPopup>
+
+      <TradeSelfPopup
+        showPopup={showSelfTradePopup}
+        setShowPopup={setShowSelfTradePopup}
+        sellSelfcard={() => {
+          setShowSelfTradePopup(false);
+          onClickSell(useProfileMap?.roomPrice);
+        }}
+        buySelfcard={() => {
+          setShowSelfTradePopup(false);
+          onClickBuy(useProfileMap?.roomPrice);
+        }}
+      ></TradeSelfPopup>
     </div>
   );
 };
