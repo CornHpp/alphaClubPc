@@ -45,9 +45,20 @@ const LeftNav: React.FC<LeftNavProps> = () => {
   const pathName = usePathname();
   const { userinfo } = useSelector((state: any) => state.user);
 
-  const [hoverCloseImage, setHoverCloseImage] = React.useState(
-    localStorage.getItem("closeTreasureTip") === "true" ? true : false
-  );
+  const [hoverCloseImage, setHoverCloseImage] = React.useState(true);
+
+  const [showTreasureTip, setShowTreasureTip] = React.useState(false);
+
+  useEffect(() => {
+    const closeTreasureTip = localStorage.getItem("closeTreasureTip");
+    console.log(closeTreasureTip);
+    if (closeTreasureTip === "false") {
+      setShowTreasureTip(false);
+    } else {
+      setShowTreasureTip(true);
+    }
+  }, []);
+
   useEffect(() => {
     const index = buttonLists.findIndex((item) => {
       return item.router === pathName;
@@ -56,7 +67,8 @@ const LeftNav: React.FC<LeftNavProps> = () => {
   }, [pathName]);
 
   const closeTreasureTip = () => {
-    localStorage.setItem("closeTreasureTip", "true");
+    localStorage.setItem("closeTreasureTip", "false");
+    setShowTreasureTip(false);
   };
   return (
     <div
@@ -140,51 +152,53 @@ const LeftNav: React.FC<LeftNavProps> = () => {
             })}
           </div>
 
-          <div className="mb-[24px] relative">
-            <Image
-              src={showOpenTreasure}
-              alt=""
-              width={148}
-              height={201}
-              onClick={() => {
-                router.push("/airdrop");
-              }}
-              className="cursor-pointer"
-            ></Image>
+          {showTreasureTip && (
+            <div className="mb-[24px] relative">
+              <Image
+                src={showOpenTreasure}
+                alt=""
+                width={148}
+                height={201}
+                onClick={() => {
+                  router.push("/airdrop");
+                }}
+                className="cursor-pointer"
+              ></Image>
 
-            <div className=" absolute top-[-32px] right-0">
-              {hoverCloseImage ? (
-                <Image
-                  src={closeHover}
-                  alt=""
-                  width={22}
-                  height={22}
-                  className="cursor-pointer"
-                  onMouseEnter={() => {
-                    setHoverCloseImage(true);
-                  }}
-                  onClick={closeTreasureTip}
-                  onMouseLeave={() => {
-                    setHoverCloseImage(false);
-                  }}
-                ></Image>
-              ) : (
-                <Image
-                  src={closeIcon}
-                  alt=""
-                  width={22}
-                  height={22}
-                  className="cursor-pointer"
-                  onMouseEnter={() => {
-                    setHoverCloseImage(true);
-                  }}
-                  onMouseLeave={() => {
-                    setHoverCloseImage(false);
-                  }}
-                ></Image>
-              )}
+              <div className=" absolute top-[-32px] right-0">
+                {hoverCloseImage ? (
+                  <Image
+                    src={closeHover}
+                    alt=""
+                    width={22}
+                    height={22}
+                    className="cursor-pointer"
+                    onMouseEnter={() => {
+                      setHoverCloseImage(true);
+                    }}
+                    onClick={closeTreasureTip}
+                    onMouseLeave={() => {
+                      setHoverCloseImage(false);
+                    }}
+                  ></Image>
+                ) : (
+                  <Image
+                    src={closeIcon}
+                    alt=""
+                    width={22}
+                    height={22}
+                    className="cursor-pointer"
+                    onMouseEnter={() => {
+                      setHoverCloseImage(true);
+                    }}
+                    onMouseLeave={() => {
+                      setHoverCloseImage(false);
+                    }}
+                  ></Image>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           <div
             className="h-[56px] flex items-center cursor-pointer"

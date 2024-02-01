@@ -24,11 +24,6 @@ const DepositPopup: React.FC<Props> = ({
   const [selectedPrice, setSelectedPrice] = React.useState(0);
   const dispatch = useDispatch();
   const { userinfo, balance } = useSelector((state: any) => state.user);
-  console.log("walletBalance", balance);
-
-  console.log("userinfo", userinfo);
-
-  const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
   const [value, setValue] = React.useState(userinfo.walletAddress);
   const { isConnected, address } = useAccount();

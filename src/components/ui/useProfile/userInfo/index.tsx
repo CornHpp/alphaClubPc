@@ -15,6 +15,11 @@ import tipThreeDays from "@/assets/profile/tipThreeDays.svg";
 import closeHover from "@/assets/popup/closeHover.svg";
 import showOpenTreasure from "@/assets/home/showOpenTreasure.svg";
 import closeIcon from "@/assets/popup/close.svg";
+import BuyPopupView, {
+  eventPriceBykeysTypeAndKeys,
+} from "@/components/ui/buyPopup";
+import SellPopipView from "@/components/ui/sellPopup";
+import BuyOrderPopup from "../../buyOrderPopup";
 
 interface Props {
   onOpenDepositPopup: () => void;
@@ -27,7 +32,9 @@ const UserInfoView: React.FC<Props> = (props) => {
 
   const urlParams = useParams();
 
-  const [houseId, setHouseId] = React.useState(urlParams.id || "");
+  const isSelf = userinfo.twitterUidStr === urlParams.id;
+
+  const [houseId, setHouseId] = React.useState(isSelf ? "" : urlParams.id);
 
   // Add your component logic here
   const { onOpenDepositPopup, onOpenWithdrawPopup, onOpenExportWalletPopup } =
@@ -41,6 +48,9 @@ const UserInfoView: React.FC<Props> = (props) => {
 
   const [useHeaderInforMap, setUseHeaderInforMap] = React.useState({});
 
+  const [currentClickItem, setCurrentClickItem] =
+    React.useState<PartialGetAllHomeType>();
+
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
   const [useProfileMap, setUseProfileMap] = React.useState<any>({});
@@ -48,6 +58,27 @@ const UserInfoView: React.FC<Props> = (props) => {
   const [showTipThreeDays, setShowTipThreeDays] = React.useState(false);
   const [hoverCloseImage, setHoverCloseImage] = React.useState(false);
 
+  const [showPopupBuy, setShowPopupBuy] = React.useState(false);
+
+  const [showPopupSell, setShowPopupSell] = React.useState(false);
+
+  const [eventSinglePrice, setEventSinglePrice] = React.useState("");
+  const [clickCurrentHolderId, setClickCurrentHolderId] = React.useState("");
+  const [showBuyOrderPopup, setShowBuyOrderPopup] = React.useState(false);
+
+  const [orderMap, setOrderMap] = React.useState<eventPriceBykeysTypeAndKeys>();
+
+  const onClickSell = (price: string) => {
+    setEventSinglePrice(price);
+    console.log(houseId);
+    setClickCurrentHolderId(houseId as string);
+    setShowPopupSell(true);
+  };
+  const onClickBuy = (price: string) => {
+    setEventSinglePrice(price);
+    setClickCurrentHolderId(houseId as string);
+    setShowPopupBuy(true);
+  };
   const getUserInfoByTwitterIdFunc = async () => {
     const twitterId = houseId || userinfo.twitterUidStr;
     const res = await getUserInfoByTwitterId(twitterId);
@@ -114,7 +145,7 @@ const UserInfoView: React.FC<Props> = (props) => {
               <div className="flex items-center mt-[6px]">
                 <Image src={ethereum} alt="" width={18} height={18}></Image>
                 <div className="text-[#0D0D0D] font-semibold ml-[2px] text-[18px]">
-                  {useProfileMap?.roomPrice?.slice(0, 6)} ETH
+                  {useProfileMap?.roomPrice?.slice(0, 7)} ETH
                 </div>
               </div>
             </div>
@@ -134,8 +165,7 @@ const UserInfoView: React.FC<Props> = (props) => {
                 setHideButtonBg(true);
               }}
               buttonClick={() => {
-                // console.log(item);
-                // onClickSell(item.price as string, item.houseId as string);
+                onClickSell(useProfileMap?.roomPrice);
               }}
               onMouseLeave={() => {
                 setHideButtonBg(false);
@@ -152,7 +182,7 @@ const UserInfoView: React.FC<Props> = (props) => {
               normalBackGround="#0D0D0D"
               color="#fff"
               buttonClick={() => {
-                // onClickBuy(item.price as string, item.houseId as string);
+                onClickBuy(useProfileMap?.roomPrice);
               }}
             ></Button>
           </div>
@@ -391,6 +421,42 @@ const UserInfoView: React.FC<Props> = (props) => {
           </div>
         </div>
       )}
+
+      <BuyPopupView
+        showPopupBuy={showPopupBuy}
+        setShowPopupBuy={setShowPopupBuy}
+        price={eventSinglePrice}
+        holderId={clickCurrentHolderId}
+        openOrderPopup={(val) => {
+          setOrderMap(val);
+          setShowPopupBuy(false);
+          setShowBuyOrderPopup(true);
+        }}
+        item={currentClickItem}
+      ></BuyPopupView>
+
+      <SellPopipView
+        showPopupBuy={showPopupSell}
+        setShowPopupBuy={setShowPopupSell}
+        price={eventSinglePrice}
+        holderId={clickCurrentHolderId}
+        openOrderPopup={(val) => {
+          setOrderMap(val);
+          setShowPopupSell(false);
+          setShowBuyOrderPopup(true);
+        }}
+        item={currentClickItem}
+      ></SellPopipView>
+
+      <BuyOrderPopup
+        orderMap={orderMap}
+        showPopup={showBuyOrderPopup}
+        setShowPopup={setShowBuyOrderPopup}
+        onClickOrderBack={() => {
+          setShowBuyOrderPopup(false);
+          setShowPopupBuy(true);
+        }}
+      ></BuyOrderPopup>
     </div>
   );
 };

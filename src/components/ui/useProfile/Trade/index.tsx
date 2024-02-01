@@ -50,20 +50,20 @@ const TradeView: React.FC<Props> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="border-[2px] min-w-[355px] rounded-[16px] h-full border-[#0D0D0D] border-solid py-[14px] bg-white">
+    <div className="border-[2px] min-w-[355px] rounded-[16px] h-full border-[#0D0D0D] border-solid py-[14px] bg-white flex-1 flex flex-col">
       <div className="text-[20px] font-bold mx-[14px]">Trade</div>
 
-      <div className="mt-[12px]">
+      <div className="mt-[12px] w-full flex-1 overflow-y-scroll">
         {lists.length > 0 && (
           <InfinietScrollbar
             hasMore={orderHasMore}
             onLoadMore={getPersonTradeListFunc}
-            distanceClientHeight={"150px"}
+            // distanceClientHeight={"150px"}
           >
             {lists.map((item, index) => {
               return (
                 <div
-                  className="flex mx-[14px] justify-between mb-[16px] "
+                  className="flex mx-[14px] justify-between mt-[16px] first:mt-0"
                   key={index + "fa"}
                 >
                   <div className="flex items-center">

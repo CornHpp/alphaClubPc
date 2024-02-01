@@ -23,6 +23,9 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
   const { toFatherAudioFile } = props;
   const [recordStatus, setRecordStatus] = React.useState(1);
 
+  const [showPlayOrShowStopIcon, setShowPlayOrShowStopIcon] =
+    React.useState(true);
+
   useEffect(() => {
     const createWaveSurfer = () => {
       if (wavesurfer) {
@@ -133,10 +136,12 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
 
   const clickPlay = () => {
     audioContext.playPause();
+    setShowPlayOrShowStopIcon(false);
   };
 
   const clickPlayStop = () => {
     audioContext.playPause();
+    setShowPlayOrShowStopIcon(true);
   };
 
   return (
@@ -205,24 +210,29 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
         </div>
       )}
       {recordStatus == 4 && (
-        <div className="mt-[8px] mx-auto w-full flex justify-center">
-          <Image
-            src={voicePlayIcon2}
-            alt=""
-            width={48}
-            height={48}
-            className="mr-[12px] cursor-pointer"
-            onClick={clickPlay}
-          ></Image>
-          <Image
-            src={voicePlayIcon3}
-            alt=""
-            width={48}
-            height={48}
-            className="mr-[12px] cursor-pointer"
-            onClick={clickPlayStop}
-          ></Image>
-        </div>
+        <>
+          <div className="mt-[8px] mx-auto w-full flex justify-center">
+            {showPlayOrShowStopIcon ? (
+              <Image
+                src={voicePlayIcon2}
+                alt=""
+                width={48}
+                height={48}
+                className="mr-[12px] cursor-pointer"
+                onClick={clickPlay}
+              ></Image>
+            ) : (
+              <Image
+                src={voicePlayIcon3}
+                alt=""
+                width={48}
+                height={48}
+                className="mr-[12px] cursor-pointer"
+                onClick={clickPlayStop}
+              ></Image>
+            )}
+          </div>
+        </>
       )}
     </div>
   );

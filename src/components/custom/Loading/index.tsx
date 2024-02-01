@@ -14,15 +14,6 @@ const Loading: React.FC<Props> = (props) => {
         background: "rgba(0, 0, 0, 0.8)",
       }}
     >
-      {/* <div className="flex flex-col items-center justify-center rounded-[8px] p-[12px]">
-        <Player
-          autoplay
-          loop
-          src={loadingAnimation}
-          style={{ height: "100px", width: "100px" }}
-        ></Player>
-        <span className="text-[14px] text-white mt-[10px]">{loadingText}</span>
-      </div> */}
       <div
         className="w-[120px] h-[120px] bg-[#fff] flex items-center justify-center broder-solid border-[2px] border-[#0d0d0d] rounded-[16px]
           fixed top-[48%] left-[50%] transform translate-y-[-50%] translate-x-[-50%]

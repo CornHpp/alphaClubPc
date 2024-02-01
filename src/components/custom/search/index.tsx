@@ -17,6 +17,7 @@ interface Props {
   value?: string;
   onChange: (val: string) => void;
   onClickSerchIcon?: (val: string | undefined) => void;
+  type?: string;
 }
 
 const Search: React.FC<Props> = (props) => {
@@ -32,6 +33,7 @@ const Search: React.FC<Props> = (props) => {
     borderRadius,
     boxShadow,
     onClickSerchIcon,
+    type = "text",
   } = props;
   const [search, setSearch] = useState("");
   return (
@@ -44,6 +46,7 @@ const Search: React.FC<Props> = (props) => {
       </div>
       <input
         value={value}
+        type={type}
         style={{
           width: width + "px",
           height: height + "px",
@@ -52,7 +55,9 @@ const Search: React.FC<Props> = (props) => {
           borderRadius: borderRadius ? borderRadius : "24px",
         }}
         className={`w-[300px] h-[44px] rounded-[24px]   border-[#0D0D0D] border-solid border-[2px]
-        ${boxShadow ? "boxShadow" : "focus:shadow-[0px_0px_16px_#00FC6E]"}`}
+        ${
+          boxShadow ? "boxShadow" : "focus:shadow-[0px_0px_16px_#00FC6E]"
+        } hide-spinner`}
         placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => {

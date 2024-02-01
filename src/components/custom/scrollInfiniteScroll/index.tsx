@@ -29,9 +29,11 @@ const InfinietScrollbar: React.FC<ScrollProps> = ({
       }}
     >
       <div
-        style={{
-          height: distanceClientHeight ? distanceClientHeight : "auto",
-        }}
+        style={
+          {
+            // height: distanceClientHeight ? distanceClientHeight : "auto",
+          }
+        }
       >
         {children}
         <InfiniteScroll loadMore={onLoadMore} hasMore={hasMore}>

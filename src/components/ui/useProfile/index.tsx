@@ -16,6 +16,7 @@ import AcceptCoHostPopup from "../coHostPopup";
 import logoutIcon from "@/assets/profile/logoutIcon.svg";
 import LoginPopupView from "../loginPopup";
 import { useParams } from "next/navigation";
+import shortAudioTip from "@/assets/profile/shortAudioTip.svg";
 import TransferPopup from "../transferPopup";
 interface Props {
   // Add your props here
@@ -37,7 +38,7 @@ const UseProfileView: React.FC<Props> = () => {
   const urlParams = useParams();
 
   return (
-    <div className="mt-[24px] w-full flex-1 flex flex-col">
+    <div className="pt-[24px] overflow-hidden w-full flex-1 flex flex-col relative">
       <div className=" flex w-full justify-between pr-[39px] items-center">
         <div className="text-[32px] font-bold mr-[3px]">My Profile</div>
 
@@ -101,9 +102,16 @@ const UseProfileView: React.FC<Props> = () => {
         <CreationvView></CreationvView>
         <HoldingsView></HoldingsView>
       </div> */}
+      <Image
+        src={shortAudioTip}
+        alt=""
+        width={120}
+        height={84}
+        className=" absolute left-[528px] top-[32px]"
+      ></Image>
 
-      <div className="mt-[12px] flex w-full pr-[37px] flex-1 pb-[24px]">
-        <div className="mr-[24px] h-full flex flex-col flex-1">
+      <div className="mt-[12px] flex w-full pr-[37px] flex-1 pb-[16px] overflow-hidden">
+        <div className="mr-[24px]  h-full  flex flex-col flex-1">
           <UserInfoView
             onOpenExportWalletPopup={() => {
               setShowPopupExportWallet(true);
@@ -115,11 +123,11 @@ const UseProfileView: React.FC<Props> = () => {
               setShowPopupDeposit(true);
             }}
           ></UserInfoView>
-          <div className="mt-[24px] flex-1">
+          <div className="mt-[24px] flex-1 overflow-hidden flex flex-col">
             <TradeView></TradeView>
           </div>
         </div>
-        <div className="mr-[24px] flex-1">
+        <div className="mr-[24px]  h-full  flex-1 flex flex-col">
           <CreationvView></CreationvView>
         </div>
         <div className="mr-[24px] flex-1">
@@ -154,8 +162,8 @@ const UseProfileView: React.FC<Props> = () => {
       <WithdrawPopup
         showPopup={showPopupWithdraw}
         setShowPopup={setShowPopupWithdraw}
-        onClickSelectCoHost={() => {
-          console.log("onClickSelectCoHost");
+        onCloseWithdrawPopup={() => {
+          setShowPopupWithdraw(false);
         }}
         onClickSchedule={() => {
           console.log("onClickSchedule");

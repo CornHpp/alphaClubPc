@@ -1,35 +1,68 @@
-import React from "react"
-import PopupView from "../popup"
-import Image from "next/image"
-import Button from "@/components/custom/button"
-import Search from "@/components/custom/search"
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
+import React, { useEffect } from "react";
+import PopupView from "../popup";
+import Image from "next/image";
+import Button from "@/components/custom/button";
+import Search from "@/components/custom/search";
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
+import { useParams } from "next/navigation";
+import { getUserInfoByTwitterId } from "@/api/model/userService";
+import { useSelector } from "react-redux";
+import { sendEth } from "@/api/model/userService";
+import Toast from "@/components/custom/Toast";
 
 interface Props {
   // Define your component props here
-  showPopup: boolean
-  setShowPopup: (showPopup: boolean) => void
-  onClickSelectCoHost: () => void
-  onClickSchedule: () => void
+  showPopup: boolean;
+  setShowPopup: (showPopup: boolean) => void;
+  onCloseWithdrawPopup: () => void;
+  onClickSchedule: () => void;
 }
 
 const WithdrawPopup: React.FC<Props> = ({
   setShowPopup,
   showPopup,
-  onClickSelectCoHost,
-  onClickSchedule,
+  onCloseWithdrawPopup,
 }) => {
-  const [selectedPrice, setSelectedPrice] = React.useState(0)
+  const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
-  const [hideButtonBg, setHideButtonBg] = React.useState(false)
+  const [walletBalance, setWalletBalance] = React.useState(0);
+  const urlParams = useParams();
+
+  const [houseId, setHouseId] = React.useState(urlParams.id || "");
+  const { userinfo } = useSelector((state: any) => state.user);
+
+  const getUserInfoByTwitterIdFunc = async () => {
+    const twitterId = houseId || userinfo.twitterUidStr;
+    const res = await getUserInfoByTwitterId(twitterId);
+    console.log(res);
+    setWalletBalance(res.result.walletBalance);
+  };
+  const [address, setAddress] = React.useState("");
+
+  const [amount, setAmount] = React.useState("");
+
+  const handleTransferClick = () => {
+    if (!amount) {
+      return;
+    }
+    sendEth(address, Number(amount)).then((res) => {
+      Toast.success("Transfer success");
+      setAmount("");
+      setAddress("");
+      setShowPopup(false);
+    });
+  };
+
+  useEffect(() => {
+    getUserInfoByTwitterIdFunc();
+  }, [houseId]);
 
   return (
     <PopupView
       width={396}
       showPopup={showPopup}
       handleCancel={() => {
-        setShowPopup(false)
-        setSelectedPrice(0)
+        setShowPopup(false);
       }}
       titleText="Withdraw ETH"
     >
@@ -44,8 +77,9 @@ const WithdrawPopup: React.FC<Props> = ({
             height={50}
             placeholder="address"
             rightNode={<></>}
-            onChange={function (val: string): void {
-              throw new Error("Function not implemented.")
+            value={address}
+            onChange={(val) => {
+              setAddress(val);
             }}
           ></Search>
         </div>
@@ -53,8 +87,12 @@ const WithdrawPopup: React.FC<Props> = ({
           <Search
             width={364}
             height={50}
+            value={amount}
+            onChange={(val) => {
+              setAmount(val);
+            }}
             placeholder="min 0.001"
-            onChange={() => {}}
+            type="number"
             rightNode={
               <div
                 className="text-[16px] font-medium
@@ -66,6 +104,9 @@ const WithdrawPopup: React.FC<Props> = ({
               flex items-center justify-center
               mr-[-5px]
             "
+                onClick={() => {
+                  setAmount(walletBalance.toString());
+                }}
               >
                 Max
               </div>
@@ -74,7 +115,7 @@ const WithdrawPopup: React.FC<Props> = ({
         </div>
 
         <div className="mt-[16px]">
-          Balance: <span className="font-semibold">$3138(0.074 eTH)</span>
+          Balance: <span className="font-semibold">{walletBalance}ETH</span>
         </div>
 
         <div className="mt-[16px] flex items-center">
@@ -82,17 +123,19 @@ const WithdrawPopup: React.FC<Props> = ({
             active={false}
             width="178px"
             height={hideButtonBg ? "54px" : "52px"}
-            text={"Sell"}
+            text={"Close"}
             background="#fff"
             borderRadius="24px"
             border="2px solid #0D0D0D"
             hideBottomBackground={hideButtonBg}
             onMouseEnter={() => {
-              setHideButtonBg(true)
+              setHideButtonBg(true);
             }}
-            buttonClick={() => {}}
+            buttonClick={() => {
+              onCloseWithdrawPopup();
+            }}
             onMouseLeave={() => {
-              setHideButtonBg(false)
+              setHideButtonBg(false);
             }}
           ></Button>
           <div className="ml-[8px]">
@@ -100,19 +143,19 @@ const WithdrawPopup: React.FC<Props> = ({
               active={false}
               width="180px"
               height="54px"
-              text={"buy"}
+              text={"Transfer"}
               background="#0D0D0D"
               borderRadius="24px"
               border="2px solid #0D0D0D"
               normalBackGround="#0D0D0D"
               color="#fff"
-              buttonClick={() => {}}
+              buttonClick={handleTransferClick}
             ></Button>
           </div>
         </div>
       </div>
     </PopupView>
-  )
-}
+  );
+};
 
-export default WithdrawPopup
+export default WithdrawPopup;

@@ -11,6 +11,7 @@ import {
 } from "@/api/model/home";
 import BigNumber from "bignumber.js";
 import UserHeader from "../userHeader";
+import lodash from "lodash";
 
 export interface eventPriceBykeysTypeAndKeys extends eventPriceBykeysType {
   keys: string;
@@ -80,14 +81,25 @@ const BuyPopupView: React.FC<Props> = ({
       ...getOrderMap,
     };
     openOrderPopup(orderMap);
+    reInit();
   };
+
+  const reInit = () => {
+    setValue("");
+    setNeedPayPrice("");
+    setSelectedPrice(-1);
+  };
+
+  const debouncedFunction = lodash.debounce((val) => {
+    getCurrentEventPriceByKeyNumberFunc(val);
+  }, 500);
 
   return (
     <PopupView
       showPopup={showPopupBuy}
       handleCancel={() => {
         setShowPopupBuy(false);
-        setSelectedPrice(0);
+        reInit();
       }}
       titleText={
         <div>
@@ -134,7 +146,9 @@ const BuyPopupView: React.FC<Props> = ({
             value={value}
             onChange={(val) => {
               setValue(val);
+              debouncedFunction(val);
             }}
+            type="number"
             width={323}
             height={50}
             placeholder="min 0.001"

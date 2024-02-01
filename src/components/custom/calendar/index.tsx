@@ -101,7 +101,7 @@ const CalendarView: React.FC<CalendarViewProps> = (props) => {
             />
           )}
         </div>
-        <div className="ml-[8px] time">
+        {/* <div className="ml-[8px] time">
           <Select
             defaultValue="AM"
             style={{ width: 72, height: 50, borderRadius: "27px" }}
@@ -112,7 +112,7 @@ const CalendarView: React.FC<CalendarViewProps> = (props) => {
               { value: "PM", label: "PM" },
             ]}
           />
-        </div>
+        </div> */}
       </div>
     </div>
   );

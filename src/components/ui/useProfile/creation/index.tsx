@@ -19,7 +19,6 @@ import AudioCard from "../../Carousel/audioCard";
 import { useParams } from "next/navigation";
 import { useSelector } from "react-redux";
 import ChooseVoiceNotePopup from "../../createVoiceNotePopup";
-import shortAudioTip from "@/assets/profile/shortAudioTip.svg";
 import tipCloseIcon from "@/assets/profile/tipCloseIcon.svg";
 import Button from "@/components/custom/button";
 
@@ -104,13 +103,6 @@ const CreationvView: React.FC<Props> = () => {
      justify-between
        border-solid px-[16px] py-[10px] bg-[#00FC6E] flex flex-col mb-[24px] relative"
         >
-          <Image
-            src={shortAudioTip}
-            alt=""
-            width={120}
-            height={84}
-            className=" absolute left-[-10px] top-[-53px]"
-          ></Image>
           <div className="pl-[32px] text-[18px] font-bold w-full flex justify-between">
             <div>Post Your Voice Intro</div>
             <Image
@@ -152,7 +144,7 @@ const CreationvView: React.FC<Props> = () => {
         </div>
       )}
 
-      <div className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid py-[16px] bg-white flex-1 flex flex-col">
+      <div className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid py-[16px] bg-white flex-1 flex flex-col overflow-hidden">
         <div className="w-full flex items-center text-[#0D0D0D] justify-between font-semibold px-[14px]">
           <div className="text-[20px] ">Creation</div>
           <div
@@ -185,12 +177,12 @@ const CreationvView: React.FC<Props> = () => {
           ></CreationTabs>
         </div>
 
-        <div className="mt-[12px] w-full flex-1">
+        <div className="mt-[12px] w-full flex-1 overflow-y-scroll">
           {audioPersonList.length > 0 && (
             <InfinietScrollbar
               hasMore={orderHasMore}
               onLoadMore={getAudioPersonListFunc}
-              distanceClientHeight={showVoiceTntro ? "464px" : "639px"}
+              // distanceClientHeight={showVoiceTntro ? "464px" : "639px"}
             >
               <div>
                 <div className="mx-[14px]">

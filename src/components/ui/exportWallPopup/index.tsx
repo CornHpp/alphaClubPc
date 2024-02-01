@@ -1,17 +1,20 @@
-import React from "react"
-import PopupView from "../popup"
-import Image from "next/image"
-import Button from "@/components/custom/button"
-import Search from "@/components/custom/search"
-import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg"
-import warningIcon from "@/assets/popup/warningIcon.svg"
+import React from "react";
+import PopupView from "../popup";
+import Image from "next/image";
+import Button from "@/components/custom/button";
+import Search from "@/components/custom/search";
+import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
+import warningIcon from "@/assets/popup/warningIcon.svg";
+import { useSelector } from "react-redux";
+import { exportWallet } from "@/api/model/userService";
+import { copyTextToClipboardSafari } from "@/lib/util";
 
 interface Props {
   // Define your component props here
-  showPopup: boolean
-  setShowPopup: (showPopup: boolean) => void
-  onClickSelectCoHost: () => void
-  onClickSchedule: () => void
+  showPopup: boolean;
+  setShowPopup: (showPopup: boolean) => void;
+  onClickSelectCoHost: () => void;
+  onClickSchedule: () => void;
 }
 
 const ExportWalletPopop: React.FC<Props> = ({
@@ -20,21 +23,31 @@ const ExportWalletPopop: React.FC<Props> = ({
   onClickSelectCoHost,
   onClickSchedule,
 }) => {
-  const [selectedPrice, setSelectedPrice] = React.useState(0)
+  const [selectedPrice, setSelectedPrice] = React.useState(0);
 
-  const [hideButtonBg, setHideButtonBg] = React.useState(false)
+  const { userinfo } = useSelector((state: any) => state.user);
+  const [address] = React.useState(userinfo.walletAddress || "");
 
-  const [isCopied, setIsCopied] = React.useState(false)
+  const [hideButtonBg, setHideButtonBg] = React.useState(false);
+
+  const handleClickCopy = () => {
+    if (address) {
+      exportWallet().then((res) => {
+        copyTextToClipboardSafari(res);
+        setShowPopup(false);
+      });
+    }
+  };
 
   return (
     <PopupView
       width={396}
       showPopup={showPopup}
       handleCancel={() => {
-        setShowPopup(false)
-        setSelectedPrice(0)
+        setShowPopup(false);
+        setSelectedPrice(0);
       }}
-      titleText="Withdraw ETH"
+      titleText="Export Wallet"
     >
       <div className="w-full flex flex-col items-center">
         <div className=" flex items-center">
@@ -42,11 +55,13 @@ const ExportWalletPopop: React.FC<Props> = ({
             width={364}
             height={50}
             placeholder="min 0.001"
+            value={address}
             leftNode={
               <div>
                 <Image
-                  src={defaultHeaderIcon}
+                  src={userinfo.imageUrl || defaultHeaderIcon}
                   alt=""
+                  className="rounded-full border-[2px] border-solid border-[#0D0D0D]"
                   width={40}
                   height={40}
                 ></Image>
@@ -54,7 +69,7 @@ const ExportWalletPopop: React.FC<Props> = ({
             }
             rightNode={<></>}
             onChange={function (val: string): void {
-              throw new Error("Function not implemented.")
+              throw new Error("Function not implemented.");
             }}
           ></Search>
         </div>
@@ -92,11 +107,13 @@ const ExportWalletPopop: React.FC<Props> = ({
             border="2px solid #0D0D0D"
             hideBottomBackground={hideButtonBg}
             onMouseEnter={() => {
-              setHideButtonBg(true)
+              setHideButtonBg(true);
             }}
-            buttonClick={() => {}}
+            buttonClick={() => {
+              handleClickCopy();
+            }}
             onMouseLeave={() => {
-              setHideButtonBg(false)
+              setHideButtonBg(false);
             }}
           ></Button>
         </div>
@@ -119,7 +136,7 @@ const ExportWalletPopop: React.FC<Props> = ({
         </div>
       </div>
     </PopupView>
-  )
-}
+  );
+};
 
-export default ExportWalletPopop
+export default ExportWalletPopop;

@@ -45,7 +45,7 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
       barWidth: 2,
       barHeight: 1,
       height: 30,
-      cursorColor: "#FF4141",
+      cursorColor: "#FFC700",
       cursorWidth: 2,
       dragToSeek: true,
     });
@@ -60,9 +60,10 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
 
   const clickPlayAudio = () => {
     if (cacheAudioUrl) {
-      createWaveSurfer(cacheAudioUrl);
+      // createWaveSurfer(cacheAudioUrl);
       setTimeout(() => {
         wavesurfer.playPause();
+        setPlayStatus(2);
       }, 500);
       return;
     }

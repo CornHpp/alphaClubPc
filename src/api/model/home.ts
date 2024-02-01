@@ -80,6 +80,18 @@ export const getSellPrice = async (
   return response;
 };
 
+// 卖出key
+export const sellKey = async (params: {
+  houseId?: string;
+  keys?: string;
+  sellPrice?: string;
+}): Promise<ResponseBaseType<any>> => {
+  const url = "/house/sell";
+  const response = await request.post<ResponseBaseType<any>>(url, params);
+
+  return response;
+};
+
 interface balanceInfoResonseType {
   balance: string;
   holdingValue: string;

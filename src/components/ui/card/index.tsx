@@ -92,7 +92,7 @@ const Card: React.FC<CardProps> = ({
               height={24}
             ></Image>
             <div className="text-[#0D0D0D] font-semibold ml-[2px] text-[24px]">
-              242
+              {item.holders}
             </div>
           </div>
         </div>
@@ -111,7 +111,7 @@ const Card: React.FC<CardProps> = ({
               height={24}
             ></Image>
             <div className="text-[#0D0D0D] font-semibold ml-[2px] text-[24px]">
-              {formatBalanceNumber(item.price)}
+              {formatBalanceNumber(item.priceStr)}
             </div>
           </div>
         </div>

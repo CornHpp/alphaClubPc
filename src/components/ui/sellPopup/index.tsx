@@ -9,10 +9,11 @@ import { formatBalanceNumber } from "@/lib/util";
 import { getCurrentEventKeys, getSellPrice } from "@/api/model/home";
 import { eventPriceBykeysTypeAndKeys } from "../buyPopup";
 import UserHeader from "../userHeader";
+import lodash, { set } from "lodash";
 
 interface Props {
-  showPopupBuy: boolean;
-  setShowPopupBuy: (showPopupBuy: boolean) => void;
+  showPopup: boolean;
+  setShowPopup: (showPopup: boolean) => void;
   price: string;
   holderId: string;
   openOrderPopup: (orderMap: any) => void;
@@ -20,8 +21,8 @@ interface Props {
 }
 
 const SellPopupView: React.FC<Props> = ({
-  setShowPopupBuy,
-  showPopupBuy,
+  setShowPopup,
+  showPopup,
   price,
   holderId,
   openOrderPopup,
@@ -41,17 +42,25 @@ const SellPopupView: React.FC<Props> = ({
   }, [holderId]);
 
   React.useEffect(() => {
-    if (showPopupBuy) {
+    if (showPopup) {
       getCurrentEventKeysFunc();
     }
-  }, [getCurrentEventKeysFunc, showPopupBuy]);
+  }, [getCurrentEventKeysFunc, showPopup]);
 
   const getSellPriceFunc = useCallback(
-    async (percent: number) => {
-      const val = percent * Number(balance) + "";
-      setValue(val);
-
-      const res = await getSellPrice(holderId, val);
+    async (percent: number | string, isInput?: boolean) => {
+      let val;
+      if (!isInput) {
+        val = Number(percent) * Number(balance) + "";
+        setValue(val);
+      } else {
+        console.log(percent, balance);
+        if (Number(percent) > Number(balance)) {
+          return;
+        }
+        val = Number(percent);
+      }
+      const res = await getSellPrice(holderId, val as string);
       console.log(res);
       const order = {
         keys: val,
@@ -64,6 +73,10 @@ const SellPopupView: React.FC<Props> = ({
     [balance, holderId]
   );
 
+  const debouncedFunction = lodash.debounce((val) => {
+    getSellPriceFunc(val, true);
+  }, 500);
+
   const clickSellButton = () => {
     const order = {
       keys: value,
@@ -71,14 +84,18 @@ const SellPopupView: React.FC<Props> = ({
       orderPrice: getOrderMap?.orderPrice,
       ...getOrderMap,
     };
+    setValue("");
+    setGetOrderMap(undefined);
     openOrderPopup(order);
   };
 
   return (
     <PopupView
-      showPopup={showPopupBuy}
+      showPopup={showPopup}
       handleCancel={() => {
-        setShowPopupBuy(false);
+        setValue("");
+        setGetOrderMap(undefined);
+        setShowPopup(false);
       }}
       titleText={
         <div>
@@ -113,10 +130,12 @@ const SellPopupView: React.FC<Props> = ({
             width={323}
             height={54}
             placeholder="Card amount"
+            type="number"
             value={value}
             onChange={(val) => {
               console.log(val);
               setValue(val);
+              debouncedFunction(val);
             }}
             rightNode={
               <div
@@ -155,7 +174,7 @@ const SellPopupView: React.FC<Props> = ({
                 <div className="text-[18px] text-[#949694] leading-[24px]">
                   Sell
                 </div>
-                {getOrderMap?.orderPrice != "0" ? (
+                {getOrderMap?.orderPrice && getOrderMap?.orderPrice != "0" ? (
                   <div className="text-[12px] text-[#00FC6E] leading-[16px]">
                     {getOrderMap?.orderPrice} ETH
                   </div>
@@ -167,14 +186,20 @@ const SellPopupView: React.FC<Props> = ({
               </div>
             }
             normalBackGround={
-              getOrderMap?.orderPrice != "0" ? "#0D0D0D" : "#E9E9E9"
+              getOrderMap?.orderPrice && getOrderMap?.orderPrice != "0"
+                ? "#0D0D0D"
+                : "#E9E9E9"
             }
             borderRadius="27px"
             border="none"
             buttonClick={() => {
-              // if (getOrderMap?.orderPrice == "0") {
-              //   return;
-              // }
+              if (
+                !getOrderMap?.orderPrice ||
+                getOrderMap?.orderPrice == "0" ||
+                balance == "0"
+              ) {
+                return;
+              }
               clickSellButton();
             }}
           ></Button>

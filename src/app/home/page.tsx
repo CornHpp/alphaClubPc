@@ -199,7 +199,7 @@ const Home: React.FC = () => {
           }}
         ></Tabs>
       </div>
-      {isLoading && loadingAnimation && (
+      {/* {isLoading && loadingAnimation && (
         <div
           className="w-[120px] h-[120px] bg-[#fff] flex items-center justify-center broder-solid border-[2px] border-[#0d0d0d] rounded-[16px]
           fixed top-[45%] left-[50%] transform [-translate-x-1/2] [-translate-y-1/2]
@@ -212,7 +212,7 @@ const Home: React.FC = () => {
             style={{ height: "100px", width: "100px" }}
           ></Player>
         </div>
-      )}
+      )} */}
 
       {!isLoading && cardList.length > 0 && (
         <div className="flex-1 overflow-hidden">
@@ -292,7 +292,7 @@ const Home: React.FC = () => {
             className="absolute right-0 bottom-[70px] w-[178px] h-[108px] border-[2px] border-solid border-[#0D0D0D] rounded-[12px] p-[10px] bg-[#fff] cursor-pointer"
           >
             <div
-              className="w-[154px] h-[40px] rounded-[8px]  flex items-center justify-center text-[#0D0D0D] font-semibold hover:bg-[#00FC6E]"
+              className="w-[154px] h-[40px] rounded-[8px]  flex items-center   pl-[8px] text-[#0D0D0D] font-semibold hover:bg-[#00FC6E]"
               onClick={() => {
                 setShowCreatVoiceNote(false);
                 setShowCreatVoiceNotePopup(true);
@@ -308,7 +308,7 @@ const Home: React.FC = () => {
               Voice Note
             </div>
             <div
-              className="mt-[4px] w-[154px] hover:bg-[#00FC6E] h-[40px] rounded-[8px]  flex items-center justify-center text-[#0D0D0D] font-semibold"
+              className="mt-[4px] w-[154px] hover:bg-[#00FC6E] h-[40px] rounded-[8px]  flex items-center pl-[8px] text-[#0D0D0D] font-semibold"
               onClick={() => {
                 setShowCreatVoiceNote(false);
                 setShowUploadAudioPopup(true);
@@ -341,8 +341,8 @@ const Home: React.FC = () => {
       ></BuyPopupView>
 
       <SellPopipView
-        showPopupBuy={showPopupSell}
-        setShowPopupBuy={setShowPopupSell}
+        showPopup={showPopupSell}
+        setShowPopup={setShowPopupSell}
         price={eventSinglePrice}
         holderId={clickCurrentHolderId}
         openOrderPopup={(val) => {

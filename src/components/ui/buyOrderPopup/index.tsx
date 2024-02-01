@@ -10,7 +10,8 @@ import audioIcon from "@/assets/popup/audioIcon.svg";
 import ethIcon from "@/assets/popup/ETH.svg";
 import { eventPriceBykeysTypeAndKeys } from "../buyPopup";
 import { filterString } from "@/lib/util";
-import { buyKey } from "@/api/model/home";
+import { buyKey, sellKey } from "@/api/model/home";
+import Toast from "@/components/custom/Toast";
 interface Props {
   showPopup: boolean;
   setShowPopup: (showPopup: boolean) => void;
@@ -26,7 +27,16 @@ const BuyOrderPopup: React.FC<Props> = ({
 }) => {
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
+  console.log(orderMap);
   const onClickOrderConfirm = () => {
+    if (orderMap?.action == 1) {
+      buyKeyFunc();
+    } else {
+      sellKeyFunc();
+    }
+  };
+
+  const buyKeyFunc = () => {
     const params = {
       houseId: orderMap?.holderId,
       keys: orderMap?.keys,
@@ -37,6 +47,22 @@ const BuyOrderPopup: React.FC<Props> = ({
       console.log(res);
       if (res.code == "200") {
         setShowPopup(false);
+        Toast.success("Buy Success");
+      }
+    });
+  };
+
+  const sellKeyFunc = () => {
+    const params = {
+      houseId: orderMap?.holderId,
+      keys: orderMap?.keys,
+    };
+
+    sellKey(params).then((res) => {
+      console.log(res);
+      if (res.code == "200") {
+        setShowPopup(false);
+        Toast.success("Sell Success");
       }
     });
   };
@@ -51,7 +77,10 @@ const BuyOrderPopup: React.FC<Props> = ({
       titleText="Order Confirmation "
     >
       <div className="text-[24px] font-semibold">
-        <span className="text-[#005A0E]">Buy</span> Gooy {orderMap?.keys} card
+        <span className="text-[#005A0E]">
+          {orderMap?.action == 1 ? "Buy" : "Sell"}
+        </span>{" "}
+        Gooy {orderMap?.keys} card
       </div>
 
       <div className="mt-[8px] text-[#404140]">Card Share</div>
@@ -68,7 +97,7 @@ const BuyOrderPopup: React.FC<Props> = ({
       <div className="mt-[4px] flex items-center">
         <Image src={ethIcon} alt="" width={24} height={24}></Image>
         <div className="text-[24px] font-semibold ml-[2px]">
-          {orderMap?.orderPrice} ETH
+          {orderMap?.orderPrice.slice(0, 10)} ETH
         </div>
       </div>
 

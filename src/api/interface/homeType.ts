@@ -5,8 +5,10 @@ interface getAllHomeType {
   houseId: string;
   imageUrl: string;
   price: string;
+  priceStr: string;
   twitterName: string;
   twitterScreenName: string;
+  holders: number;
 }
 
 type PartialGetAllHomeType = Partial<getAllHomeType>;
