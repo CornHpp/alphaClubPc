@@ -133,7 +133,7 @@ const Page: React.FC<Props> = () => {
   }, []);
 
   return (
-    <div className="mt-[24px] w-full flex flex-col flex-1 pr-[37px]">
+    <div className="mt-[24px] w-full flex flex-col flex-1 pr-[37px] overflow-hidden">
       <div className=" flex w-full justify-between pr-[39px] items-center">
         <div className="text-[32px] font-bold mr-[3px]">cards</div>
       </div>
@@ -150,7 +150,7 @@ const Page: React.FC<Props> = () => {
         </div>
       </div>
 
-      <div className="flex flex-1 pb-[16px] w-full">
+      <div className="flex flex-1 pb-[16px] w-full overflow-hidden">
         <div
           className="mt-[24px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px]  flex-1 mr-[24px] flex-col flex overflow-hidden"
           style={{
@@ -159,7 +159,9 @@ const Page: React.FC<Props> = () => {
           }}
         >
           <div className=" pb-[0px]">
-            <div className="text-[20px] font-bold">Top Clubs</div>
+            <div className="text-[20px] font-bold mt-[14px] ml-[14px]">
+              Top Clubs
+            </div>
 
             <div className="flex items-end">
               {paimingList.map((item, index) => {
@@ -206,7 +208,7 @@ const Page: React.FC<Props> = () => {
                           height={51}
                           className="w-[51px] h-[51px] rounded-full border-[2px] border-solid border-[#0d0d0d]"
                         ></Image>
-                        <div className="text-[16px] font-bold">
+                        <div className="text-[16px] font-bold overflow-hidden text-ellipsis whitespace-normal  w-[70px] h-[20px]">
                           {item.twitterName}
                         </div>
                       </div>
@@ -250,9 +252,9 @@ const Page: React.FC<Props> = () => {
                         </div>
                       </div>
 
-                      <div className=" w-full pt-[10px] px-[6px]  ">
+                      <div className=" w-full pt-[10px] px-[8px]  ">
                         <div
-                          className="border-[#0D0D0D] border-[2px]  h-[50px] border-solid rounded-[8px] flex flex-col items-center justify-center "
+                          className="border-[#0D0D0D] border-[1px]  h-[50px] border-solid rounded-[8px] flex flex-col items-center justify-center "
                           style={{
                             height: index == 1 ? "58px" : "50px",
                             fontSize: index == 1 ? "18px" : "16px",
@@ -290,7 +292,7 @@ const Page: React.FC<Props> = () => {
             </div>
           </div>
 
-          <div className="mt-[-2px] box-border pl-[12px] bg-[#fff] rounded-[12px]  ml-[-2px] border-[2px] border-[#0D0D0D] border-solid flex-1 mb-[-2px]">
+          <div className="mt-[-2px] box-border pl-[12px] bg-[#fff] rounded-[12px]  ml-[-2px] border-[2px] border-[#0D0D0D] border-solid flex-1 mb-[-2px] overflow-y-scroll">
             <InfinietScrollbar
               hasMore={orderHasMore}
               onLoadMore={getLoadOrder}
@@ -433,7 +435,7 @@ const Page: React.FC<Props> = () => {
               ]}
             ></CreationTabs>
           </div> */}
-          <div className="mt-[16px] flex-1">
+          <div className="mt-[16px] flex-1  overflow-y-scroll">
             <InfinietScrollbar
               hasMore={false}
               distanceClientHeight={"606px"}

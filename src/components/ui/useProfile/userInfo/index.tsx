@@ -436,8 +436,8 @@ const UserInfoView: React.FC<Props> = (props) => {
       ></BuyPopupView>
 
       <SellPopipView
-        showPopupBuy={showPopupSell}
-        setShowPopupBuy={setShowPopupSell}
+        showPopup={showPopupSell}
+        setShowPopup={setShowPopupSell}
         price={eventSinglePrice}
         holderId={clickCurrentHolderId}
         openOrderPopup={(val) => {
