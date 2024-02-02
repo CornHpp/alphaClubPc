@@ -17,7 +17,7 @@ const HoldersCard: React.FC<Props> = (props) => {
           username: item?.twitterName,
           avatar: item?.imageUrl,
           twitterScreenName: item?.twitterScreenName,
-          followers: 100,
+          followers: item.followersCount,
         }}
         headerWidth={40}
       ></UserHeader>

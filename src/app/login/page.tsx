@@ -7,6 +7,7 @@ import Button from "@/components/custom/button";
 import twitterBorderWhite from "@/assets/login/twitterBorderWhite.svg";
 import xIcon from "@/assets/login/xIcon.svg";
 import agreeIcon from "@/assets/login/agreeIcon.svg";
+import unagreeIcon from "@/assets/login/unagreeIcon.svg";
 import textAnimation from "@/assets/login/textAnimation.svg";
 import firstAnimation from "@/assets/login/firstAnimation.svg";
 import secondAnimation from "@/assets/login/secondAnimation.svg";
@@ -28,6 +29,7 @@ const Login: React.FC<LoginProps> = () => {
 
   const [inviteCodeIsWrong, setInviteCodeIsWrong] = React.useState(false);
   const [value, setValue] = React.useState("");
+  const [agree, setAgree] = React.useState(true);
   const router = useRouter();
 
   const getTwitterLinkFunc = async () => {
@@ -233,14 +235,31 @@ const Login: React.FC<LoginProps> = () => {
       </div>
 
       {!isShowInviteCode && (
-        <div className="mt-[12px] flex items-center cursor-pointer">
-          <Image
-            className="mr-[4px]"
-            src={agreeIcon}
-            alt=""
-            width={24}
-            height={24}
-          ></Image>
+        <div className="mt-[12px] flex items-center cursor-pointer h-[26px]">
+          {agree ? (
+            <Image
+              className="mr-[4px]"
+              src={agreeIcon}
+              alt=""
+              width={24}
+              height={24}
+              onClick={() => {
+                setAgree(false);
+              }}
+            ></Image>
+          ) : (
+            <Image
+              className="mr-[4px]"
+              src={unagreeIcon}
+              alt=""
+              width={24}
+              height={24}
+              onClick={() => {
+                setAgree(true);
+              }}
+            ></Image>
+          )}
+
           {"<User agreement> & <Privacy Policy>"}
         </div>
       )}

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect } from "react";
 import PlusCricleIcon from "@/assets/profile/PlusCricleIcon.svg";
 import Image from "next/image";
 import Tabs from "@/components/custom/tabs";
@@ -21,6 +21,7 @@ import { useSelector } from "react-redux";
 import ChooseVoiceNotePopup from "../../createVoiceNotePopup";
 import tipCloseIcon from "@/assets/profile/tipCloseIcon.svg";
 import Button from "@/components/custom/button";
+import { getQueryParams } from "@/lib/util";
 
 interface Props {
   // Add your props here
@@ -55,6 +56,13 @@ const CreationvView: React.FC<Props> = () => {
   const urlParams = useParams();
 
   const houseId = urlParams.id ? urlParams.id : userinfo.twitterUidStr;
+
+  useEffect(() => {
+    const windowUrl = getQueryParams();
+    if (windowUrl?.type == "AudioDem") {
+      setCurrentTab(1);
+    }
+  }, []);
 
   const getAudioPersonListFunc = async (isReset?: boolean) => {
     if (isReset) {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import type { UploadFile, UploadProps } from "antd";
 import { message, Progress, Upload } from "antd";
 import cloudUploadIcon from "@/assets/popup/cloudUploadIcon.svg";
@@ -21,7 +21,7 @@ const DragUpload: React.FC<uploadProps> = (props) => {
   const [files, setFiles] = React.useState([null]);
   const [fileName, setFileName] = React.useState("");
   const [percent, setPercent] = React.useState(0);
-  let isHasFile = false;
+  let [isHasFile, setIshasFile] = React.useState(false);
   const [uploading, setUploading] = React.useState(false);
 
   const startProgress = () => {
@@ -39,6 +39,12 @@ const DragUpload: React.FC<uploadProps> = (props) => {
       });
     }, 100);
   };
+
+  useEffect(() => {
+    if (isHasFile) {
+      setPercent(100);
+    }
+  }, [isHasFile]);
 
   const getAudioLength = (audioFile: File | undefined) => {
     if (!audioFile) return;
@@ -89,6 +95,7 @@ const DragUpload: React.FC<uploadProps> = (props) => {
         audioUpload(formdata).then((res) => {
           console.log("res", res);
           isHasFile = true;
+          setIshasFile(true);
           setUrltoParent(res.result);
         });
       }
@@ -97,6 +104,8 @@ const DragUpload: React.FC<uploadProps> = (props) => {
       console.log("remove", file);
       setPercent(0);
       isHasFile = false;
+      setIshasFile(false);
+
       setUrltoParent("");
       return true;
     },

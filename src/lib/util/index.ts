@@ -319,3 +319,18 @@ export const getPercent = (
 
   return percent;
 };
+
+export const getQueryParams = (): any => {
+  if (typeof window === "undefined") {
+    return;
+  }
+
+  const urlParams: any = new URLSearchParams(window.location.search);
+  const paramsObj: { [key: string]: string } = {};
+
+  for (const [key, value] of urlParams.entries()) {
+    paramsObj[key] = value;
+  }
+
+  return paramsObj;
+};

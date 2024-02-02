@@ -43,7 +43,7 @@ const Card: React.FC<CardProps> = ({
             username: item.twitterName,
             avatar: item.imageUrl,
             twitterScreenName: item.twitterScreenName,
-            followers: 100,
+            followers: item.followersCount,
           }}
         ></UserHeader>
         <Image

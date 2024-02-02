@@ -60,7 +60,14 @@ const Page: React.FC<Props> = () => {
         ></Tabs>
       </div>
 
-      {currentTab == 0 && <AirDropRank></AirDropRank>}
+      {currentTab == 0 && (
+        <AirDropRank
+          onChange={(val) => {
+            console.log(val);
+            setCurrentTab(val);
+          }}
+        ></AirDropRank>
+      )}
       {currentTab == 1 && <AirDropPoint></AirDropPoint>}
 
       <InviteCodePopup

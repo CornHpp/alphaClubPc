@@ -37,10 +37,14 @@ const UseProfileView: React.FC<Props> = () => {
   const [showPopupLoginView, setShowPopupLoginView] = React.useState(false);
   const urlParams = useParams();
 
+  const [currentNameProfile, setCurrentNameProfile] = React.useState("");
+
   return (
     <div className="pt-[24px] overflow-hidden w-full flex-1 flex flex-col relative">
       <div className=" flex w-full justify-between pr-[39px] items-center">
-        <div className="text-[32px] font-bold mr-[3px]">My Profile</div>
+        <div className="text-[32px] font-bold mr-[3px]">
+          {currentNameProfile} Profile
+        </div>
 
         {!urlParams.id && (
           <div className="flex items-center font-semibold cursor-pointer">
@@ -113,6 +117,9 @@ const UseProfileView: React.FC<Props> = () => {
       <div className="mt-[12px] flex w-full pr-[37px] flex-1 pb-[16px] overflow-hidden">
         <div className="mr-[24px]  h-full  flex flex-col flex-1">
           <UserInfoView
+            setCurrentNameProfile={(name) => {
+              setCurrentNameProfile(name);
+            }}
             onOpenExportWalletPopup={() => {
               setShowPopupExportWallet(true);
             }}

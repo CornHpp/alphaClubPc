@@ -12,6 +12,7 @@ import Emitter from "@/lib/emitter";
 import DragUpload from "./dragUpload";
 import { formatDate } from "@/lib/util";
 import Toaster from "@/components/custom/Toast";
+import { useRouter } from "next/navigation";
 
 const { TextArea } = Input;
 interface Props {
@@ -27,7 +28,6 @@ interface Props {
 const UploadAudioPopup: React.FC<Props> = ({
   setShowPopup,
   showPopup,
-  onClickSelectCoHost,
   onClickSchedule,
   isEdit = false,
   onSuccess,
@@ -39,13 +39,18 @@ const UploadAudioPopup: React.FC<Props> = ({
   const [saveAudioDuration, setSaveAudioDuration] = React.useState(0);
 
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
+  const router = useRouter();
 
   useEffect(() => {
     Emitter.on("createAudioSuccess", (url: string) => {
       setValue("");
       setDescribe("");
       setSaveAudioUrl("");
-      onSuccess();
+      Toaster.success("Upload voice note successfully");
+      setTimeout(() => {
+        router.push("/profile?type=" + "AudioDem");
+      }, 1000);
+      // onSuccess();
     });
     return () => {
       Emitter.off("createAudioSuccess");
@@ -98,7 +103,11 @@ const UploadAudioPopup: React.FC<Props> = ({
       setSelectedPrice(0);
       setDescribe("");
       setValue("");
-      onSuccess();
+      Toaster.success("Upload voice note successfully");
+      setTimeout(() => {
+        router.push("/profile?type=" + "AudioDem");
+      }, 1000);
+      // onSuccess();
     });
   };
 

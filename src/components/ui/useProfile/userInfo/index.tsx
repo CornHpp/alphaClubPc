@@ -30,6 +30,7 @@ interface Props {
   onOpenDepositPopup: () => void;
   onOpenWithdrawPopup: () => void;
   onOpenExportWalletPopup: () => void;
+  setCurrentNameProfile: (val: string) => void;
 }
 
 const UserInfoView: React.FC<Props> = (props) => {
@@ -42,8 +43,12 @@ const UserInfoView: React.FC<Props> = (props) => {
   const [houseId, setHouseId] = React.useState(isSelf ? "" : urlParams.id);
 
   // Add your component logic here
-  const { onOpenDepositPopup, onOpenWithdrawPopup, onOpenExportWalletPopup } =
-    props;
+  const {
+    onOpenDepositPopup,
+    onOpenWithdrawPopup,
+    onOpenExportWalletPopup,
+    setCurrentNameProfile,
+  } = props;
 
   const [widthDrawHideButtonBg, setWidthDrawHideButtonBg] =
     React.useState(false);
@@ -100,6 +105,10 @@ const UserInfoView: React.FC<Props> = (props) => {
       followers: res.result.followersCount,
       twitterScreenName: res.result.twitterScreenName,
     });
+    console.log(isSelf);
+    setCurrentNameProfile(
+      isSelf || !urlParams.id ? "My" : res.result.twitterName
+    );
     setUseProfileMap({
       holders: res.result.holders,
       roomPrice: res.result.priceStr,

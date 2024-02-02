@@ -5,7 +5,7 @@ const lists = [
     name: "Voice Note",
   },
   {
-    name: "AudioDem",
+    name: "Audio Gem",
   },
 ];
 

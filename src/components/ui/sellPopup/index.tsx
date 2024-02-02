@@ -35,6 +35,8 @@ const SellPopupView: React.FC<Props> = ({
 
   const [value, setValue] = React.useState("");
 
+  const timeLineRef = React.useRef<any>(null);
+
   const getCurrentEventKeysFunc = useCallback(async () => {
     const res = await getCurrentEventKeys(holderId);
     console.log(res);
@@ -119,6 +121,7 @@ const SellPopupView: React.FC<Props> = ({
 
         <div className="mt-[16px]">
           <TimeLine
+            onRef={timeLineRef}
             onSelectPrice={(val) => {
               getSellPriceFunc(val);
             }}
@@ -149,6 +152,12 @@ const SellPopupView: React.FC<Props> = ({
               mr-[-5px]
             "
                 onClick={() => {
+                  getSellPriceFunc(1);
+                  console.log(timeLineRef.current);
+
+                  if (timeLineRef.current) {
+                    timeLineRef.current?.fatherSetCurrentStep(4);
+                  }
                   setValue(balance.toString());
                 }}
               >

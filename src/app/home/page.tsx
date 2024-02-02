@@ -71,6 +71,7 @@ const Home: React.FC = () => {
   const [showUploadAudioPopup, setShowUploadAudioPopup] = React.useState(false);
 
   const [showBuyOrderPopup, setShowBuyOrderPopup] = React.useState(false);
+  const [currentShowSellorBuy, setCurrentShowSellorBuy] = React.useState(0); //1 是sell到order的 2是buy 0是没有
 
   const [showHomeToast, setShowHomeToast] = React.useState(false);
   const [totastMessage, setTotastMessage] = React.useState("");
@@ -336,6 +337,7 @@ const Home: React.FC = () => {
           setOrderMap(val);
           setShowPopupBuy(false);
           setShowBuyOrderPopup(true);
+          setCurrentShowSellorBuy(2);
         }}
         item={currentClickItem}
       ></BuyPopupView>
@@ -349,6 +351,7 @@ const Home: React.FC = () => {
           setOrderMap(val);
           setShowPopupSell(false);
           setShowBuyOrderPopup(true);
+          setCurrentShowSellorBuy(1);
         }}
         item={currentClickItem}
       ></SellPopipView>
@@ -460,7 +463,11 @@ const Home: React.FC = () => {
         setShowPopup={setShowBuyOrderPopup}
         onClickOrderBack={() => {
           setShowBuyOrderPopup(false);
-          setShowPopupBuy(true);
+          if (currentShowSellorBuy == 1) {
+            setShowPopupSell(true);
+          } else {
+            setShowPopupBuy(true);
+          }
         }}
       ></BuyOrderPopup>
     </div>

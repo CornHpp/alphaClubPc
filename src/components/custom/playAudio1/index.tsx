@@ -71,7 +71,7 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
       console.log(res);
       if (res.code == "200") {
         setAudioStatus(2);
-
+        setPlayStatus(2);
         const newSrc = src + "?" + res.result;
         createWaveSurfer(newSrc);
         setCacheAudioUrl(newSrc);

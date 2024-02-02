@@ -409,8 +409,16 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
                     <div
                       className=" absolute bg-[#FFF96D] left-0 top-0 h-full"
                       style={{
-                        width: `${(item.unFinished / item.allNum) * 100}%`,
-                        borderRadius: `12px 0 0 12px`,
+                        width: `${
+                          (item.unFinished / item.allNum > 1
+                            ? 1
+                            : item.unFinished / item.allNum) * 100
+                        }%`,
+                        borderRadius: `${
+                          item.unFinished / item.allNum >= 1
+                            ? "12px"
+                            : "12px 0 0 12px"
+                        }`,
                       }}
                     ></div>
                     <div className=" relative">Open</div>

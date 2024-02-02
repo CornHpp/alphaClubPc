@@ -94,7 +94,7 @@ const Header: React.FC<Props> = (props) => {
     },
     {
       img: earn,
-      text: "earn",
+      text: "Earned",
       value: "0",
       currency: "ETH",
     },

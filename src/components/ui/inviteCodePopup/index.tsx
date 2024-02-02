@@ -24,8 +24,6 @@ const InviteCodePopup: React.FC<Props> = ({
   onClickSelectCoHost,
   onClickSchedule,
 }) => {
-  const [selectedPrice, setSelectedPrice] = React.useState(0);
-
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
   const [inviteCodeList, setInviteCodeList] = React.useState<
     inviteCodeResponseType[]
@@ -48,6 +46,13 @@ const InviteCodePopup: React.FC<Props> = ({
     });
   };
 
+  const initInviteCodeList = () => {
+    inviteCodeList.forEach((item) => {
+      item.isCopy = false;
+    });
+    setInviteCodeList([...inviteCodeList]);
+  };
+
   useEffect(() => {
     getUserInviteCodeFunc();
     getUserInfoByTwitterIdFunc();
@@ -60,7 +65,7 @@ const InviteCodePopup: React.FC<Props> = ({
       showPopup={showPopup}
       handleCancel={() => {
         setShowPopup(false);
-        setSelectedPrice(0);
+        initInviteCodeList();
       }}
       titleText="Invite Your Friends"
     >

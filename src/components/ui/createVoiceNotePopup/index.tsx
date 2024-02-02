@@ -10,6 +10,7 @@ import { audioCreate, audioUpload } from "@/api/model/audio";
 import PressRecord from "./pressRecord";
 import { formatDate } from "@/lib/util";
 import Toaster from "@/components/custom/Toast";
+import { useRouter } from "next/navigation";
 
 interface Props {
   // Define your component props here
@@ -27,6 +28,8 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
   const [audioDuration, setAudioDuration] = useState<number>(0);
 
   const [value, setValue] = React.useState("");
+
+  const router = useRouter();
 
   const onClickConfirm = () => {
     const currentTime = formatDate(new Date(), "yyyy-MM-dd hh:mm:ss");
@@ -47,7 +50,10 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
             setShowPopup(false);
             setValue("");
             setFormData(undefined);
-            onSuccess();
+            Toaster.success("Create voice note successfully");
+            setTimeout(() => {
+              router.push("/profile");
+            }, 1000);
           })
           .catch((err) => {
             setFormData(undefined);

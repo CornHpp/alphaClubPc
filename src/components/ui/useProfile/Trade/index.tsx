@@ -76,7 +76,7 @@ const TradeView: React.FC<Props> = () => {
                     ></Image>
                     <div className="ml-[4px] ">
                       <div className="text-[#004D22] text-[12px]">
-                        {item.twitterName} bought{" "}
+                        {item.twitterName}{" "}
                         <span className="font-semibold">{item.keys}</span> card
                       </div>
                       <div className="text-[#005A0E] text-[16px] font-semibold">

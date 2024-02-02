@@ -1,15 +1,29 @@
 import { Tooltip } from "antd";
-import React, { useEffect } from "react";
+import React, { useEffect, useImperativeHandle } from "react";
 import "./index.css";
 
 interface TimeLineProps {
   // Add your props here
   onSelectPrice: (val: number) => void;
+  onRef?: any;
 }
 
 const TimeLine: React.FC<TimeLineProps> = (props) => {
   const { onSelectPrice } = props;
   const [currentStep, setCurrentStep] = React.useState(0);
+
+  useImperativeHandle(props.onRef, () => {
+    console.log("useImperativeHandle");
+    // 需要将暴露的接口返回出去
+    return {
+      fatherSetCurrentStep: fatherSetCurrentStep,
+    };
+  });
+
+  const fatherSetCurrentStep = (val: number) => {
+    console.log(val);
+    setCurrentStep(val);
+  };
 
   return (
     <div className="w-[327px] h-[64px] flex justify-between relative cursor-pointer items-center">

@@ -43,10 +43,10 @@ const BuyPopupView: React.FC<Props> = ({
       price: 0.001,
     },
     {
-      price: 0.002,
+      price: 0.01,
     },
     {
-      price: 0.003,
+      price: 0.1,
     },
   ]);
   const [getOrderMap, setGetOrderMap] = React.useState<eventPriceBykeysType>();
@@ -91,6 +91,12 @@ const BuyPopupView: React.FC<Props> = ({
   };
 
   const debouncedFunction = lodash.debounce((val) => {
+    setSelectedPrice(-1);
+    buttonList.findIndex((item) => {
+      if (val == item.price) {
+        setSelectedPrice(buttonList.indexOf(item));
+      }
+    });
     getCurrentEventPriceByKeyNumberFunc(val);
   }, 500);
 

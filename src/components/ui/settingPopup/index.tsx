@@ -65,18 +65,20 @@ const SettingPopup: React.FC<Props> = ({ setShowPopup, showPopup }) => {
 
       <div className="mt-[4px] flex items-center">
         <Switch onChange={setChecked} checked={checked}></Switch>
-        <div className="ml-[12px]">
-          <Search
-            width={247}
-            height={32}
-            value={threshold}
-            onChange={(val) => {
-              setThreshold(val);
-            }}
-            placeholder="min 0.001"
-            rightNode={<div className="text-[16px] font-medium">Key</div>}
-          ></Search>
-        </div>
+        {checked && (
+          <div className="ml-[12px]">
+            <Search
+              width={247}
+              height={32}
+              value={threshold}
+              onChange={(val) => {
+                setThreshold(val);
+              }}
+              placeholder="min 0.001"
+              rightNode={<div className="text-[16px] font-medium">Card</div>}
+            ></Search>
+          </div>
+        )}
       </div>
       <div className="mt-[24px]">
         <Button

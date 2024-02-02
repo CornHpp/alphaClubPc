@@ -10,9 +10,11 @@ import {
 
 interface AirDropRankProps {
   // Define the props for the AirDropRank component here
+  onChange: (val: number) => void;
 }
 
-const AirDropRank: React.FC<AirDropRankProps> = () => {
+const AirDropRank: React.FC<AirDropRankProps> = (props) => {
+  const { onChange } = props;
   const [personRankList, setPersonRankList] = React.useState<
     PartialUsersAirdropRequestType[]
   >([]);
@@ -53,7 +55,12 @@ const AirDropRank: React.FC<AirDropRankProps> = () => {
         Get to the top of the leaderboard and increase your points. 24-hour
         rolling rankings of the top 1,221 players will be rewarded with points!
         To learn more about our point earning mechanism please read on
-        <span className="text-[14px] font-semibold underline">
+        <span
+          className="text-[14px] font-semibold underline cursor-pointer"
+          onClick={() => {
+            onChange(1);
+          }}
+        >
           {" "}
           Points Farming
         </span>
