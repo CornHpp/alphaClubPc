@@ -98,15 +98,22 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
         });
     });
   };
+  const buttonDisabled = useMemo(() => {
+    if (isIntroSelf) {
+      return formData; // Return true if formData is falsy
+    } else {
+      return value && formData; // Return true if either value or formData is falsy
+    }
+  }, [isIntroSelf, value, formData]);
 
-  const buttonDisabled = () =>
-    useMemo(() => {
-      if (isIntroSelf) {
-        return formData;
-      } else {
-        return value && formData;
-      }
-    }, [value, formData]);
+  // const buttonDisabled = () =>
+  //   useMemo(() => {
+  //     if (isIntroSelf) {
+  //       return formData;
+  //     } else {
+  //       return value && formData;
+  //     }
+  //   }, [value, formData]);
 
   return (
     <PopupView
@@ -153,8 +160,8 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
           width="368px"
           height="50px"
           text={"Post Now"}
-          color={buttonDisabled() ? "#fff" : "#949694"}
-          normalBackGround={buttonDisabled() ? "#0D0D0D" : "#E9E9E9"}
+          color={buttonDisabled ? "#fff" : "#949694"}
+          normalBackGround={buttonDisabled ? "#0D0D0D" : "#E9E9E9"}
           borderRadius="27px"
           border="none"
           buttonClick={onClickConfirm}
