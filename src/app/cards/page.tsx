@@ -120,7 +120,7 @@ const Page: React.FC<Props> = () => {
       if (!pageList) pageList = [];
 
       const newCardList = [
-        ...(twitterFriendList ? twitterFriendList : []),
+        ...(refresh ? [] : twitterFriendList ? twitterFriendList : []),
         ...(pageList ? pageList : []),
       ];
 
@@ -134,7 +134,7 @@ const Page: React.FC<Props> = () => {
 
   const setTwitterVoteFunc = (
     twitterName: string | undefined,
-    isSearchList: boolean
+    isSearchList?: boolean
   ) => {
     const params = {
       twitterScreenName: twitterName as string,
@@ -142,7 +142,11 @@ const Page: React.FC<Props> = () => {
     setTwitterVote(params).then((res) => {
       console.log(res);
       if (isSearchList) {
-        setSearchMap({ ...searchMap, started: 1 });
+        setSearchMap({
+          ...searchMap,
+          started: 1,
+          tickets: (searchMap?.tickets as number) + 1,
+        });
       }
       getTwitterListFunc(true);
     });
