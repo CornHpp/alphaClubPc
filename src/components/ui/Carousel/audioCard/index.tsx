@@ -4,6 +4,7 @@ import Image from "next/image";
 import audioIcon from "@/assets/home/audio.svg";
 import machine from "@/assets/home/machine.svg";
 import person from "@/assets/home/person.svg";
+import radioIcon from "@/assets/profile/radioIcon.svg";
 import volumeIcon from "@/assets/home/volumeIcon.svg";
 import timeIcon from "@/assets/popup/timeIcon.svg";
 import PlayAudio from "@/components/custom/playAudio1";
@@ -32,11 +33,11 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
     <div>
       <div className="flex">
         <SmallButton
-          text={audioSource === 0 ? "SHORT" : "LOING"}
-          background="#FFFFB3"
+          text={audioSource === 0 ? "SHORT" : "LONG"}
+          background={audioSource === 0 ? "#FFFFB3" : "#B4FFB3"}
         >
           <Image
-            src={volumeIcon}
+            src={audioSource === 0 ? volumeIcon : radioIcon}
             alt=""
             width={12}
             height={12}

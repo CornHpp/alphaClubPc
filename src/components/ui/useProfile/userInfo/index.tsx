@@ -10,6 +10,7 @@ import ethereum from "@/assets/home/ethereum.svg";
 import { useParams } from "next/navigation";
 import tradeIcon from "@/assets/profile/tradeIcon.svg";
 import {
+  creatSelfInfroAudio,
   getSelfcardMessage,
   getUserInfoByTwitterId,
 } from "@/api/model/userService";
@@ -25,30 +26,33 @@ import BuyPopupView, {
 import SellPopipView from "@/components/ui/sellPopup";
 import BuyOrderPopup from "../../buyOrderPopup";
 import TradeSelfPopup from "../../tradeSelfPopup";
+import ChooseVoiceNotePopup from "../../createVoiceNotePopup";
+import Toast from "@/components/custom/Toast";
 
 interface Props {
   onOpenDepositPopup: () => void;
   onOpenWithdrawPopup: () => void;
   onOpenExportWalletPopup: () => void;
   setCurrentNameProfile: (val: string) => void;
+  setIsHaveIntroAudio: (val: boolean) => void;
 }
 
 const UserInfoView: React.FC<Props> = (props) => {
-  const { userinfo } = useSelector((state: any) => state.user);
-
-  const urlParams = useParams();
-
-  const isSelf = userinfo.twitterUidStr === urlParams.id;
-
-  const [houseId, setHouseId] = React.useState(isSelf ? "" : urlParams.id);
-
   // Add your component logic here
   const {
     onOpenDepositPopup,
     onOpenWithdrawPopup,
     onOpenExportWalletPopup,
     setCurrentNameProfile,
+    setIsHaveIntroAudio,
   } = props;
+  const { userinfo } = useSelector((state: any) => state.user);
+
+  const urlParams = useParams();
+
+  const isSelf = userinfo.twitterUidStr === urlParams.id || !urlParams.id;
+
+  const [houseId, setHouseId] = React.useState(isSelf ? "" : urlParams.id);
 
   const [widthDrawHideButtonBg, setWidthDrawHideButtonBg] =
     React.useState(false);
@@ -81,6 +85,11 @@ const UserInfoView: React.FC<Props> = (props) => {
   const [orderMap, setOrderMap] = React.useState<eventPriceBykeysTypeAndKeys>();
   const [isCanBuySelf, setIsCanBuySelf] = React.useState(false);
 
+  const [showCreatVoiceNotePopup, setShowCreatVoiceNotePopup] =
+    React.useState(false);
+
+  const [isIntroAudio, setIntroAudio] = React.useState(false);
+
   const onClickSell = (price: string) => {
     setEventSinglePrice(price);
     console.log(houseId);
@@ -91,21 +100,29 @@ const UserInfoView: React.FC<Props> = (props) => {
   const onClickBuy = (price: string) => {
     setEventSinglePrice(price);
     const twitterId = houseId || userinfo.twitterUidStr;
+    console.log("11111111");
     setClickCurrentHolderId(twitterId);
     setShowPopupBuy(true);
   };
   const getUserInfoByTwitterIdFunc = async () => {
     const twitterId = houseId || userinfo.twitterUidStr;
     const res = await getUserInfoByTwitterId(twitterId);
-    console.log(res, "");
+    console.log(res);
+    setCurrentClickItem(res.result);
+    if (isSelf) {
+      setIsHaveIntroAudio(res.result.selfIntrFlag ? false : true);
+    } else {
+      setIsHaveIntroAudio(false);
+    }
+    setIntroAudio(res.result.selfIntrFlag ? true : false);
     setIsCanBuySelf(res.result.selfCardCanBuy);
     setUseHeaderInforMap({
       username: res.result.twitterName,
       avatar: res.result.imageUrl,
       followers: res.result.followersCount,
       twitterScreenName: res.result.twitterScreenName,
+      selfAudioUrl: res.result.selfIntr,
     });
-    console.log(isSelf);
     setCurrentNameProfile(
       isSelf || !urlParams.id ? "My" : res.result.twitterName
     );
@@ -114,6 +131,7 @@ const UserInfoView: React.FC<Props> = (props) => {
       roomPrice: res.result.priceStr,
       walletAddress: res.result.walletAddress,
       walletBalance: res.result.walletBalance,
+      holdingValues: res.result.holdingValues,
     });
   };
 
@@ -135,6 +153,17 @@ const UserInfoView: React.FC<Props> = (props) => {
     });
   };
 
+  const deleteSelfIntroAudio = () => {
+    const params = {
+      selfIntrFlag: false,
+    };
+    creatSelfInfroAudio(params).then((res) => {
+      console.log(res);
+      Toast.success("Delete successfully");
+      getUserInfoByTwitterIdFunc();
+    });
+  };
+
   return (
     <div
       className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid relative"
@@ -150,6 +179,15 @@ const UserInfoView: React.FC<Props> = (props) => {
         }}
       >
         <UserHeader
+          onClickDeleteIntroAudio={() => {
+            console.log("delete");
+            deleteSelfIntroAudio();
+          }}
+          onClickNewIntro={() => {
+            setShowCreatVoiceNotePopup(true);
+          }}
+          isAcceptShowDelteButton={isSelf || !houseId}
+          showPlayingAudioIcon={isIntroAudio}
           userInfo={useHeaderInforMap}
           nameMarginLeft={"12px"}
         ></UserHeader>
@@ -468,12 +506,11 @@ const UserInfoView: React.FC<Props> = (props) => {
       {!houseId && (
         <div className="px-[16px] py-[16px]">
           <div className="flex items-center font-semibold text-[16px]">
-            <div className="font-medium w-[129px]">Holding Value：</div> $1138
-            (0.501 ETH)
+            <div className="font-medium w-[129px]">Holding Value：</div>
+            {formatBalanceNumber(useProfileMap?.holdingValues)}ETH
           </div>
           <div className="flex items-center font-semibold text-[16px]">
-            <div className="font-medium w-[129px]">Fees Earned：</div> $1138
-            (0.501 ETH)
+            <div className="font-medium w-[129px]">Fees Earned：</div> 0.00ETH
           </div>
         </div>
       )}
@@ -526,6 +563,16 @@ const UserInfoView: React.FC<Props> = (props) => {
           onClickBuy(useProfileMap?.roomPrice);
         }}
       ></TradeSelfPopup>
+
+      <ChooseVoiceNotePopup
+        showPopup={showCreatVoiceNotePopup}
+        setShowPopup={setShowCreatVoiceNotePopup}
+        onSuccess={() => {
+          setShowCreatVoiceNotePopup(false);
+          getUserInfoByTwitterIdFunc();
+        }}
+        isIntroSelf={true}
+      ></ChooseVoiceNotePopup>
     </div>
   );
 };

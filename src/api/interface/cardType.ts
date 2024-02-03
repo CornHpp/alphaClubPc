@@ -36,11 +36,14 @@ interface responseTwitterListType {
   twitterScreenName: string;
   imageUrl: string;
   followersCount: number;
-  arrived: 0;
+  arrived: number;
   price: string;
   createTime: string;
   updateTime: string;
   holdings: number;
+  started: number;
+  priceStr: string;
+  tickets: number;
 }
 
 type PartialGetTradeOrderList = Partial<getTradeOrderList>;

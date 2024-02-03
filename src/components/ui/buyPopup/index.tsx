@@ -12,6 +12,8 @@ import {
 import BigNumber from "bignumber.js";
 import UserHeader from "../userHeader";
 import lodash from "lodash";
+import questionIcon from "@/assets/popup/questionIcon.svg";
+import { Tooltip } from "antd";
 
 export interface eventPriceBykeysTypeAndKeys extends eventPriceBykeysType {
   keys: string;
@@ -126,7 +128,22 @@ const BuyPopupView: React.FC<Props> = ({
           <Image src={ETHIcon} alt="" width={24} height={24}></Image>
           {formatBalanceNumber(price)}ETH
         </div>
-        <div className="mt-[16px]">Price Formula</div>
+        <div className="mt-[16px] flex">
+          Price Formula
+          <Tooltip
+            placement="top"
+            title={"price=supply^2/14285"}
+            className=" cursor-pointer"
+          >
+            <Image
+              src={questionIcon}
+              alt=""
+              width={16}
+              height={16}
+              className="ml-[2px]"
+            ></Image>
+          </Tooltip>
+        </div>
 
         {buttonList.map((item, index) => {
           return (

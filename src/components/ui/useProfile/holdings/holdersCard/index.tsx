@@ -2,6 +2,7 @@ import UserHeader from "@/components/ui/userHeader";
 import React from "react";
 import keyIcon from "@/assets/home/key.svg";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface Props {
   // Add your props here
@@ -9,18 +10,25 @@ interface Props {
 }
 
 const HoldersCard: React.FC<Props> = (props) => {
+  const router = useRouter();
   const { item } = props;
   return (
     <div className="flex items-center justify-between">
-      <UserHeader
-        userInfo={{
-          username: item?.twitterName,
-          avatar: item?.imageUrl,
-          twitterScreenName: item?.twitterScreenName,
-          followers: item.followersCount,
+      <div
+        onClick={() => {
+          router.push(`/profile/${item.twitterUid}`);
         }}
-        headerWidth={40}
-      ></UserHeader>
+      >
+        <UserHeader
+          userInfo={{
+            username: item?.twitterName,
+            avatar: item?.imageUrl,
+            twitterScreenName: item?.twitterScreenName,
+            followers: item.followersCount,
+          }}
+          headerWidth={40}
+        ></UserHeader>
+      </div>
 
       <div className=" text-right">
         <div className="text-[12px] text-[#404140] font-medium">Cards</div>

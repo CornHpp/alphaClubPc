@@ -23,24 +23,18 @@ const HoldingsView: React.FC<Props> = () => {
   >([]);
 
   const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true);
+  const urlParams = useParams();
 
+  const houseId = urlParams.id ? urlParams.id : userinfo.twitterUidStr;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const queryParams = {
     pageNum: 1,
     pageSize: 50,
+    twitterUid: houseId as string,
   };
-
-  const urlParams = useParams();
-
-  const houseId = urlParams.id ? urlParams.id : userinfo.twitterUidStr;
 
   const getkeyholderHoldingFunc = useCallback(
     async (isReset?: boolean) => {
-      const params = {
-        pageNum: 1,
-        pageSize: 50,
-        twitterUid: houseId as string,
-      };
       if (isReset) {
         queryParams.pageNum = 1;
         setHoulderList([]);
@@ -49,7 +43,7 @@ const HoldingsView: React.FC<Props> = () => {
       const keyholderFunc =
         tabIndex === 0 ? keyholderHolding : keyholderHolders;
 
-      const res = await keyholderFunc(params);
+      const res = await keyholderFunc(queryParams);
       let { pageList = [], count = 0 } = res.result;
       if (!pageList) pageList = [];
       const newCardList = [
@@ -59,7 +53,7 @@ const HoldingsView: React.FC<Props> = () => {
       if (newCardList.length >= count) {
         setOrderHasMore(false);
       }
-
+      console.log(pageList, "pageList");
       setHoulderList(newCardList || []);
     },
     [houlderList, houseId, queryParams, tabIndex]

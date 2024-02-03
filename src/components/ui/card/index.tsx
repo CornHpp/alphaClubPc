@@ -39,11 +39,13 @@ const Card: React.FC<CardProps> = ({
         }}
       >
         <UserHeader
+          showPlayingAudioIcon={item.selfIntrFlag}
           userInfo={{
             username: item.twitterName,
             avatar: item.imageUrl,
             twitterScreenName: item.twitterScreenName,
             followers: item.followersCount,
+            selfAudioUrl: item.selfIntr,
           }}
         ></UserHeader>
         <Image

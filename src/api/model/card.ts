@@ -47,3 +47,12 @@ export const getTwitterList = async (
   >(url, params);
   return response;
 };
+
+// 给twitter用户投票
+export const setTwitterVote = async (params: {
+  twitterScreenName: string;
+}): Promise<ResponseBaseType<any>> => {
+  const url = "/secret/twitter/byScreenName/vote";
+  const response = await request.post<ResponseBaseType<any>>(url, params);
+  return response;
+};

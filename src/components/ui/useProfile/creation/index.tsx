@@ -25,9 +25,12 @@ import { getQueryParams } from "@/lib/util";
 
 interface Props {
   // Add your props here
+  showVoiceTntro: boolean;
+  setIsShowVoiceIntro: (val: boolean) => void;
 }
 
-const CreationvView: React.FC<Props> = () => {
+const CreationvView: React.FC<Props> = (props) => {
+  const { showVoiceTntro, setIsShowVoiceIntro } = props;
   const { userinfo } = useSelector((state: any) => state.user);
 
   const [showPopupCreateEvent, setShowPopupCreateEvent] = React.useState(false);
@@ -101,7 +104,6 @@ const CreationvView: React.FC<Props> = () => {
   const openVoicePopup = () => {
     setShowCreatVoiceNotePopup(true);
   };
-  const [showVoiceTntro, setShowVoiceTntro] = React.useState(true);
 
   return (
     <div className="h-full flex flex-col">
@@ -117,7 +119,7 @@ const CreationvView: React.FC<Props> = () => {
               src={tipCloseIcon}
               className="cursor-pointer"
               onClick={() => {
-                setShowVoiceTntro(false);
+                setIsShowVoiceIntro(false);
               }}
               alt=""
               width={16}
@@ -250,6 +252,7 @@ const CreationvView: React.FC<Props> = () => {
               getAudioPersonListFunc(true);
             }, 1000);
           }}
+          isIntroSelf={true}
         ></ChooseVoiceNotePopup>
 
         <CreateEventPopupView

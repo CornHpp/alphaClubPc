@@ -39,6 +39,8 @@ const UseProfileView: React.FC<Props> = () => {
 
   const [currentNameProfile, setCurrentNameProfile] = React.useState("");
 
+  const [isShowVoiceIntro, setIsShowVoiceIntro] = React.useState(false);
+
   return (
     <div className="pt-[24px] overflow-hidden w-full flex-1 flex flex-col relative">
       <div className=" flex w-full justify-between pr-[39px] items-center">
@@ -117,6 +119,9 @@ const UseProfileView: React.FC<Props> = () => {
       <div className="mt-[12px] flex w-full pr-[37px] flex-1 pb-[16px] overflow-hidden">
         <div className="mr-[24px]  h-full  flex flex-col flex-1">
           <UserInfoView
+            setIsHaveIntroAudio={(val) => {
+              setIsShowVoiceIntro(val);
+            }}
             setCurrentNameProfile={(name) => {
               setCurrentNameProfile(name);
             }}
@@ -135,7 +140,12 @@ const UseProfileView: React.FC<Props> = () => {
           </div>
         </div>
         <div className="mr-[24px]  h-full  flex-1 flex flex-col">
-          <CreationvView></CreationvView>
+          <CreationvView
+            showVoiceTntro={isShowVoiceIntro}
+            setIsShowVoiceIntro={(val) => {
+              setIsShowVoiceIntro(val);
+            }}
+          ></CreationvView>
         </div>
         <div className="mr-[24px] flex-1">
           <HoldingsView></HoldingsView>

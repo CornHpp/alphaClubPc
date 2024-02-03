@@ -9,6 +9,8 @@ interface getAllHomeType {
   twitterName: string;
   twitterScreenName: string;
   holders: number;
+  selfIntr: string;
+  selfIntrFlag: boolean;
 }
 
 type PartialGetAllHomeType = Partial<getAllHomeType>;

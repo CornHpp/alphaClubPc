@@ -87,7 +87,15 @@ const BuyOrderPopup: React.FC<Props> = ({
       titleText="Order Confirmation "
     >
       <div className="text-[24px] font-semibold">
-        <span className="text-[#005A0E]">
+        <span
+          className="text-[#005A0E]"
+          style={{
+            color:
+              orderMap?.action == 1 || orderMap?.action == 3
+                ? "#005A0E"
+                : "#E42222",
+          }}
+        >
           {orderMap?.action == 1 || orderMap?.action == 3 ? "Buy" : "Sell"}
         </span>{" "}
         Gooy {orderMap?.keys} card
@@ -113,7 +121,19 @@ const BuyOrderPopup: React.FC<Props> = ({
 
       <div className="mt-[8px] text-[#404140]">Action</div>
 
-      <div className="mt-[4px] flex items-center w-[55px] h-[24px] rounded-[12px] bg-[#C0FFD2] justify-center text-[#005A0E] font-semibold text-[16px]">
+      <div
+        style={{
+          color:
+            orderMap?.action == 1 || orderMap?.action == 3
+              ? "#005A0E"
+              : "#E42222",
+          background:
+            orderMap?.action == 1 || orderMap?.action == 3
+              ? "#C0FFD2"
+              : "#FFC6C6",
+        }}
+        className="mt-[4px] flex items-center w-[55px] h-[24px] rounded-[12px] bg-[#C0FFD2] justify-center text-[#005A0E] font-semibold text-[16px]"
+      >
         {orderMap?.action == 1 || orderMap?.action == 3 ? "Buy" : "Sell"}
       </div>
 

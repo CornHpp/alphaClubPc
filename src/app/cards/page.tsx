@@ -29,6 +29,7 @@ import {
   getTradeGetHouseGetOrderList,
   getTwitterList,
   getTwitterSearch,
+  setTwitterVote,
 } from "@/api/model/card";
 import { formatBalanceNumber } from "@/lib/util";
 import Search from "@/components/custom/search";
@@ -43,9 +44,8 @@ const Page: React.FC<Props> = () => {
     PartialGetTradeOrderList[]
   >([]);
 
-  const [twitterFriendList, setTwitterFriendList] = React.useState<
-    PartialResponseTwitterListType[]
-  >([]);
+  const [twitterFriendList, setTwitterFriendList] =
+    React.useState<PartialResponseTwitterListType[]>();
   const [paimingList, setPaimingList] = React.useState<
     PartialGetTradeOrderList[]
   >([]);
@@ -109,22 +109,44 @@ const Page: React.FC<Props> = () => {
     pageSize: 50,
   };
 
-  const getTwitterListFunc = () => {
+  const getTwitterListFunc = (refresh?: boolean) => {
+    if (refresh) {
+      twitterParams.pageNum = 1;
+      setTwitterFriendList([]);
+    }
     getTwitterList(twitterParams).then((res) => {
       console.log(res);
       let { pageList = [], count = 0 } = res.result;
       if (!pageList) pageList = [];
 
-      const newCardList = [...twitterFriendList, ...(pageList ? pageList : [])];
+      const newCardList = [
+        ...(twitterFriendList ? twitterFriendList : []),
+        ...(pageList ? pageList : []),
+      ];
 
       setTwitterFriendList(newCardList);
 
       if (newCardList.length >= count) {
-        // setOrderHasMore(false);
+        setOrderHasMore(false);
       }
     });
   };
 
+  const setTwitterVoteFunc = (
+    twitterName: string | undefined,
+    isSearchList: boolean
+  ) => {
+    const params = {
+      twitterScreenName: twitterName as string,
+    };
+    setTwitterVote(params).then((res) => {
+      console.log(res);
+      if (isSearchList) {
+        setSearchMap({ ...searchMap, started: 1 });
+      }
+      getTwitterListFunc(true);
+    });
+  };
   useEffect(() => {
     getPageData();
     getTwitterListFunc();
@@ -388,27 +410,44 @@ const Page: React.FC<Props> = () => {
                       width="113px"
                       height="40px"
                       text={
-                        searchMap?.arrived == 1
+                        searchMap.arrived == 1
                           ? "arrived"
                           : searchMap?.started == 1
-                          ? "0 Polls"
-                          : "0 Polls"
+                          ? `${searchMap.tickets} Polls`
+                          : `${searchMap.tickets} Polls`
                       }
-                      color={"#fff"}
+                      color={
+                        searchMap?.arrived == 1
+                          ? "#949694"
+                          : searchMap?.started == 1
+                          ? "#0D0D0D"
+                          : "#fff"
+                      }
                       normalBackGround={
-                        searchMap?.arrived == 1 ? "#E9E9E9" : "#0D0D0D"
+                        searchMap?.arrived == 1
+                          ? "#E9E9E9"
+                          : searchMap?.started == 1
+                          ? "#00FC6E"
+                          : "#0D0D0D"
                       }
                       borderRadius="27px"
                       border={
                         searchMap?.arrived == 1 ? "none" : "2px solid #0D0D0D"
                       }
                       buttonClick={() => {
-                        console.log("click");
+                        if (searchMap.arrived || searchMap.started) {
+                          return;
+                        }
+                        setTwitterVoteFunc(searchMap.twitterScreenName, true);
                       }}
                     >
                       <Image
                         src={
-                          searchMap?.arrived == 1 ? arrivedIcon : loveWhiteIcon
+                          searchMap?.arrived == 1
+                            ? arrivedIcon
+                            : searchMap.started == 1
+                            ? loveBlackIcon
+                            : loveWhiteIcon
                         }
                         alt=""
                         width={20}
@@ -448,64 +487,78 @@ const Page: React.FC<Props> = () => {
               }}
             >
               <div>
-                {twitterFriendList.map((item, index) => {
-                  return (
-                    <div
-                      className="flex items-center mb-[16px] pr-[16px] pl-[4px]"
-                      key={index + "1r"}
-                    >
-                      <UserPrice
-                        item={{
-                          imageUrl: item?.imageUrl,
-                          twitterName: item?.twitterName,
-                          twitterScreenName: item?.twitterScreenName,
-                          followersCount: item?.followersCount,
-                          price: item?.price,
-                          holders: item?.holdings,
-                        }}
-                      ></UserPrice>
-                      <div className="ml-[32px]">
-                        <Button
-                          hideBottomBackground={true}
-                          active={false}
-                          width="113px"
-                          height="40px"
-                          text={
-                            searchMap?.arrived == 1
-                              ? "arrived"
-                              : searchMap?.started == 1
-                              ? "0 Polls"
-                              : "0 Polls"
-                          }
-                          color={"#fff"}
-                          normalBackGround={
-                            searchMap?.arrived == 1 ? "#E9E9E9" : "#0D0D0D"
-                          }
-                          borderRadius="27px"
-                          border={
-                            searchMap?.arrived == 1
-                              ? "none"
-                              : "2px solid #0D0D0D"
-                          }
-                          buttonClick={() => {
-                            console.log("click");
+                {twitterFriendList &&
+                  twitterFriendList.map((item, index) => {
+                    return (
+                      <div
+                        className="flex items-center mb-[16px] pr-[16px] pl-[4px]"
+                        key={index + "1r"}
+                      >
+                        <UserPrice
+                          item={{
+                            imageUrl: item?.imageUrl,
+                            twitterName: item?.twitterName,
+                            twitterScreenName: item?.twitterScreenName,
+                            followersCount: item?.followersCount,
+                            price: item?.priceStr,
+                            holders: item?.holdings,
                           }}
-                        >
-                          <Image
-                            src={
-                              searchMap?.arrived == 1
-                                ? arrivedIcon
-                                : loveWhiteIcon
+                        ></UserPrice>
+                        <div className="ml-[32px]">
+                          <Button
+                            hideBottomBackground={true}
+                            active={false}
+                            width="113px"
+                            height="40px"
+                            text={
+                              item.arrived == 1
+                                ? "arrived"
+                                : item?.started == 1
+                                ? `${item.tickets} Polls`
+                                : `${item.tickets} Polls`
                             }
-                            alt=""
-                            width={20}
-                            height={20}
-                          ></Image>
-                        </Button>
+                            color={
+                              item?.arrived == 1
+                                ? "#E9E9E9"
+                                : item?.started == 1
+                                ? "#0D0D0D"
+                                : "#fff"
+                            }
+                            normalBackGround={
+                              item?.arrived == 1
+                                ? "#E9E9E9"
+                                : item?.started == 1
+                                ? "#00FC6E"
+                                : "#0D0D0D"
+                            }
+                            borderRadius="27px"
+                            border={
+                              item?.arrived == 1 ? "none" : "2px solid #0D0D0D"
+                            }
+                            buttonClick={() => {
+                              if (item.arrived || item.started) {
+                                return;
+                              }
+                              setTwitterVoteFunc(item.twitterScreenName);
+                            }}
+                          >
+                            <Image
+                              src={
+                                item?.arrived == 1
+                                  ? arrivedIcon
+                                  : item.started == 1
+                                  ? loveBlackIcon
+                                  : loveWhiteIcon
+                              }
+                              alt=""
+                              width={20}
+                              height={20}
+                            ></Image>
+                          </Button>
+                        </div>
                       </div>
-                    </div>
-                  );
-                })}
+                    );
+                  })}
               </div>
             </InfinietScrollbar>
           </div>

@@ -63,3 +63,18 @@ export const buySelfcard = async (): Promise<ResponseBaseType<any>> => {
   const response = await request.post<ResponseBaseType<any>>(url);
   return response;
 };
+
+interface audioSelfIntroType {
+  selfIntr?: string;
+  selfIntrFlag: boolean; //true 第一上传录音，false 修改录音
+}
+
+// 录音介绍自己
+export const creatSelfInfroAudio = async (
+  params: audioSelfIntroType
+): Promise<ResponseBaseType<any>> => {
+  const url = "/secret/users/selfIntro";
+  const response = await request.post<ResponseBaseType<any>>(url, params);
+
+  return response;
+};
