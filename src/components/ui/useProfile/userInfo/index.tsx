@@ -123,6 +123,13 @@ const UserInfoView: React.FC<Props> = (props) => {
       twitterScreenName: res.result.twitterScreenName,
       selfAudioUrl: res.result.selfIntr,
     });
+    setCurrentClickItem({
+      twitterName: res.result.twitterName,
+      imageUrl: res.result.imageUrl,
+      followersCount: res.result.followersCount,
+      twitterScreenName: res.result.twitterScreenName,
+    })
+    console.log(isSelf);
     setCurrentNameProfile(
       isSelf || !urlParams.id ? "My" : res.result.twitterName
     );
