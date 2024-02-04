@@ -28,6 +28,8 @@ const BuyOrderPopup: React.FC<Props> = ({
 }) => {
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
+  console.log(orderMap);
+
   const buySelfThreeCardsFunc = () => {
     buySelfcard().then((res) => {
       console.log(res);
@@ -84,7 +86,7 @@ const BuyOrderPopup: React.FC<Props> = ({
       handleCancel={() => {
         setShowPopup(false);
       }}
-      titleText="Order Confirmation "
+      titleText="Order Confirmation"
     >
       <div className="text-[24px] font-semibold">
         <span
@@ -157,11 +159,29 @@ const BuyOrderPopup: React.FC<Props> = ({
         5% fee goes to the content creator.
       </div>
 
-      <div className="mt-[16px] bg-[#D8FCD1] text-[#0D0D0D] border-[2px] border-solid border-[#0D0D0D] rounded-[10px] h-[68px] flex flex-col justify-center px-[10px]">
+      <div
+        style={{
+          background:
+            Number(orderMap?.orderPrice || 0) >
+            Number(orderMap?.walletFromBalance)
+              ? "#FFC6C6"
+              : "#D8FCD1",
+        }}
+        className="mt-[16px] bg-[#D8FCD1] text-[#0D0D0D] border-[2px] border-solid border-[#0D0D0D] rounded-[10px] h-[68px] flex flex-col justify-center px-[10px]"
+      >
         <div className="font-semibold text-[16px]">
           wallet: <span>{filterString(orderMap?.walletFrom)}</span>
         </div>
-        <div className="mt-[4px] text-[#005A0E] text-[16px] font-semibold">
+        <div
+          className="mt-[4px] text-[#005A0E] text-[16px] font-semibold"
+          style={{
+            color:
+              Number(orderMap?.orderPrice || 0) >
+              Number(orderMap?.walletFromBalance)
+                ? "#E42222"
+                : "#005A0E",
+          }}
+        >
           {orderMap?.walletFromBalance} ETH available
         </div>
       </div>

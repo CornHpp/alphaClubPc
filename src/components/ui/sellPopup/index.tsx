@@ -143,7 +143,7 @@ const SellPopupView: React.FC<Props> = ({
             type="number"
             value={value}
             onChange={(val) => {
-              console.log(val);
+              setGetOrderMap(undefined);
               setValue(val);
               debouncedFunction(val, true);
             }}

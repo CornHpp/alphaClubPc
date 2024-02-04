@@ -11,7 +11,7 @@ import {
 } from "@/api/model/home";
 import BigNumber from "bignumber.js";
 import UserHeader from "../userHeader";
-import lodash from "lodash";
+import lodash, { set } from "lodash";
 import questionIcon from "@/assets/popup/questionIcon.svg";
 import { Tooltip } from "antd";
 import useDebounce from "@/hooks/useDebounce";
@@ -178,6 +178,7 @@ const BuyPopupView: React.FC<Props> = ({
             value={value}
             onChange={(val) => {
               setValue(val);
+              setNeedPayPrice("");
               debouncedFunction(val);
             }}
             type="number"

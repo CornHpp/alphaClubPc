@@ -6,6 +6,7 @@ import Image from "next/image";
 import fileMusicIcon from "@/assets/popup/fileMusicIcon.svg";
 import deleteIcon from "@/assets/popup/deleteIcon.svg";
 import { audioCreate, audioUpload } from "@/api/model/audio";
+import Toaster from "@/components/custom/Toast";
 
 import "./index.css";
 
@@ -18,7 +19,7 @@ const { Dragger } = Upload;
 
 const DragUpload: React.FC<uploadProps> = (props) => {
   const { setUrltoParent, setAudioDuration } = props;
-  const [files, setFiles] = React.useState([null]);
+  const [files, setFiles] = React.useState([]);
   const [fileName, setFileName] = React.useState("");
   const [percent, setPercent] = React.useState(0);
   let [isHasFile, setIshasFile] = React.useState(false);
@@ -66,13 +67,23 @@ const DragUpload: React.FC<uploadProps> = (props) => {
     maxCount: 1,
 
     beforeUpload: (file) => {
+      const { type } = file;
+
+      if (type == "image/x-icon") {
+        return;
+      }
+
       setPercent(0);
       return false;
     },
     accept: ".mp3,.wav,.m4a",
     onChange(info) {
-      const { status } = info.file;
-
+      const { status, type } = info.file;
+      if (type === "image/x-icon") {
+        setFiles([]);
+        Toaster.error("Please upload an audio");
+        return;
+      }
       if (status === "removed") {
         return;
       }
@@ -112,6 +123,7 @@ const DragUpload: React.FC<uploadProps> = (props) => {
     onDrop(e) {
       console.log("Dropped files", e.dataTransfer.files);
     },
+    fileList: files,
     itemRender: (
       originNode,
       file,
