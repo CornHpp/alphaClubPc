@@ -207,15 +207,15 @@ const LeftNav: React.FC<LeftNavProps> = () => {
             }}
           >
             <Image
-              src={userinfo.imageUrl || defaultHeaderIcon}
+              src={userinfo?.imageUrl || defaultHeaderIcon}
               alt=""
               width={56}
               className="w-[56px] h-[56px] rounded-full border-solid border-[#0D0D0D] border-[2px]"
               height={56}
             ></Image>
             <div className="ml-[8px]">
-              <div className="text-[20px] font-bold overflow-hidden text-ellipsis whitespace-normal  w-[70px]  h-[30px]">
-                {userinfo.twitterName}
+              <div className="text-[20px] font-bold overflow-hidden text-ellipsis whitespace-nowrap  w-[70px]  h-[30px]">
+                {userinfo?.twitterName}
               </div>
               <div className="flex items-center text-[12px] text-[#404140]">
                 <Image
@@ -225,8 +225,8 @@ const LeftNav: React.FC<LeftNavProps> = () => {
                   width={16}
                   height={16}
                 ></Image>
-                <div className="ml-[2px] font-medium overflow-hidden text-ellipsis whitespace-normal  w-[70px]">
-                  @{userinfo.twitterScreenName}
+                <div className="ml-[2px] font-medium overflow-hidden text-ellipsis whitespace-nowrap  w-[70px]">
+                  @{userinfo?.twitterScreenName}
                 </div>
               </div>
             </div>

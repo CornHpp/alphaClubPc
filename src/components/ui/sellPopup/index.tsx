@@ -9,7 +9,7 @@ import { formatBalanceNumber } from "@/lib/util";
 import { getCurrentEventKeys, getSellPrice } from "@/api/model/home";
 import { eventPriceBykeysTypeAndKeys } from "../buyPopup";
 import UserHeader from "../userHeader";
-import lodash, { set } from "lodash";
+import useDebounce from "@/hooks/useDebounce";
 
 interface Props {
   showPopup: boolean;
@@ -52,16 +52,25 @@ const SellPopupView: React.FC<Props> = ({
   const getSellPriceFunc = useCallback(
     async (percent: number | string, isInput?: boolean) => {
       let val;
+
       if (!isInput) {
         val = Number(percent) * Number(balance) + "";
         setValue(val);
       } else {
-        console.log(percent, balance);
         if (Number(percent) > Number(balance)) {
           return;
         }
         val = Number(percent);
       }
+
+      if (!val) {
+        setGetOrderMap(undefined);
+        timeLineRef.current?.fatherSetCurrentStep(0);
+        return;
+      }
+
+      const percentValue = Number(val) / Number(balance);
+      timeLineRef.current?.fatherSetCurrentStep(percentValue * 4);
       const res = await getSellPrice(holderId, val as string);
       console.log(res);
       const order = {
@@ -75,9 +84,7 @@ const SellPopupView: React.FC<Props> = ({
     [balance, holderId]
   );
 
-  const debouncedFunction = lodash.debounce((val) => {
-    getSellPriceFunc(val, true);
-  }, 500);
+  const debouncedFunction = useDebounce(getSellPriceFunc, 700);
 
   const clickSellButton = () => {
     const order = {
@@ -138,7 +145,7 @@ const SellPopupView: React.FC<Props> = ({
             onChange={(val) => {
               console.log(val);
               setValue(val);
-              debouncedFunction(val);
+              debouncedFunction(val, true);
             }}
             rightNode={
               <div

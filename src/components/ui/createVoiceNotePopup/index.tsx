@@ -53,7 +53,7 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
         const params = {
           title: value,
           fileUrl: res.result,
-          source: 1,
+          source: 0,
           showTime: currentTime,
           audioDuration: audioDuration,
         };

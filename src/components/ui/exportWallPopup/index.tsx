@@ -59,7 +59,7 @@ const ExportWalletPopop: React.FC<Props> = ({
             leftNode={
               <div>
                 <Image
-                  src={userinfo.imageUrl || defaultHeaderIcon}
+                  src={userinfo?.imageUrl || defaultHeaderIcon}
                   alt=""
                   className="rounded-full border-[2px] border-solid border-[#0D0D0D]"
                   width={40}

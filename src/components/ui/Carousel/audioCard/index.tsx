@@ -23,6 +23,7 @@ interface CarouselProps {
   readedUserCount?: number;
   handleClickDelete?: (id: number | undefined) => void;
   showDeleteIcon?: boolean;
+  desc?: string;
 }
 
 const AudioCard: React.FC<CarouselProps> = (props) => {
@@ -36,8 +37,8 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
     readedUserCount,
     handleClickDelete,
     showDeleteIcon = false,
+    desc,
   } = props;
-
   return (
     <>
       <div>
@@ -56,7 +57,7 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
               ></Image>
             </SmallButton>
             <div className="ml-[6px]">
-              <SmallButton text={time} background="#fff">
+              <SmallButton text={time.slice(0, 11)} background="#fff">
                 <Image
                   src={timeIcon}
                   alt=""
@@ -66,7 +67,7 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
                 ></Image>
               </SmallButton>
             </div>
-            <div className="ml-[6px]">
+            {/* <div className="ml-[6px]">
               <SmallButton text={readedUserCount?.toString()} background="#fff">
                 <Image
                   src={earphoneIcon}
@@ -76,7 +77,7 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
                   className="w-[12px] h-[12px] mr-[3px]"
                 ></Image>
               </SmallButton>
-            </div>
+            </div> */}
           </div>
 
           {showDeleteIcon && (
@@ -92,14 +93,21 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
         </div>
         {title && title.length > 25 ? (
           <Tooltip placement="top" title={title} className=" cursor-pointer">
-            <div className="text-[18px] font-semibold mt-[2px] overflow-hidden text-ellipsis whitespace-normal w-[95%]">
+            <div className="text-[18px] font-semibold mt-[2px] overflow-hidden text-ellipsis whitespace-nowrap w-[95%]">
               {title}
             </div>
           </Tooltip>
         ) : (
-          <div className="text-[18px] font-semibold mt-[2px] overflow-hidden text-ellipsis whitespace-normal w-[95%]">
+          <div className="text-[18px] font-semibold mt-[2px] overflow-hidden text-ellipsis whitespace-nowrap w-[95%]">
             {title}
           </div>
+        )}
+        {desc ? (
+          <div className="text-[14px] text-[#404140] mt-[2px] overflow-hidden text-ellipsis whitespace-nowrap w-[95%]">
+            {desc}
+          </div>
+        ) : (
+          <>{audioSource != 0 && <div className="h-[20px]">{desc}</div>}</>
         )}
 
         {audioSource === 0 ? (
@@ -111,6 +119,7 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
         ) : (
           <AudioPlayer
             id={id as number}
+            isProfile={false}
             audioDuration={audioDuration}
             src={audioUrl}
           ></AudioPlayer>

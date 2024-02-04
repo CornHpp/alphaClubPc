@@ -227,7 +227,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({
         }}
       >
         <div
-          className=" font-semibold text-[20px]"
+          className=" font-semibold text-[20px] text-ellipsis overflow-hidden whitespace-nowrap w-[200px]"
           style={{
             fontSize: titleSize,
           }}

@@ -55,6 +55,8 @@ const CreationvView: React.FC<Props> = (props) => {
 
   const [currentDeletId, setCurrentDeletId] = React.useState<any>();
 
+  const [isIntroSelf, setIsIntroSelf] = React.useState(false);
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const queryParams = {
     pageNum: 1,
@@ -62,6 +64,7 @@ const CreationvView: React.FC<Props> = (props) => {
   };
 
   const urlParams = useParams();
+  const isSelf = userinfo.twitterUidStr === urlParams.id || !urlParams.id;
 
   const houseId = urlParams.id ? urlParams.id : userinfo.twitterUidStr;
 
@@ -109,6 +112,7 @@ const CreationvView: React.FC<Props> = (props) => {
 
   const openVoicePopup = () => {
     setShowCreatVoiceNotePopup(true);
+    setIsIntroSelf(true);
   };
 
   const handleClickDelete = () => {
@@ -172,23 +176,26 @@ const CreationvView: React.FC<Props> = (props) => {
       <div className="border-[2px] min-w-[355px] rounded-[16px]  border-[#0D0D0D] border-solid py-[16px] bg-white flex-1 flex flex-col overflow-hidden">
         <div className="w-full flex items-center text-[#0D0D0D] justify-between font-semibold px-[14px]">
           <div className="text-[20px] ">Creation</div>
-          <div
-            className=" w-[108px] h-[34px] border-[#0D0D0D] border-solid border-[2px] bg-[#FFF96D] items-center flex justify-center text-[12px] rounded-[17px]
-          cursor-pointer
-          "
-            onClick={() => {
-              setShowCreatVoiceNotePopup(true);
-            }}
-          >
-            <Image
-              src={microphoneIcon}
-              alt=""
-              width={18}
-              height={18}
-              className="w-[18px] h-[18px]"
-            ></Image>
-            Voice Note
-          </div>
+
+          {isSelf && (
+            <div
+              className=" w-[108px] h-[34px] border-[#0D0D0D] border-solid border-[2px] bg-[#FFF96D] items-center flex justify-center text-[12px] rounded-[17px]
+      cursor-pointer
+      "
+              onClick={() => {
+                setShowCreatVoiceNotePopup(true);
+              }}
+            >
+              <Image
+                src={microphoneIcon}
+                alt=""
+                width={18}
+                height={18}
+                className="w-[18px] h-[18px]"
+              ></Image>
+              Voice Note
+            </div>
+          )}
         </div>
 
         <div className="mt-[14px] px-[14px]">
@@ -272,7 +279,7 @@ const CreationvView: React.FC<Props> = (props) => {
               getAudioPersonListFunc(true);
             }, 1000);
           }}
-          isIntroSelf={true}
+          isIntroSelf={isIntroSelf}
         ></ChooseVoiceNotePopup>
 
         <CreateEventPopupView

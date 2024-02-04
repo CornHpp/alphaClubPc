@@ -168,7 +168,9 @@ const DragUpload: React.FC<uploadProps> = (props) => {
             {uploading ? "Uploading..." : "Drag Or Browse"}
           </div>
           {!uploading && (
-            <div className="text-[11px] text-[#949694]">support: wav. mp3.</div>
+            <div className="text-[11px] text-[#949694]">
+              support: wav.mp3.m4a
+            </div>
           )}
         </div>
       </Dragger>

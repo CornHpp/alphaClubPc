@@ -298,7 +298,7 @@ export const Audio: React.FC<audioType> = (props) => {
           </div>
         </div>
 
-        {isProfile && (
+        {isProfile ? (
           <div className="mt-[12px] flex">
             <Image
               src={beforeFifteen}
@@ -334,6 +334,22 @@ export const Audio: React.FC<audioType> = (props) => {
               }}
             ></Image>
           </div>
+        ) : (
+          <Image
+            src={playStatus == 1 ? playIcon : stopIcon}
+            alt=""
+            width={32}
+            height={32}
+            className="mt-[10px]"
+            onClick={() => {
+              if (playStatus === 1) {
+                setPlayStatus(2);
+              } else {
+                setPlayStatus(1);
+              }
+              handleClickPaly();
+            }}
+          ></Image>
         )}
 
         {/* {toggle && src && (

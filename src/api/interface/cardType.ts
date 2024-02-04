@@ -18,6 +18,7 @@ interface getTradeOrderList {
   price: number | string;
   twitterName: string;
   twitterScreenName: string;
+  holdcount: number;
 }
 
 interface responseScreenNameType {
@@ -45,6 +46,7 @@ interface responseTwitterListType {
   started: number;
   priceStr: string;
   tickets: number;
+  holdcount: number;
 }
 
 type PartialGetTradeOrderList = Partial<getTradeOrderList>;

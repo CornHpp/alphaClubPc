@@ -88,7 +88,7 @@ const DepositPopup: React.FC<Props> = ({
               <div>
                 <Image
                   className=" rounded-full  border-[2px] border-[#0D0D0D] border-solid"
-                  src={userinfo.imageUrl || defaultHeaderIcon}
+                  src={userinfo?.imageUrl || defaultHeaderIcon}
                   alt=""
                   width={40}
                   height={40}

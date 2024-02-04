@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import PopupView from "../popup";
 import ETHIcon from "@/assets/popup/ETH.svg";
 import Image from "next/image";
@@ -14,6 +14,7 @@ import UserHeader from "../userHeader";
 import lodash from "lodash";
 import questionIcon from "@/assets/popup/questionIcon.svg";
 import { Tooltip } from "antd";
+import useDebounce from "@/hooks/useDebounce";
 
 export interface eventPriceBykeysTypeAndKeys extends eventPriceBykeysType {
   keys: string;
@@ -92,19 +93,23 @@ const BuyPopupView: React.FC<Props> = ({
     setSelectedPrice(-1);
   };
 
-  const debouncedFunction = lodash.debounce((val) => {
-    setSelectedPrice(-1);
-    buttonList.findIndex((item) => {
-      if (val == item.price) {
-        setSelectedPrice(buttonList.indexOf(item));
+  const getBuyPrice = useCallback(
+    (val: any) => {
+      setSelectedPrice(-1);
+      buttonList.findIndex((item) => {
+        if (val == item.price) {
+          setSelectedPrice(buttonList.indexOf(item));
+        }
+      });
+      if (val <= 0) {
+        setNeedPayPrice("");
+      } else {
+        getCurrentEventPriceByKeyNumberFunc(val);
       }
-    });
-    if (val <= 0) {
-      setNeedPayPrice("");
-    } else {
-      getCurrentEventPriceByKeyNumberFunc(val);
-    }
-  }, 500);
+    },
+    [buttonList, getCurrentEventPriceByKeyNumberFunc]
+  );
+  const debouncedFunction = useDebounce(getBuyPrice, 500);
 
   return (
     <PopupView

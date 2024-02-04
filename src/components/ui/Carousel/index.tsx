@@ -72,6 +72,7 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
               audioUrl={item.fileUrl}
               audioSource={item.source}
               title={item.title}
+              audioDuration={item.audioDuration}
             ></AudioCard>
           </div>
           <div>

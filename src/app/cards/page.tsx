@@ -234,7 +234,7 @@ const Page: React.FC<Props> = () => {
                           height={51}
                           className="w-[51px] h-[51px] rounded-full border-[2px] border-solid border-[#0d0d0d]"
                         ></Image>
-                        <div className="text-[16px] font-bold overflow-hidden text-ellipsis whitespace-normal  w-[70px] h-[20px]">
+                        <div className="text-[16px] font-bold overflow-hidden text-ellipsis whitespace-nowrap  w-[70px] h-[20px]">
                           {item.twitterName}
                         </div>
                       </div>
@@ -253,7 +253,7 @@ const Page: React.FC<Props> = () => {
                               Twitter
                             </div>
                           </div>
-                          <div className="text-[14px] font-semibold overflow-hidden text-ellipsis whitespace-normal  w-[70px]">
+                          <div className="text-[14px] font-semibold overflow-hidden text-ellipsis whitespace-nowrap  w-[70px]">
                             @{item.twitterScreenName}
                           </div>
                         </div>
@@ -306,7 +306,7 @@ const Page: React.FC<Props> = () => {
                               height={12}
                             ></Image>
                             <div className="text-[#404140]  ml-[2px] text-[12px]">
-                              Holder:{item.holders}
+                              Holder:{item.holdcount}
                             </div>
                           </div>
                         </div>
@@ -505,7 +505,7 @@ const Page: React.FC<Props> = () => {
                             twitterScreenName: item?.twitterScreenName,
                             followersCount: item?.followersCount,
                             price: item?.priceStr,
-                            holders: item?.holdings,
+                            holders: item?.holdcount,
                           }}
                         ></UserPrice>
                         <div className="ml-[32px]">

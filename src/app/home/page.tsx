@@ -34,12 +34,14 @@ import {
 } from "@/api/model/home";
 import InfiniteScrollContent from "@/components/custom/infiniteScrollContent";
 import Emitter from "@/lib/emitter";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Player, Controls } from "@lottiefiles/react-lottie-player";
 import loadingAnimation from "@/lib/animation/loadingfinal.json";
 import nothingIcon from "@/assets/home/nothingIcon.svg";
 import BuyOrderPopup from "@/components/ui/buyOrderPopup";
 import HomeToast from "@/components/custom/homeToast";
+import { getUserInfo } from "@/api/model/userService";
+import { setUserInfo } from "@/redux/features/userSlice";
 
 const tabsList = [
   {
@@ -89,7 +91,7 @@ const Home: React.FC = () => {
   const [isLoading, setIsLoading] = React.useState(true);
 
   const loadMore = useCallback(
-    (refresh?: boolean) => {
+    (refresh?: boolean, currentIndex?: number) => {
       const parmas: infoType = {
         pageNum: paramsData.pageNum,
         pageSize: paramsData.pageSize,
@@ -101,8 +103,7 @@ const Home: React.FC = () => {
         setCardList([]);
       }
 
-      console.log(tabsActive);
-      const getHomeList = tabsActive == 1 ? getHouseAll : getHolderAll;
+      const getHomeList = currentIndex == 1 ? getHouseAll : getHolderAll;
       if (tabsActive == 1) {
         parmas.queryKey = paramsData.queryKey;
       }
@@ -162,11 +163,22 @@ const Home: React.FC = () => {
     setClickCurrentHolderId(holderId);
     setShowPopupSell(true);
   };
+  const dispatch = useDispatch();
+
+  const cacheUserInfo = () => {
+    getUserInfo().then((res) => {
+      console.log(res);
+      // dispatch(setUserInfo(res.result));
+    });
+  };
   return (
     <div className="relative flex-col flex w-full h-full">
       <div className=" flex pt-[18px] h-[76px] w-full items-center justify-between">
         <div className="flex items-center">
-          <div className="text-[32px] font-bold mr-[3px]">
+          <div
+            className="text-[32px] font-bold mr-[3px]"
+            onClick={cacheUserInfo}
+          >
             Pick Clubs To Join In!
           </div>
           <Image
@@ -194,9 +206,12 @@ const Home: React.FC = () => {
           tabList={tabsList}
           activeIndex={tabsActive}
           tabClick={(val) => {
-            tabsActive = val;
             setTabsActive(val);
-            loadMore(true);
+            if (val == 1) {
+              loadMore(true, 1);
+            } else {
+              loadMore(true, 0);
+            }
           }}
         ></Tabs>
       </div>
