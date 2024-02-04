@@ -11,6 +11,7 @@ import PlayAudio from "@/components/custom/playAudio1";
 import AudioPlayer from "@/components/custom/audioPlayer";
 import deleteIcon from "@/assets/popup/deleteIcon.svg";
 import earphoneIcon from "@/assets/profile/earphoneIcon.svg";
+import { Tooltip } from "antd";
 
 interface CarouselProps {
   time: string | undefined;
@@ -89,8 +90,18 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
             </div>
           )}
         </div>
+        {title && title.length > 25 ? (
+          <Tooltip placement="top" title={title} className=" cursor-pointer">
+            <div className="text-[18px] font-semibold mt-[2px] overflow-hidden text-ellipsis whitespace-normal w-[95%]">
+              {title}
+            </div>
+          </Tooltip>
+        ) : (
+          <div className="text-[18px] font-semibold mt-[2px] overflow-hidden text-ellipsis whitespace-normal w-[95%]">
+            {title}
+          </div>
+        )}
 
-        <div className="text-[18px] font-semibold mt-[2px]">{title}</div>
         {audioSource === 0 ? (
           <PlayAudio
             id={id as number}
