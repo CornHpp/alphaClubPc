@@ -64,7 +64,7 @@ const Login: React.FC<LoginProps> = () => {
           getUserInfo().then((res) => {
             console.log(res);
             dispatch(setUserInfo(res.result));
-            if (res.result.bindInviteCode) {
+            if (res?.result?.bindInviteCode) {
               router.push("/home");
             } else {
               setIsShowInviteCode(true);

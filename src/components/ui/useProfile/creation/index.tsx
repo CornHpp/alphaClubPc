@@ -21,7 +21,10 @@ import { useSelector } from "react-redux";
 import ChooseVoiceNotePopup from "../../createVoiceNotePopup";
 import tipCloseIcon from "@/assets/profile/tipCloseIcon.svg";
 import Button from "@/components/custom/button";
+import DeletePopupView from "@/components/ui/deletePopup";
 import { getQueryParams } from "@/lib/util";
+import { audioDelete } from "@/api/model/audio";
+import Toast from "@/components/custom/Toast";
 
 interface Props {
   // Add your props here
@@ -50,6 +53,8 @@ const CreationvView: React.FC<Props> = (props) => {
 
   const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true);
 
+  const [currentDeletId, setCurrentDeletId] = React.useState<any>();
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const queryParams = {
     pageNum: 1,
@@ -66,6 +71,7 @@ const CreationvView: React.FC<Props> = (props) => {
       setCurrentTab(1);
     }
   }, []);
+  const [showDeletePopup, setShowDeletePopup] = React.useState(false);
 
   const getAudioPersonListFunc = async (isReset?: boolean) => {
     if (isReset) {
@@ -103,6 +109,15 @@ const CreationvView: React.FC<Props> = (props) => {
 
   const openVoicePopup = () => {
     setShowCreatVoiceNotePopup(true);
+  };
+
+  const handleClickDelete = () => {
+    audioDelete(currentDeletId).then((res) => {
+      console.log("res", res);
+      getAudioPersonListFunc(true);
+      Toast.success("Delete Success");
+      setShowDeletePopup(false);
+    });
   };
 
   return (
@@ -203,12 +218,17 @@ const CreationvView: React.FC<Props> = (props) => {
                         key={index + "1"}
                       >
                         <AudioCard
+                          handleClickDelete={(id) => {
+                            setCurrentDeletId(id);
+                            setShowDeletePopup(true);
+                          }}
                           id={item.id}
                           time={item.showTime}
                           audioUrl={item.fileUrl}
                           audioSource={item.source}
                           title={item.title}
                           audioDuration={item.audioDuration}
+                          readedUserCount={item.readedUserCount}
                         ></AudioCard>
                       </div>
                     );
@@ -298,6 +318,12 @@ const CreationvView: React.FC<Props> = (props) => {
           }}
         ></AcceptCoHostPopup>
       </div>
+
+      <DeletePopupView
+        showPopup={showDeletePopup}
+        setShowPopup={setShowDeletePopup}
+        clickDelete={handleClickDelete}
+      ></DeletePopupView>
     </div>
   );
 };

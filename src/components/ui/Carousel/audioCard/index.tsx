@@ -9,6 +9,8 @@ import volumeIcon from "@/assets/home/volumeIcon.svg";
 import timeIcon from "@/assets/popup/timeIcon.svg";
 import PlayAudio from "@/components/custom/playAudio1";
 import AudioPlayer from "@/components/custom/audioPlayer";
+import deleteIcon from "@/assets/popup/deleteIcon.svg";
+import earphoneIcon from "@/assets/profile/earphoneIcon.svg";
 
 interface CarouselProps {
   time: string | undefined;
@@ -17,6 +19,9 @@ interface CarouselProps {
   title?: string;
   audioDuration?: number;
   id: number | undefined;
+  readedUserCount?: number;
+  handleClickDelete?: (id: number | undefined) => void;
+  showDeleteIcon?: boolean;
 }
 
 const AudioCard: React.FC<CarouselProps> = (props) => {
@@ -27,51 +32,80 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
     title,
     audioDuration,
     id,
+    readedUserCount,
+    handleClickDelete,
+    showDeleteIcon = false,
   } = props;
 
   return (
-    <div>
-      <div className="flex">
-        <SmallButton
-          text={audioSource === 0 ? "SHORT" : "LONG"}
-          background={audioSource === 0 ? "#FFFFB3" : "#B4FFB3"}
-        >
-          <Image
-            src={audioSource === 0 ? volumeIcon : radioIcon}
-            alt=""
-            width={12}
-            height={12}
-            className="w-[12px] h-[12px] mr-[3px]"
-          ></Image>
-        </SmallButton>
-        <div className="ml-[6px]">
-          <SmallButton text={time} background="#fff">
-            <Image
-              src={timeIcon}
-              alt=""
-              width={12}
-              height={12}
-              className="w-[12px] h-[12px] mr-[3px]"
-            ></Image>
-          </SmallButton>
-        </div>
-      </div>
+    <>
+      <div>
+        <div className="flex justify-between">
+          <div className="flex">
+            <SmallButton
+              text={audioSource === 0 ? "SHORT" : "LONG"}
+              background={audioSource === 0 ? "#FFFFB3" : "#B4FFB3"}
+            >
+              <Image
+                src={audioSource === 0 ? volumeIcon : radioIcon}
+                alt=""
+                width={12}
+                height={12}
+                className="w-[12px] h-[12px] mr-[3px]"
+              ></Image>
+            </SmallButton>
+            <div className="ml-[6px]">
+              <SmallButton text={time} background="#fff">
+                <Image
+                  src={timeIcon}
+                  alt=""
+                  width={12}
+                  height={12}
+                  className="w-[12px] h-[12px] mr-[3px]"
+                ></Image>
+              </SmallButton>
+            </div>
+            <div className="ml-[6px]">
+              <SmallButton text={readedUserCount?.toString()} background="#fff">
+                <Image
+                  src={earphoneIcon}
+                  alt=""
+                  width={12}
+                  height={12}
+                  className="w-[12px] h-[12px] mr-[3px]"
+                ></Image>
+              </SmallButton>
+            </div>
+          </div>
 
-      <div className="text-[18px] font-semibold mt-[2px]">{title}</div>
-      {audioSource === 0 ? (
-        <PlayAudio
-          id={id as number}
-          audioDuration={audioDuration}
-          src={audioUrl}
-        ></PlayAudio>
-      ) : (
-        <AudioPlayer
-          id={id as number}
-          audioDuration={audioDuration}
-          src={audioUrl}
-        ></AudioPlayer>
-      )}
-    </div>
+          {showDeleteIcon && (
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                handleClickDelete && handleClickDelete(id);
+              }}
+            >
+              <Image src={deleteIcon} alt="" width={16} height={16}></Image>
+            </div>
+          )}
+        </div>
+
+        <div className="text-[18px] font-semibold mt-[2px]">{title}</div>
+        {audioSource === 0 ? (
+          <PlayAudio
+            id={id as number}
+            audioDuration={audioDuration}
+            src={audioUrl}
+          ></PlayAudio>
+        ) : (
+          <AudioPlayer
+            id={id as number}
+            audioDuration={audioDuration}
+            src={audioUrl}
+          ></AudioPlayer>
+        )}
+      </div>
+    </>
   );
 };
 

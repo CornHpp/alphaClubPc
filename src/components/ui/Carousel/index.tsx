@@ -24,6 +24,10 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
     if (val !== currentSlide) {
       (carouseRef?.current as any).next();
     }
+    console.log(val);
+    if (val !== currentSlide && val == 1) {
+      getPersonTradeListFunc();
+    }
   };
 
   const [isShowDanmu, setIsShowDanmu] = React.useState<boolean>(false);
@@ -51,19 +55,10 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
     setShowDanmuList(newCardList);
   };
 
-  useEffect(() => {
-    getPersonTradeListFunc();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const onChange1 = (currentSlide: number) => {
-    console.log(currentSlide);
-  };
-
   return (
     <div className="w-full px-[16px] py-[16px] ">
       <div className="border-[2px] border-[#0D0D0D] border-solid overflow-hidden rounded-[10px] w-full h-[129px]">
-        <Carousel ref={carouseRef} dots={false} afterChange={onChange1}>
+        <Carousel ref={carouseRef} dots={false}>
           <div
             className="w-full rounded-[10px] bg-[#fff] h-[129px] px-[10px] py-[10px] cursor-pointer"
             onClick={() => {
@@ -79,19 +74,17 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
               title={item.title}
             ></AudioCard>
           </div>
-          {showDanmuList.length > 0 && (
-            <div>
-              {isShowDanmu ? (
-                <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[129px] block px-[10px] py-[10px]">
-                  <CardBeginView></CardBeginView>
-                </div>
-              ) : (
-                <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[129px] block overflow-hidden">
-                  {item && <Danmu lists={showDanmuList}></Danmu>}
-                </div>
-              )}
-            </div>
-          )}
+          <div>
+            {isShowDanmu ? (
+              <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[129px] block px-[10px] py-[10px]">
+                <CardBeginView></CardBeginView>
+              </div>
+            ) : (
+              <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[129px] block overflow-hidden">
+                {item && <Danmu lists={showDanmuList}></Danmu>}
+              </div>
+            )}
+          </div>
         </Carousel>
       </div>
       <div className=" flex w-full justify-center mt-[6px] cursor-pointer">

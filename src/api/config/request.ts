@@ -58,7 +58,7 @@ const request = {
   },
 
   // delete删除
-  delete<T>(url: string, params?: object, config = {}): Promise<ResultData<T>> {
+  delete<T>(url: string, params?: object, config = {}): Promise<T> {
     config = mixinCustom(config);
     return http.delete(url, { ...params, ...config });
   },

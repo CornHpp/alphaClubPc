@@ -6,4 +6,5 @@ interface creatAudioType {
   source: number;
   id?: number;
   audioDuration?: number;
+  readedUserCount: number;
 }

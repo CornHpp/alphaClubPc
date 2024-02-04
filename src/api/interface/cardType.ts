@@ -7,6 +7,7 @@ interface getTradeListType {
   createTime: string;
   moneyCount: string;
   price: string;
+  priceStr: string;
 }
 
 interface getTradeOrderList {

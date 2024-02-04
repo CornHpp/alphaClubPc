@@ -27,3 +27,12 @@ export const audioQueryAccess = async (
   const response = await request.get<ResponseBaseType<any>>(url);
   return response;
 };
+
+// 删除一个audio
+export const audioDelete = async (
+  audioId: number | string
+): Promise<ResponseBaseType<any>> => {
+  const url = `/audio/${audioId}/delete`;
+  const response = await request.delete<ResponseBaseType<any>>(url);
+  return response;
+};
