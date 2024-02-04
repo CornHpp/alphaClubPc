@@ -161,7 +161,7 @@ const Page: React.FC<Props> = () => {
   return (
     <div className="mt-[24px] w-full flex flex-col flex-1 pr-[37px] overflow-hidden">
       <div className=" flex w-full justify-between pr-[39px] items-center">
-        <div className="text-[32px] font-bold mr-[3px]">cards</div>
+        <div className="text-[32px] font-bold mr-[3px]">Cards</div>
       </div>
       <div className="flex items-center mt-[12px] border-[2px] border-[#0D0D0D] border-solid rounded-[12px]  h-[58px] bg-white px-[14px]">
         <div className="font-bold text-[18px] w-[65px] leading-[20px]">

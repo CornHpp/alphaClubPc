@@ -4,7 +4,6 @@ import "overlayscrollbars/overlayscrollbars.css";
 import "./index.css";
 import "overlayscrollbars/overlayscrollbars.css";
 import React, { useEffect, useRef } from "react";
-import UserPrice from "@/components/ui/userPrice";
 import InfiniteScrollContent from "@/components/custom/infiniteScrollContent";
 
 import { InfiniteScroll } from "antd-mobile";

@@ -47,7 +47,7 @@ const DanmuButtonCards: React.FC<DanmuButtonProps> = (props) => {
           </span>
           {item?.tradeType == 1 ? "bought" : "sold"}{" "}
           <span className="text-[#0D0D0D] ml-[3px] mr-[3px]">{item?.keys}</span>{" "}
-          Key
+          Card
         </div>
         <div className="text-[16px] font-semibold text-[#005A0E] flex items-center mt-[3px]">
           {item?.price?.toString().slice(0, 6)}ETH

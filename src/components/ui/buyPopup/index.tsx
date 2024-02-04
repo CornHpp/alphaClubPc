@@ -99,7 +99,11 @@ const BuyPopupView: React.FC<Props> = ({
         setSelectedPrice(buttonList.indexOf(item));
       }
     });
-    getCurrentEventPriceByKeyNumberFunc(val);
+    if (val <= 0) {
+      setNeedPayPrice("");
+    } else {
+      getCurrentEventPriceByKeyNumberFunc(val);
+    }
   }, 500);
 
   return (
