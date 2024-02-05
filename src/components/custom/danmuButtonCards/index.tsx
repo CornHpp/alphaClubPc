@@ -42,7 +42,7 @@ const DanmuButtonCards: React.FC<DanmuButtonProps> = (props) => {
       ></Image>
       <div className="ml-[4px] leading-[14px] flex-shrink-0">
         <div className="font-medium text-[12px] text-[#004D22] flex items-center">
-          <span className="overflow-hidden text-ellipsis whitespace-nowrap  max-w-[70px] inline-block h-[14px] mr-[3px]">
+          <span className="overflow-hidden text-ellipsis whitespace-nowrap  max-w-[60px] inline-block mr-[3px]">
             {item?.twitterName}{" "}
           </span>
           {item?.tradeType == 1 ? "bought" : "sold"}{" "}

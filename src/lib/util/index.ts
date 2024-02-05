@@ -172,6 +172,7 @@ interface ParsedTime {
   hour: string;
   minute: string;
 }
+
 export const parseTimeValue = (
   value: string,
   serviceTime: boolean
@@ -257,21 +258,24 @@ export function formatDateIsEnd(
 }
 
 // utc时间转换为本地时间
-export function utcToLocal(time: string | Date) {
-  const utcTime = formatDate(time, "yyyy-MM-dd hh:mm:ss");
+export function utcToLocal(time: string | Date | undefined) {
+  if (!time) return "";
+  const newTime = new Date(time).toLocaleString("en-US", {});
+  const utcTime = formatDate(newTime, "yyyy-MM-dd hh:mm:ss");
   return utcTime;
 }
 
 // 本地时间转换为utc时间 在转成常用的格式
-
 export function localToUtc(time: string) {
-  time = time?.split(" ").join("T").concat("Z");
+  const utcTime = new Date(time).toISOString();
+  // time = time?.split(" ").join("T").concat("Z");
 
-  let toLocalDate = new Date(time).toLocaleString("en-US", {});
+  // let toLocalDate = new Date(time).toLocaleString("en-US", {});
 
-  const target = new Date(toLocalDate);
-  return formatDate(target, "yyyy-MM-dd hh:mm:ss");
+  // const target = new Date(toLocalDate);
+  return formatDate(utcTime, "yyyy-MM-dd hh:mm:ss");
 }
+
 // 判断当前时间是否大于传入时间
 export const isTimeAfter = (time: string) => {
   console.log(time);

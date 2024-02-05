@@ -9,7 +9,7 @@ import Emitter from "@/lib/emitter";
 import "./index.css";
 import CalendarView from "@/components/custom/calendar";
 import { audioCreate } from "@/api/model/audio";
-import { formatDate } from "@/lib/util";
+import { formatDate, localToUtc } from "@/lib/util";
 interface Props {
   // Define your component props here
   showPopupBuy: boolean;
@@ -54,7 +54,7 @@ const ChooseTimePopup: React.FC<Props> = ({
   const onClickConfirmFunc = () => {
     const params = {
       ...(audioData as creatAudioType),
-      showTime: selectedTime,
+      showTime: localToUtc(selectedTime),
     };
     console.log("params", params);
     audioCreate(params)

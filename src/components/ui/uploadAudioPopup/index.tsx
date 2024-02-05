@@ -11,7 +11,7 @@ import Emitter from "@/lib/emitter";
 import errorIcon from "@/assets/home/errorIcon.svg";
 
 import DragUpload from "./dragUpload";
-import { formatDate } from "@/lib/util";
+import { formatDate, localToUtc } from "@/lib/util";
 import Toaster from "@/components/custom/Toast";
 import { useRouter } from "next/navigation";
 
@@ -97,7 +97,7 @@ const UploadAudioPopup: React.FC<Props> = ({
       title: value,
       descr: describe,
       fileUrl: saveAudioUrl,
-      showTime: currentTime,
+      showTime: localToUtc(currentTime),
       source: 1,
       audioDuration: saveAudioDuration,
     };

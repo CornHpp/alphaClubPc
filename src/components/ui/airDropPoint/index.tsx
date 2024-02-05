@@ -377,7 +377,8 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
                     <div>
                       {index == 3 ? (
                         <div>
-                          Squad Trade: {item.unFinished}/{item.allNum}
+                          Squad Trade:
+                          {item.unFinished.toString().slice(0, 8)}/{item.allNum}
                         </div>
                       ) : (
                         <div>
@@ -406,21 +407,34 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
                     }}
                     className=" relative w-[63px] cursor-pointer h-[25px] rounded-[12px] bg-[#E9E9E9] text-[#949694] text-[14px] font-semibold flex justify-center items-center"
                   >
-                    <div
-                      className=" absolute bg-[#FFF96D] left-0 top-0 h-full"
-                      style={{
-                        width: `${
-                          (item.unFinished / item.allNum > 1
-                            ? 1
-                            : item.unFinished / item.allNum) * 100
-                        }%`,
-                        borderRadius: `${
-                          item.unFinished / item.allNum >= 1
-                            ? "12px"
-                            : "12px 0 0 12px"
-                        }`,
-                      }}
-                    ></div>
+                    {index == 0 || index == 1 ? (
+                      <div
+                        className=" absolute bg-[#FFF96D] left-0 top-0 h-full"
+                        style={{
+                          background:
+                            (index == 0 || index == 1) && item.canOpen
+                              ? "#FFF96D"
+                              : "#E9E9E9",
+                        }}
+                      ></div>
+                    ) : (
+                      <div
+                        className=" absolute bg-[#FFF96D] left-0 top-0 h-full"
+                        style={{
+                          width: `${
+                            (item.unFinished / item.allNum > 1
+                              ? 1
+                              : item.unFinished / item.allNum) * 100
+                          }%`,
+                          borderRadius: `${
+                            item.unFinished / item.allNum >= 1
+                              ? "12px"
+                              : "12px 0 0 12px"
+                          }`,
+                        }}
+                      ></div>
+                    )}
+
                     <div className=" relative">Open</div>
                   </div>
                 </div>

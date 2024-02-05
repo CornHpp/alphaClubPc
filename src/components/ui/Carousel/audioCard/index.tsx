@@ -23,7 +23,8 @@ interface CarouselProps {
   readedUserCount?: number;
   handleClickDelete?: (id: number | undefined) => void;
   showDeleteIcon?: boolean;
-  desc?: string;
+  descr?: string;
+  isProfile?: boolean;
 }
 
 const AudioCard: React.FC<CarouselProps> = (props) => {
@@ -37,7 +38,8 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
     readedUserCount,
     handleClickDelete,
     showDeleteIcon = false,
-    desc,
+    descr,
+    isProfile = false,
   } = props;
   return (
     <>
@@ -103,12 +105,12 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
           </div>
         )}
 
-        {desc ? (
+        {descr ? (
           <div className="text-[14px] text-[#404140] mt-[2px] overflow-hidden text-ellipsis whitespace-nowrap w-[95%]">
-            {desc}
+            {descr}
           </div>
         ) : (
-          <>{audioSource != 0 && <div className="h-[20px]">{desc}</div>}</>
+          <>{audioSource != 0 && <div className="h-[20px]">{descr}</div>}</>
         )}
 
         {audioSource === 0 ? (
@@ -120,7 +122,7 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
         ) : (
           <AudioPlayer
             id={id as number}
-            isProfile={false}
+            isProfile={isProfile}
             audioDuration={audioDuration}
             src={audioUrl}
           ></AudioPlayer>

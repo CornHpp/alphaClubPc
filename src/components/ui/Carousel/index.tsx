@@ -8,6 +8,7 @@ import AudioCard from "./audioCard";
 import nothingIcon from "@/assets/home/nothingIcon.svg";
 import { getPersonTradeList } from "@/api/model/profile";
 import Image from "next/image";
+import { utcToLocal } from "@/lib/util";
 
 interface CarouselProps {
   // Define your props here
@@ -28,13 +29,13 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
     }
     console.log(val);
     if (val !== currentSlide && val == 1) {
-      getPersonTradeListFunc();
+      // getPersonTradeListFunc();
     }
   };
 
   const [isShowDanmu, setIsShowDanmu] = React.useState<boolean>(false);
 
-  const [isHaveList, setIsHaveList] = React.useState<boolean>(true);
+  const [isHaveList, setIsHaveList] = React.useState<boolean>(false);
 
   const [isHaveAudio, setIsHaveAudio] = React.useState<boolean>(false);
 
@@ -98,20 +99,21 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
                 {item.audioEventDomain && (
                   <AudioCard
                     id={item?.audioEventDomain?.id}
-                    time={item?.audioEventDomain?.showTime}
+                    time={utcToLocal(item?.audioEventDomain?.showTime)}
                     audioUrl={item?.audioEventDomain?.fileUrl as string}
                     audioSource={item?.audioEventDomain.source}
                     title={item.audioEventDomain.title}
                     audioDuration={item.audioEventDomain.audioDuration}
+                    descr={item.audioEventDomain.descr}
                   ></AudioCard>
                 )}
               </div>
             )}
-            <div>
+            {item.tradeHistoryDomains && (
               <div className="w-full rounded-[10px] bg-[#E9E9E9] h-[129px] block overflow-hidden">
-                {item && <Danmu lists={showDanmuList}></Danmu>}
+                {item && <Danmu lists={item.tradeHistoryDomains}></Danmu>}
               </div>
-            </div>
+            )}
           </Carousel>
         ) : (
           <div className="overflow-hidden rounded-[10px] w-full h-[129px] flex flex-col items-center justify-center font-semibold text-[14px]">
@@ -126,7 +128,7 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
           </div>
         )}
       </div>
-      {isHaveList && (
+      {item.audioEventDomain && item.tradeHistoryDomains ? (
         <div className=" flex w-full justify-center mt-[6px] cursor-pointer">
           <div
             className="w-[14px] h-[5px]  rounded-[16px] "
@@ -147,6 +149,8 @@ const CarouselView: React.FC<CarouselProps> = (props) => {
             }}
           ></div>
         </div>
+      ) : (
+        <div className="mt-[12px]"></div>
       )}
     </div>
   );

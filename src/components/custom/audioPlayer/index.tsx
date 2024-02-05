@@ -273,7 +273,9 @@ export const Audio: React.FC<audioType> = (props) => {
         >
           <div className="w-full flex justify-between  pr-[8px]">
             <div>{currentTime}</div>
-            <div>{audioDuration}</div>
+            <div>
+              {audioDuration} {"'"}s
+            </div>
           </div>
           <div className="flex items-center mt-[6px] w-full">
             <div

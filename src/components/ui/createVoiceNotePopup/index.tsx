@@ -8,7 +8,7 @@ import CalendarView from "@/components/custom/calendar";
 import Search from "@/components/custom/search";
 import { audioCreate, audioUpload } from "@/api/model/audio";
 import PressRecord from "./pressRecord";
-import { formatDate } from "@/lib/util";
+import { formatDate, localToUtc } from "@/lib/util";
 import Toaster from "@/components/custom/Toast";
 import { useRouter } from "next/navigation";
 import { creatSelfInfroAudio } from "@/api/model/userService";
@@ -33,6 +33,10 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
   const [formData, setFormData] = useState<FormData>();
   const [audioDuration, setAudioDuration] = useState<number>(0);
 
+  const [titlePlaceHolder, setTitlePlaceHolder] = useState<string>(
+    `${formatDate(new Date(), "yyyy-MM-dd")} short recording`
+  );
+
   const [value, setValue] = React.useState("");
 
   const [showError, setShowError] = useState(false);
@@ -40,7 +44,6 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
   const router = useRouter();
 
   const onClickConfirm = () => {
-    console.log("value", isIntroSelf);
     if (isIntroSelf) {
       introSelf();
     } else {
@@ -50,16 +53,17 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
 
   const shortRecording = async () => {
     const currentTime = formatDate(new Date(), "yyyy-MM-dd hh:mm:ss");
+
     console.log("currentTime", currentTime);
-    if (value && formData) {
+    if (formData) {
       audioUpload(formData).then((res) => {
         console.log("res", res);
 
         const params = {
-          title: value,
+          title: value || titlePlaceHolder,
           fileUrl: res.result,
           source: 0,
-          showTime: currentTime,
+          showTime: localToUtc(currentTime),
           audioDuration: audioDuration,
         };
         audioCreate(params)
@@ -111,18 +115,9 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
     if (isIntroSelf) {
       return formData; // Return true if formData is falsy
     } else {
-      return value && formData; // Return true if either value or formData is falsy
+      return formData; // Return true if either value or formData is falsy
     }
-  }, [isIntroSelf, value, formData]);
-
-  // const buttonDisabled = () =>
-  //   useMemo(() => {
-  //     if (isIntroSelf) {
-  //       return formData;
-  //     } else {
-  //       return value && formData;
-  //     }
-  //   }, [value, formData]);
+  }, [isIntroSelf, formData]);
 
   return (
     <PopupView
@@ -156,7 +151,7 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
             width={368}
             boxShadow={showError}
             height={54}
-            placeholder="2024-01-16 short recording"
+            placeholder={titlePlaceHolder}
             rightNode={<></>}
           ></Search>
 

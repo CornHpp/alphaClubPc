@@ -22,7 +22,7 @@ import ChooseVoiceNotePopup from "../../createVoiceNotePopup";
 import tipCloseIcon from "@/assets/profile/tipCloseIcon.svg";
 import Button from "@/components/custom/button";
 import DeletePopupView from "@/components/ui/deletePopup";
-import { getQueryParams } from "@/lib/util";
+import { getQueryParams, utcToLocal } from "@/lib/util";
 import { audioDelete } from "@/api/model/audio";
 import Toast from "@/components/custom/Toast";
 import cloudUploadIcon from "@/assets/home/cloudUploadIcon.svg";
@@ -243,8 +243,9 @@ const CreationvView: React.FC<Props> = (props) => {
                             setCurrentDeletId(id);
                             setShowDeletePopup(true);
                           }}
+                          isProfile={true}
                           id={item.id}
-                          time={item.showTime}
+                          time={utcToLocal(item.showTime)}
                           audioUrl={item.fileUrl}
                           audioSource={item.source}
                           title={item.title}
