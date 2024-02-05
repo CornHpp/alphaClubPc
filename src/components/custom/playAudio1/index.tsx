@@ -69,22 +69,25 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
       }, 500);
       return;
     }
-    audioQueryAccess(id).then((res) => {
-      console.log(res);
-      if (res.code == "200") {
-        setAudioStatus(2);
-        setPlayStatus(2);
-        const newSrc = src + "?" + res.result;
-        createWaveSurfer(waveContentId.current, newSrc);
-        setCacheAudioUrl(newSrc);
-
-        setTimeout(() => {
-          wavesurfer.playPause();
-        }, 500);
-      } else {
+    audioQueryAccess(id)
+      .then((res) => {
+        console.log(res);
+        if (res.code == "200") {
+          setAudioStatus(2);
+          setPlayStatus(2);
+          const newSrc = src + "?" + res.result;
+          createWaveSurfer(waveContentId.current, newSrc);
+          setCacheAudioUrl(newSrc);
+          setTimeout(() => {
+            wavesurfer.playPause();
+          }, 500);
+        } else {
+          Toaster.error("Cards not enough!");
+        }
+      })
+      .catch((err) => {
         Toaster.error("Cards not enough!");
-      }
-    });
+      });
   };
 
   const clickPlayStop = () => {
