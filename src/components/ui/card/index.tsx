@@ -113,7 +113,7 @@ const Card: React.FC<CardProps> = ({
               height={24}
             ></Image>
             <div className="text-[#0D0D0D] font-semibold ml-[2px] text-[24px]">
-              {formatBalanceNumber(item.priceStr)}
+              {formatBalanceNumber(item.priceStr)} ETH
             </div>
           </div>
         </div>

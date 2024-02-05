@@ -75,7 +75,7 @@ const WithdrawPopup: React.FC<Props> = ({
           <Search
             width={364}
             height={50}
-            placeholder="address"
+            placeholder="Enter Address"
             rightNode={<></>}
             value={address}
             onChange={(val) => {
@@ -91,7 +91,7 @@ const WithdrawPopup: React.FC<Props> = ({
             onChange={(val) => {
               setAmount(val);
             }}
-            placeholder="min 0.001"
+            placeholder="Enter Amount"
             type="number"
             rightNode={
               <div

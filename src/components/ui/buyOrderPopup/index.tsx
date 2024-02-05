@@ -28,8 +28,6 @@ const BuyOrderPopup: React.FC<Props> = ({
 }) => {
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
-  console.log(orderMap);
-
   const buySelfThreeCardsFunc = () => {
     buySelfcard().then((res) => {
       console.log(res);

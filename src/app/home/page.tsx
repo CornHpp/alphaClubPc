@@ -54,7 +54,7 @@ const tabsList = [
   },
 ];
 const Home: React.FC = () => {
-  let [tabsActive, setTabsActive] = React.useState(0);
+  let [tabsActive, setTabsActive] = React.useState(1);
 
   const [showPopupBuy, setShowPopupBuy] = React.useState(false);
   const [showPopupSell, setShowPopupSell] = React.useState(false);
@@ -128,7 +128,7 @@ const Home: React.FC = () => {
   );
 
   useEffect(() => {
-    loadMore(true);
+    loadMore(true, 1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

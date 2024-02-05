@@ -23,6 +23,7 @@ interface Props {
   isEdit?: boolean;
   onClickSchedule: (data: creatAudioType) => void;
   onSuccess: () => void;
+  isProfileView?: boolean;
 }
 
 const UploadAudioPopup: React.FC<Props> = ({
@@ -31,6 +32,7 @@ const UploadAudioPopup: React.FC<Props> = ({
   onClickSchedule,
   isEdit = false,
   onSuccess,
+  isProfileView = false,
 }) => {
   const [selectedPrice, setSelectedPrice] = React.useState(0);
   const [describe, setDescribe] = React.useState("");
@@ -55,6 +57,7 @@ const UploadAudioPopup: React.FC<Props> = ({
     return () => {
       Emitter.off("createAudioSuccess");
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isEdit, onSuccess]);
 
   const onClickScheduleFunc = () => {
@@ -104,10 +107,13 @@ const UploadAudioPopup: React.FC<Props> = ({
       setDescribe("");
       setValue("");
       Toaster.success("Upload voice note successfully");
-      setTimeout(() => {
-        router.push("/profile?type=" + "AudioDem");
-      }, 1000);
-      // onSuccess();
+      if (isProfileView) {
+        onSuccess();
+      } else {
+        setTimeout(() => {
+          router.push("/profile?type=" + "AudioDem");
+        }, 1000);
+      }
     });
   };
 
@@ -198,7 +204,7 @@ const UploadAudioPopup: React.FC<Props> = ({
           active={false}
           width="176px"
           height="54px"
-          text={"Starting now"}
+          text={"Post now"}
           background="#0D0D0D"
           borderRadius="26px"
           border="2px solid #0D0D0D"

@@ -128,14 +128,14 @@ const UserInfoView: React.FC<Props> = (props) => {
       imageUrl: res.result.imageUrl,
       followersCount: res.result.followersCount,
       twitterScreenName: res.result.twitterScreenName,
-    })
+    });
     console.log(isSelf);
     setCurrentNameProfile(
       isSelf || !urlParams.id ? "My" : res.result.twitterName
     );
     setUseProfileMap({
       holders: res.result.holders,
-      roomPrice: res.result.priceStr,
+      priceStr: res.result.priceStr,
       walletAddress: res.result.walletAddress,
       walletBalance: res.result.walletBalance,
       holdingValues: res.result.holdingValues,
@@ -289,7 +289,7 @@ const UserInfoView: React.FC<Props> = (props) => {
             <div className="flex items-center mt-[6px]">
               <Image src={ethereum} alt="" width={18} height={18}></Image>
               <div className="text-[#0D0D0D] font-semibold ml-[2px] text-[18px]">
-                {useProfileMap?.priceStr} ETH
+                {useProfileMap?.priceStr?.slice(0, 8)} ETH
               </div>
             </div>
           </div>
@@ -358,7 +358,7 @@ const UserInfoView: React.FC<Props> = (props) => {
             <div className="ml-[8px]">
               <div className="flex font-medium">Balance</div>
               <div className="mt-[3px] font-semibold text-[18px]">
-                {formatBalanceNumber(useProfileMap?.walletBalance)}
+                {formatBalanceNumber(useProfileMap?.walletBalance)} ETH
               </div>
             </div>
           </div>
@@ -517,7 +517,10 @@ const UserInfoView: React.FC<Props> = (props) => {
             {formatBalanceNumber(useProfileMap?.holdingValues)}ETH
           </div>
           <div className="flex items-center font-semibold text-[16px]">
-            <div className="font-medium w-[129px]">Fees Earned：</div> 0.00ETH
+            <div className="font-medium w-[129px]">
+              Fees Earned：{useProfileMap?.priceStr}
+            </div>{" "}
+            0.00ETH
           </div>
         </div>
       )}

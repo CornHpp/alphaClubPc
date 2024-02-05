@@ -25,6 +25,8 @@ import DeletePopupView from "@/components/ui/deletePopup";
 import { getQueryParams } from "@/lib/util";
 import { audioDelete } from "@/api/model/audio";
 import Toast from "@/components/custom/Toast";
+import cloudUploadIcon from "@/assets/home/cloudUploadIcon.svg";
+import UploadAudioPopup from "../../uploadAudioPopup";
 
 interface Props {
   // Add your props here
@@ -35,6 +37,11 @@ interface Props {
 const CreationvView: React.FC<Props> = (props) => {
   const { showVoiceTntro, setIsShowVoiceIntro } = props;
   const { userinfo } = useSelector((state: any) => state.user);
+
+  const [showUploadAudioPopup, setShowUploadAudioPopup] = React.useState(false);
+
+  const [cacheCurrentAudioData, setCacheCurrentAudioData] =
+    React.useState<creatAudioType>();
 
   const [showPopupCreateEvent, setShowPopupCreateEvent] = React.useState(false);
   const [showPopupChooseSpeaker, setShowPopupChooseSpeaker] =
@@ -179,21 +186,28 @@ const CreationvView: React.FC<Props> = (props) => {
 
           {isSelf && (
             <div
-              className=" w-[108px] h-[34px] border-[#0D0D0D] border-solid border-[2px] bg-[#FFF96D] items-center flex justify-center text-[12px] rounded-[17px]
+              className=" min-w-[108px] h-[34px] px-[14px] border-[#0D0D0D] border-solid border-[2px] bg-[#FFF96D] items-center flex justify-center text-[12px] rounded-[17px]
       cursor-pointer
       "
+              style={{
+                background: currentTab == 0 ? "#FFF96D" : "#00FC6E",
+              }}
               onClick={() => {
-                setShowCreatVoiceNotePopup(true);
+                if (currentTab == 0) {
+                  setShowCreatVoiceNotePopup(true);
+                } else {
+                  setShowUploadAudioPopup(true);
+                }
               }}
             >
               <Image
-                src={microphoneIcon}
+                src={currentTab == 0 ? microphoneIcon : cloudUploadIcon}
                 alt=""
                 width={18}
                 height={18}
                 className="w-[18px] h-[18px]"
               ></Image>
-              Voice Note
+              {currentTab == 0 ? "Voice Note" : "Upload Audio"}
             </div>
           )}
         </div>
@@ -281,6 +295,27 @@ const CreationvView: React.FC<Props> = (props) => {
           }}
           isIntroSelf={isIntroSelf}
         ></ChooseVoiceNotePopup>
+
+        <UploadAudioPopup
+          isProfileView
+          showPopup={showUploadAudioPopup}
+          setShowPopup={setShowUploadAudioPopup}
+          onClickSchedule={(val) => {
+            setCacheCurrentAudioData(val);
+            setShowUploadAudioPopup(false);
+            setShowPopupChooseTime(true);
+          }}
+          onClickSelectCoHost={() => {
+            setShowPopupCreateEvent(false);
+            setShowPopupChooseSpeaker(true);
+          }}
+          onSuccess={() => {
+            setShowUploadAudioPopup(false);
+            setTimeout(() => {
+              console.log(1111);
+            }, 1000);
+          }}
+        ></UploadAudioPopup>
 
         <CreateEventPopupView
           showPopupBuy={showPopupCreateEvent}

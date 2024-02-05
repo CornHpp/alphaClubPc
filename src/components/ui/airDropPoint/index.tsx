@@ -132,7 +132,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
       pointNum: 50,
       showPointNum: false,
       unFinished: 0,
-      allNum: 1,
+      allNum: 2,
       message:
         "Every 2 card purchases of different clubs each week earn you a treasure box to open(randomised points between 500-999)",
       titleImage: icon7,

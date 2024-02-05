@@ -19,7 +19,7 @@ const { Dragger } = Upload;
 
 const DragUpload: React.FC<uploadProps> = (props) => {
   const { setUrltoParent, setAudioDuration } = props;
-  const [files, setFiles] = React.useState([]);
+  const [files, setFiles] = React.useState<any>([]);
   const [fileName, setFileName] = React.useState("");
   const [percent, setPercent] = React.useState(0);
   let [isHasFile, setIshasFile] = React.useState(false);
@@ -69,9 +69,7 @@ const DragUpload: React.FC<uploadProps> = (props) => {
     beforeUpload: (file) => {
       const { type } = file;
 
-      if (type == "image/x-icon") {
-        return;
-      }
+      console.log(file);
 
       setPercent(0);
       return false;
@@ -79,7 +77,13 @@ const DragUpload: React.FC<uploadProps> = (props) => {
     accept: ".mp3,.wav,.m4a",
     onChange(info) {
       const { status, type } = info.file;
-      if (type === "image/x-icon") {
+
+      console.log(type);
+      if (
+        type !== "audio/mpeg" &&
+        type !== "audio/x-m4a" &&
+        type !== "audio/wav"
+      ) {
         setFiles([]);
         Toaster.error("Please upload an audio");
         return;
@@ -87,6 +91,8 @@ const DragUpload: React.FC<uploadProps> = (props) => {
       if (status === "removed") {
         return;
       }
+
+      setFiles([info.file]);
 
       setFileName(info.file.name);
       if (status !== "uploading") {
@@ -116,6 +122,7 @@ const DragUpload: React.FC<uploadProps> = (props) => {
       setPercent(0);
       isHasFile = false;
       setIshasFile(false);
+      setFiles([]);
 
       setUrltoParent("");
       return true;
