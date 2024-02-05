@@ -102,6 +102,7 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
             {title}
           </div>
         )}
+
         {desc ? (
           <div className="text-[14px] text-[#404140] mt-[2px] overflow-hidden text-ellipsis whitespace-nowrap w-[95%]">
             {desc}

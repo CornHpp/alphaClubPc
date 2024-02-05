@@ -19,6 +19,7 @@ interface Props {
   setShowPopup: (showPopup: boolean) => void;
   onSuccess: () => void;
   isIntroSelf?: boolean;
+  isProfile?: boolean;
 }
 
 const ChooseVoiceNotePopup: React.FC<Props> = ({
@@ -26,6 +27,7 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
   showPopup,
   onSuccess,
   isIntroSelf = false,
+  isProfile = false,
 }) => {
   const [formData, setFormData] = useState<FormData>();
   const [audioDuration, setAudioDuration] = useState<number>(0);
@@ -64,9 +66,13 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
             setValue("");
             setFormData(undefined);
             Toaster.success("Create voice note successfully");
-            setTimeout(() => {
-              router.push("/profile");
-            }, 1000);
+            if (isProfile) {
+              onSuccess();
+            } else {
+              setTimeout(() => {
+                router.push("/profile");
+              }, 1000);
+            }
           })
           .catch((err) => {
             setFormData(undefined);

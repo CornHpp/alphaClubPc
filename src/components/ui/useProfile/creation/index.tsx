@@ -283,15 +283,12 @@ const CreationvView: React.FC<Props> = (props) => {
         </div>
 
         <ChooseVoiceNotePopup
+          isProfile
           showPopup={showCreatVoiceNotePopup}
           setShowPopup={setShowCreatVoiceNotePopup}
           onSuccess={() => {
             setShowCreatVoiceNotePopup(false);
-            setTimeout(() => {
-              // setShowHomeToast(true);
-              // setTotastMessage("Create Voice Note Success");
-              getAudioPersonListFunc(true);
-            }, 1000);
+            getAudioPersonListFunc(true);
           }}
           isIntroSelf={isIntroSelf}
         ></ChooseVoiceNotePopup>
@@ -311,9 +308,7 @@ const CreationvView: React.FC<Props> = (props) => {
           }}
           onSuccess={() => {
             setShowUploadAudioPopup(false);
-            setTimeout(() => {
-              console.log(1111);
-            }, 1000);
+            getAudioPersonListFunc(true);
           }}
         ></UploadAudioPopup>
 
@@ -342,10 +337,16 @@ const CreationvView: React.FC<Props> = (props) => {
           onClickConfirm={() => {
             setShowPopupChooseTime(false);
           }}
+          audioData={cacheCurrentAudioData}
           showPopupBuy={showPopupChooseTime}
           setShowPopupBuy={setShowPopupChooseTime}
           onClickBack={() => {
             console.log("back");
+            setShowUploadAudioPopup(true);
+            setShowPopupChooseTime(false);
+          }}
+          onSuccess={() => {
+            getAudioPersonListFunc(true);
           }}
         ></ChooseTimePopup>
 

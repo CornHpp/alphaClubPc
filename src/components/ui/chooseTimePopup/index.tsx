@@ -17,6 +17,7 @@ interface Props {
   onClickBack: () => void;
   onClickConfirm: () => void;
   audioData?: creatAudioType;
+  onSuccess?: () => void;
 }
 
 const ChooseTimePopup: React.FC<Props> = ({
@@ -25,6 +26,7 @@ const ChooseTimePopup: React.FC<Props> = ({
   onClickBack,
   onClickConfirm,
   audioData,
+  onSuccess,
 }) => {
   const [selectedPrice, setSelectedPrice] = React.useState(0);
 
@@ -60,6 +62,7 @@ const ChooseTimePopup: React.FC<Props> = ({
         console.log("res", res);
         Emitter.emit("createAudioSuccess");
         setShowPopupBuy(false);
+        onSuccess && onSuccess();
       })
       .catch((err) => {});
   };
