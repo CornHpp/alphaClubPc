@@ -28,6 +28,7 @@ export const UserIntroAudioPlay: React.FC<audioType> = (props) => {
 
   useEffect(() => {
     initAudio();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioSrc]);
 
   useImperativeHandle(onRef, () => {

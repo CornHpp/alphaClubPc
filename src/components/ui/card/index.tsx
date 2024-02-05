@@ -157,4 +157,4 @@ const Card: React.FC<CardProps> = ({
   );
 };
 
-export default React.memo(Card);
+export default Card;

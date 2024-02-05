@@ -177,4 +177,4 @@ export const SmallButton: React.FC<ButtonProps> = (props) => {
   );
 };
 
-export default React.memo(CarouselView);
+export default CarouselView;
