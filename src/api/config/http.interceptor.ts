@@ -70,7 +70,7 @@ service.interceptors.response.use(
 
     if (code != 200) {
       if (code == "90019") {
-        return Promise.reject(res.data);
+        return Promise.resolve(res.data);
       }
 
       if (

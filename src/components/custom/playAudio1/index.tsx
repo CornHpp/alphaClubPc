@@ -36,7 +36,7 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
 
     if (!waveContentId) return;
 
-    const currentWaveSurfer = WaveSurfer.create({
+    let currentWaveSurfer = WaveSurfer.create({
       container: waveContentId,
       waveColor: "#949694",
       progressColor: "##FFFFB3",
@@ -86,6 +86,7 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
         }
       })
       .catch((err) => {
+        console.log(err);
         Toaster.error("Cards not enough!");
       });
   };

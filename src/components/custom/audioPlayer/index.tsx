@@ -12,6 +12,7 @@ import stopIcon from "@/assets/home/stopIcon.svg";
 import beforeFifteen from "@/assets/profile/beforeFifteen.svg";
 import afterFifteen from "@/assets/profile/afterFifteen.svg";
 import { audioQueryAccess } from "@/api/model/audio";
+import Toaster from "../Toast";
 // import "./Audio.css";
 
 function transTime(value: number) {
@@ -243,14 +244,18 @@ export const Audio: React.FC<audioType> = (props) => {
     }
 
     audioQueryAccess(id).then((res) => {
-      const newSrc = src + "?" + res.result;
-      audioSrc = newSrc;
-      setAudioSrc(newSrc);
-      initAudioFunc();
-      initAudioFunc2();
-      setTimeout(() => {
-        audioRef.current?.play();
-      }, 500);
+      if (res.code == "200") {
+        const newSrc = src + "?" + res.result;
+        audioSrc = newSrc;
+        setAudioSrc(newSrc);
+        initAudioFunc();
+        initAudioFunc2();
+        setTimeout(() => {
+          audioRef.current?.play();
+        }, 500);
+      } else {
+        Toaster.error("Cards not enough!");
+      }
     });
   };
 
