@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PopupView from "../popup";
 import Image from "next/image";
 import Button from "@/components/custom/button";
@@ -8,6 +8,7 @@ import redDelete from "@/assets/popup/redDelete.svg";
 import { Input } from "antd";
 import { audioCreate, audioUpload } from "@/api/model/audio";
 import Emitter from "@/lib/emitter";
+import errorIcon from "@/assets/home/errorIcon.svg";
 
 import DragUpload from "./dragUpload";
 import { formatDate } from "@/lib/util";
@@ -42,6 +43,7 @@ const UploadAudioPopup: React.FC<Props> = ({
 
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
   const router = useRouter();
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     Emitter.on("createAudioSuccess", (url: string) => {
@@ -134,14 +136,34 @@ const UploadAudioPopup: React.FC<Props> = ({
           <Search
             value={value}
             onChange={(val) => {
+              if (val.length > 100) {
+                setShowError(true);
+                return;
+              } else {
+                setShowError(false);
+              }
               setValue(val);
             }}
+            boxShadow={showError}
             rightNode={true}
             width={364}
             height={50}
             placeholder="What do you want to talk about?"
           ></Search>
         </div>
+        {showError && (
+          <div className="mt-[12px] flex items-center w-full h-[32px] border-solid border-[2px] border-[#0D0D0D] bg-[#FFC6C6] rounded-[8px] px-[10px]">
+            <Image
+              className="mr-[2px]"
+              src={errorIcon}
+              alt=""
+              width={16}
+              height={16}
+            ></Image>
+            <span className="font-bold mr-[2px]">Error:</span> Only 100
+            characters can be entered
+          </div>
+        )}
       </div>
 
       <div className="mt-[32px]">

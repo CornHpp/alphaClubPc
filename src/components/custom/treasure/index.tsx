@@ -61,7 +61,7 @@ const OpenTreasure: React.FC<Props> = (props) => {
               ></Image>
             </div>
 
-            <div className="absolute right-[48px] top-[18px] z-100001">
+            <div className="absolute right-[48px] top-[18px] z-[100001]">
               {hoverCloseImage ? (
                 <Image
                   src={closeHover}

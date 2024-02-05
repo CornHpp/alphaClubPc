@@ -189,7 +189,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
           copyAttriaute(1, item);
         } else if (item.scoreType == 4) {
           copyAttriaute(2, item);
-        } else if (item.scoreType == 5) {
+        } else if (item.scoreType == 3) {
           copyAttriaute(3, item);
         }
       });
@@ -202,15 +202,16 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
     openTreasureBox(id).then((res) => {
       getAllTaskInfoFunc();
       const item = res.result;
+      setCurrentScore(item.scoreCount);
       setOpenTreasureShow(true);
-      if (id == 9) {
-        copyAttriaute(1, item);
+      if (item.scoreType == 9) {
+        copyAttriaute(0, item);
       } else if (item.scoreType == 10) {
-        copyAttriaute(2, item);
+        copyAttriaute(1, item);
       } else if (item.scoreType == 4) {
+        copyAttriaute(2, item);
+      } else if (item.scoreType == 3) {
         copyAttriaute(3, item);
-      } else if (item.scoreType == 5) {
-        copyAttriaute(4, item);
       }
     });
   };
@@ -400,7 +401,6 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
                     }}
                     onClick={() => {
                       if (item.canOpen) {
-                        setCurrentScore(item.scoreCount);
                         openTreasureBoxFunc(item.id);
                       }
                     }}

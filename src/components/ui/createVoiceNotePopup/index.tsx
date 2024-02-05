@@ -12,6 +12,7 @@ import { formatDate } from "@/lib/util";
 import Toaster from "@/components/custom/Toast";
 import { useRouter } from "next/navigation";
 import { creatSelfInfroAudio } from "@/api/model/userService";
+import errorIcon from "@/assets/home/errorIcon.svg";
 
 interface Props {
   // Define your component props here
@@ -33,6 +34,8 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
   const [audioDuration, setAudioDuration] = useState<number>(0);
 
   const [value, setValue] = React.useState("");
+
+  const [showError, setShowError] = useState(false);
 
   const router = useRouter();
 
@@ -142,13 +145,34 @@ const ChooseVoiceNotePopup: React.FC<Props> = ({
           <Search
             value={value}
             onChange={(val) => {
+              if (val.length > 100) {
+                setShowError(true);
+                return;
+              } else {
+                setShowError(false);
+              }
               setValue(val);
             }}
             width={368}
+            boxShadow={showError}
             height={54}
             placeholder="2024-01-16 short recording"
             rightNode={<></>}
           ></Search>
+
+          {showError && (
+            <div className="mt-[12px] flex items-center w-full h-[32px] border-solid border-[2px] border-[#0D0D0D] bg-[#FFC6C6] rounded-[8px] px-[10px]">
+              <Image
+                className="mr-[2px]"
+                src={errorIcon}
+                alt=""
+                width={16}
+                height={16}
+              ></Image>
+              <span className="font-bold mr-[2px]">Error:</span> Only 100
+              characters can be entered
+            </div>
+          )}
         </div>
       )}
 

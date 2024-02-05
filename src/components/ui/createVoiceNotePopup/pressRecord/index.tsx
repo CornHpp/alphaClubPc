@@ -57,7 +57,12 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
       record.on("record-end", (blob: any) => {
         const audioDuration = wavesurfer.getDuration();
         const formData = new FormData();
-        formData.append("file", blob, "recording.webm");
+
+        let timestamp = new Date().getTime().toString(); // 获取当前时间戳
+        let random = Math.random().toString(36).substring(2, 8); // 生成随机字符串
+
+        let randomString = timestamp + "_" + random; // 组合时间戳和随机字
+        formData.append("file", blob, `${randomString}.webm`);
         toFatherAudioFile(formData, audioDuration);
 
         const recordedUrl = URL.createObjectURL(blob);

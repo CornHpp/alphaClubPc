@@ -11,6 +11,7 @@ interface getAllHomeType {
   holders: number;
   selfIntr: string;
   selfIntrFlag: boolean;
+  tradeHistoryDomains: responseTwitterListType;
 }
 
 type PartialGetAllHomeType = Partial<getAllHomeType>;

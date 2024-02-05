@@ -9,3 +9,9 @@
 .rhap_controls-section {
   display: none;
 }
+
+.audio-bar {
+  width: 2px; /* 设置每个音频条的宽度 */
+  background-color: #333; /* 设置音频条的颜色 */
+  height: 2px;
+}

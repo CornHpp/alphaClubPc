@@ -59,28 +59,13 @@ const Card: React.FC<CardProps> = ({
           }}
         ></Image>
       </div>
-      {item.audioEventDomain ? (
-        <Carousel
-          onOpenEventPopup={() => {
-            // setShowEventPopup(true);
-          }}
-          item={item.audioEventDomain}
-          houseId={item.houseId}
-        ></Carousel>
-      ) : (
-        <div className="w-full px-[16px] py-[16px] mb-[10px]">
-          <div className="border-[2px] border-[#0D0D0D] border-solid overflow-hidden rounded-[10px] w-full h-[129px] flex flex-col items-center justify-center font-semibold text-[14px]">
-            <Image
-              src={nothingIcon}
-              alt=""
-              className="w-[64px] h-[64px]"
-              width={64}
-              height={64}
-            ></Image>
-            Uh, there’s nothing here.
-          </div>
-        </div>
-      )}
+      <Carousel
+        onOpenEventPopup={() => {
+          // setShowEventPopup(true);
+        }}
+        item={item}
+        houseId={item.houseId}
+      ></Carousel>
 
       <div className="mb-[14px] mx-[16px] flex items-center">
         <div className="">

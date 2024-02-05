@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { use, useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import Image from "next/image";
 import playIcon from "@/assets/home/playIcon.svg";
@@ -17,26 +17,27 @@ interface PlayAudioProps {
   id: number;
 }
 
-var wavesurfer: any;
-var timer: any;
 const PlayAudio: React.FC<PlayAudioProps> = (props) => {
+  // Create an instance of WaveSurfer
+
+  let [wavesurfer, setWaveSurfer] = useState<any>();
+
   const { shortAudio = false, src, audioDuration, id } = props;
   const [playStatus, setPlayStatus] = React.useState(1);
 
   const [audioStatus, setAudioStatus] = React.useState(1); // 1: 隐藏 2: 播放
 
-  let [audioSrc, setAudioSrc] = React.useState("");
+  const waveContentId = useRef<HTMLDivElement>(null);
 
-  const createWaveSurfer = (audioUrl: string) => {
-    // Create an instance of WaveSurfer
+  const createWaveSurfer = (waveContentId: any, audioUrl: string) => {
     if (wavesurfer) {
       wavesurfer.destroy();
     }
-    const contentId = document.getElementById("container" + id);
-    console.log("contentId", contentId);
-    if (!contentId) return;
-    wavesurfer = WaveSurfer.create({
-      container: contentId,
+
+    if (!waveContentId) return;
+
+    const currentWaveSurfer = WaveSurfer.create({
+      container: waveContentId,
       waveColor: "#949694",
       progressColor: "##FFFFB3",
       url: audioUrl,
@@ -51,16 +52,17 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
     });
 
     // 监听结束事件
-    wavesurfer.on("finish", () => {
+    currentWaveSurfer.on("finish", () => {
       setPlayStatus(1);
     });
+    wavesurfer = currentWaveSurfer;
+    setWaveSurfer(currentWaveSurfer);
   };
 
   const [cacheAudioUrl, setCacheAudioUrl] = React.useState("");
 
   const clickPlayAudio = () => {
     if (cacheAudioUrl) {
-      // createWaveSurfer(cacheAudioUrl);
       setTimeout(() => {
         wavesurfer.playPause();
         setPlayStatus(2);
@@ -73,8 +75,9 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
         setAudioStatus(2);
         setPlayStatus(2);
         const newSrc = src + "?" + res.result;
-        createWaveSurfer(newSrc);
+        createWaveSurfer(waveContentId.current, newSrc);
         setCacheAudioUrl(newSrc);
+
         setTimeout(() => {
           wavesurfer.playPause();
         }, 500);
@@ -88,6 +91,33 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
     wavesurfer.playPause();
     setPlayStatus(1);
   };
+
+  const waveRef = useRef<HTMLDivElement>(null);
+
+  const createAudioBars = () => {
+    if (waveRef.current == null) return;
+    const container = waveRef.current;
+    const containerWidth = container?.clientWidth; // 获取容器宽度
+    container.innerHTML = ""; // 清空容器
+    const barCount = Math.floor(containerWidth / 6); // 计算音频条数量，这里假设每个音频条的最小宽度为 10px
+    for (let i = 0; i < barCount; i++) {
+      const bar = document.createElement("div");
+      bar.classList.add("audio-bar");
+      container.appendChild(bar);
+    }
+  };
+
+  useEffect(() => {
+    window.onresize = function () {
+      createAudioBars();
+    };
+    createAudioBars();
+
+    return () => {
+      window.onresize = null;
+      wavesurfer?.destroy();
+    };
+  }, [wavesurfer]);
 
   return (
     <>
@@ -107,19 +137,21 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
 
       <div className="w-full  mt-[11px] flex items-center justify-between">
         <div
-          id={"container" + id}
+          ref={waveContentId}
           className="flex-1 flex-shrink-0 h-[32px] rounded-[6px] border-[1px] border-solid border-[#0D0D0D] bg-[#E9E9E9] mr-[12px]"
           style={{
             display: audioStatus === 1 ? "none" : "block",
           }}
         ></div>
         <div
-          className="flex-1 flex-shrink-0 h-[32px] rounded-[6px] border-[1px] border-solid border-[#0D0D0D] bg-[#E9E9E9] mr-[12px] flex items-center justify-center"
+          ref={waveRef}
+          className="flex-1 flex-shrink-0 h-[32px] rounded-[6px] border-[1px] border-solid border-[#0D0D0D] bg-[#E9E9E9] mr-[12px] flex items-center
+           justify-around px-[8px]"
           style={{
             display: audioStatus === 2 ? "none" : "flex",
           }}
         >
-          <Image src={audioWaveSurfer} alt="" width={234} height={22}></Image>
+          {/* <Image src={audioWaveSurfer} alt="" width={234} height={22}></Image> */}
         </div>
         {playStatus === 1 ? (
           <Image
