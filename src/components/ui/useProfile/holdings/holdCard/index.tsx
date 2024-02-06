@@ -32,7 +32,7 @@ const HoldCard: React.FC<HoldCardProps> = () => {
         <div className="mx-[16px] w-[2px] h-[12px] rounded-[1px] bg-[#0D0D0D]"></div>
         <div className="">
           <div className="flex text-[14px] font-medium text-[#404140]">
-            Room Price
+            Card Price
           </div>
           <div className="font-semibold text-[18px] flex items-center">
             <Image

@@ -57,7 +57,7 @@ const CreateEventPopupView: React.FC<Props> = ({
       titleText="Create Your Event"
     >
       <div className="">
-        <div className="font-medium text-[14px]">Room Price</div>
+        <div className="font-medium text-[14px]">Card Price</div>
 
         <div className="mt-[12px]">
           <Search

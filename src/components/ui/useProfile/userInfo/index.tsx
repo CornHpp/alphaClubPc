@@ -249,7 +249,7 @@ const UserInfoView: React.FC<Props> = (props) => {
 
             <div className="">
               <div className="text-[14px] text-[#404140] font-medium">
-                room price
+                card price
               </div>
               <div className="flex items-center mt-[6px]">
                 <Image src={ethereum} alt="" width={18} height={18}></Image>
@@ -315,7 +315,7 @@ const UserInfoView: React.FC<Props> = (props) => {
 
           <div className="ml-[8px]">
             <div className="text-[14px] text-[#404140] font-medium">
-              room price
+              card price
             </div>
             <div className="flex items-center mt-[6px]">
               <Image src={ethereum} alt="" width={18} height={18}></Image>

@@ -87,7 +87,7 @@ const Card: React.FC<CardProps> = ({
 
         <div className="">
           <div className="text-[14px] text-[#404140] font-medium">
-            room price
+            card price
           </div>
           <div className="flex items-center mt-[6px]">
             <Image
