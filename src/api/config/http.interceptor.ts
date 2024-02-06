@@ -110,6 +110,9 @@ service.interceptors.response.use(
     }
 
     if (status == 401) {
+      if (error.config.url == "/secret/users/getLogin?") {
+        return Promise.resolve(error);
+      }
       setTimeout(() => {
         localStorage.removeItem("token");
         location.href = `${location.origin}/login`;
