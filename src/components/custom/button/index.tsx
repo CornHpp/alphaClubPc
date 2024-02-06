@@ -16,6 +16,7 @@ interface ButtonProps {
   hideBottomBackground?: boolean;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = (props) => {
@@ -35,6 +36,7 @@ const Button: React.FC<ButtonProps> = (props) => {
     hideBottomBackground,
     onMouseEnter,
     onMouseLeave,
+    disabled,
   } = props;
 
   return (
@@ -46,28 +48,35 @@ const Button: React.FC<ButtonProps> = (props) => {
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
-      <div
-        className="absolute z-[9]"
-        style={{
-          left: active ? "-2px" : "2px",
-          top: active ? "-2px" : "2px",
-          width: "100%",
-          height: height,
-          borderRadius: borderRadius,
-          background: "#0D0D0D",
-          display: hideBottomBackground ? "none" : "block",
-        }}
-      ></div>
+      {!disabled && (
+        <div
+          className="absolute z-[9]"
+          style={{
+            left: active ? "-2px" : "2px",
+            top: active ? "-2px" : "2px",
+            width: "100%",
+            height: height,
+            borderRadius: borderRadius,
+            background: "#0D0D0D",
+            display: hideBottomBackground ? "none" : "block",
+          }}
+        ></div>
+      )}
+
       <div
         className="cursor-pointer flex items-center justify-center relative z-10"
-        onClick={buttonClick}
+        onClick={() => !disabled && buttonClick()}
         style={{
           width: "100%",
           height: height,
           border: border,
           borderRadius: borderRadius,
-          background: active ? background : normalBackGround,
-          color: color,
+          background: disabled
+            ? "#E9E9E9"
+            : active
+            ? background
+            : normalBackGround,
+          color: disabled ? "#0D0D0D" : color,
         }}
       >
         {children && <div className="mr-[2px]">{children}</div>}

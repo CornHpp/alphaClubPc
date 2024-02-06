@@ -237,9 +237,13 @@ export const Audio: React.FC<audioType> = (props) => {
   const handleClickPaly = () => {
     if (audioSrc && playStatus === 1) {
       audioRef.current?.play();
+      setPlayStatus(2);
+
       return;
     } else if (audioSrc && playStatus === 2) {
       audioRef.current?.pause();
+      setPlayStatus(1);
+
       return;
     }
 
@@ -250,6 +254,11 @@ export const Audio: React.FC<audioType> = (props) => {
         setAudioSrc(newSrc);
         initAudioFunc();
         initAudioFunc2();
+        if (playStatus === 1) {
+          setPlayStatus(2);
+        } else {
+          setPlayStatus(1);
+        }
         setTimeout(() => {
           audioRef.current?.play();
         }, 500);
@@ -323,11 +332,6 @@ export const Audio: React.FC<audioType> = (props) => {
               height={32}
               className="mx-[16px]"
               onClick={() => {
-                if (playStatus === 1) {
-                  setPlayStatus(2);
-                } else {
-                  setPlayStatus(1);
-                }
                 handleClickPaly();
               }}
             ></Image>
@@ -349,11 +353,6 @@ export const Audio: React.FC<audioType> = (props) => {
             height={32}
             className="mt-[10px]"
             onClick={() => {
-              if (playStatus === 1) {
-                setPlayStatus(2);
-              } else {
-                setPlayStatus(1);
-              }
               handleClickPaly();
             }}
           ></Image>

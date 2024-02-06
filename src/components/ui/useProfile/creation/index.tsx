@@ -27,6 +27,7 @@ import { audioDelete } from "@/api/model/audio";
 import Toast from "@/components/custom/Toast";
 import cloudUploadIcon from "@/assets/home/cloudUploadIcon.svg";
 import UploadAudioPopup from "../../uploadAudioPopup";
+import EventEmitter from "@/lib/emitter";
 
 interface Props {
   // Add your props here
@@ -243,6 +244,7 @@ const CreationvView: React.FC<Props> = (props) => {
                             setCurrentDeletId(id);
                             setShowDeletePopup(true);
                           }}
+                          showDeleteIcon={isSelf}
                           isProfile={true}
                           id={item.id}
                           time={utcToLocal(item.showTime)}
@@ -290,6 +292,7 @@ const CreationvView: React.FC<Props> = (props) => {
           onSuccess={() => {
             setShowCreatVoiceNotePopup(false);
             getAudioPersonListFunc(true);
+            EventEmitter.emit("updateUserInfo");
           }}
           isIntroSelf={isIntroSelf}
         ></ChooseVoiceNotePopup>

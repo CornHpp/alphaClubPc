@@ -95,18 +95,18 @@ const AudioCard: React.FC<CarouselProps> = (props) => {
         </div>
         {title && title.length > 25 ? (
           <Tooltip placement="top" title={title} className=" cursor-pointer">
-            <div className="text-[18px] font-semibold mt-[2px] overflow-hidden text-ellipsis whitespace-nowrap w-[95%]">
+            <div className="text-[18px] font-semibold mt-[2px] overflow-hidden text-ellipsis whitespace-nowrap w-[250px]">
               {title}
             </div>
           </Tooltip>
         ) : (
-          <div className="text-[18px] font-semibold mt-[2px] overflow-hidden text-ellipsis whitespace-nowrap w-[95%]">
+          <div className="text-[18px] font-semibold mt-[2px] overflow-hidden text-ellipsis whitespace-nowrap w-[250px]">
             {title}
           </div>
         )}
 
         {descr ? (
-          <div className="text-[14px] text-[#404140] mt-[2px] overflow-hidden text-ellipsis whitespace-nowrap w-[95%]">
+          <div className="text-[14px] text-[#404140]  overflow-hidden text-ellipsis whitespace-nowrap w-[300px]">
             {descr}
           </div>
         ) : (

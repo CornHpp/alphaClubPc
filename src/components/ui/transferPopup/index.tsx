@@ -3,13 +3,19 @@ import PopupView from "../popup";
 import Image from "next/image";
 import Button from "@/components/custom/button";
 import Search from "@/components/custom/search";
-import { useAccount, useSendTransaction, useEnsName } from "wagmi";
+import {
+  useAccount,
+  useSendTransaction,
+  useEnsName,
+  useDisconnect,
+} from "wagmi";
 import defaultHeaderIcon from "@/assets/home/defaultHeaderIcon.svg";
 import { useWeb3Modal, useWeb3ModalTheme } from "@web3modal/wagmi/react";
 import Toaster from "@/components/custom/Toast";
 import { arbitrum, baseGoerli } from "viem/chains";
 import { parseEther } from "viem";
 import { useSelector } from "react-redux";
+
 import { filterString } from "@/lib/util";
 interface Props {
   // Define your component props here
@@ -19,6 +25,7 @@ interface Props {
 
 const TransferPopup: React.FC<Props> = ({ setShowPopup, showPopup }) => {
   const [selectedPrice, setSelectedPrice] = React.useState(0);
+  const { disconnect } = useDisconnect();
 
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
   const { userinfo } = useSelector((state: any) => state.user);
@@ -44,9 +51,18 @@ const TransferPopup: React.FC<Props> = ({ setShowPopup, showPopup }) => {
   const clickTransfer = async () => {
     // 连接钱包进行转账操作
     console.log("clickTransfer", value);
+    if (!value) {
+      Toaster.error("Please enter the amount to transfer.");
+      return;
+    }
     const res = await sendTransactionAsync();
     console.log(res);
     Toaster.info("Please go to your wallet to confirm the transaction.");
+  };
+
+  const clickDisconnectWallet = () => {
+    disconnect();
+    setShowPopup(false);
   };
 
   return (
@@ -71,7 +87,29 @@ const TransferPopup: React.FC<Props> = ({ setShowPopup, showPopup }) => {
               {filterString(otherWalletAddress)}
             </div>
 
-            <div>Disconnect</div>
+            <div>
+              <Button
+                active={false}
+                width="104px"
+                fontSize="14px"
+                height={hideButtonBg ? "32px" : "30px"}
+                text={"Disconnect"}
+                background="#fff"
+                borderRadius="15px"
+                color="#E42222"
+                border="2px solid #0D0D0D"
+                hideBottomBackground={hideButtonBg}
+                onMouseEnter={() => {
+                  setHideButtonBg(true);
+                }}
+                buttonClick={() => {
+                  clickDisconnectWallet();
+                }}
+                onMouseLeave={() => {
+                  setHideButtonBg(false);
+                }}
+              ></Button>
+            </div>
           </div>
 
           <div className="text-[14px] mt-[8px]">To:</div>

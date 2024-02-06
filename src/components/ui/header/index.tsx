@@ -13,6 +13,7 @@ import { usePathname } from "next/navigation";
 import Emitter from "@/lib/emitter";
 import { getSelfUsersBalanceinfo } from "@/api/model/home";
 import { setBalance } from "@/redux/features/userSlice";
+import { setEarned, setHoldingValue } from "@/redux/features/userSlice";
 
 import { setEtherObject } from "@/redux/features/userSlice";
 
@@ -55,12 +56,13 @@ const Header: React.FC<Props> = (props) => {
     const res = await getSelfUsersBalanceinfo();
     console.log(res);
     dispatch(setBalance(res?.result?.balance));
+    dispatch(setEarned(res?.result?.earned));
+    dispatch(setHoldingValue(res?.result?.holdingValue));
     iconLists[0].value = res?.result?.totalBalance;
     iconLists[1].value = res?.result?.holdingValue;
     iconLists[2].value = res?.result?.balance;
-    iconLists[3].value = "0";
+    iconLists[3].value = res?.result?.earned;
     iconLists[4].value = res?.result?.score;
-
     setIconLists([...iconLists]);
   };
 
@@ -142,7 +144,7 @@ const Header: React.FC<Props> = (props) => {
                 </div>
                 <div className="text-[20px] text-[#0D0D0D] font-semibold">
                   {index != 4 ? "$" : ""}
-                  {item.value.slice(0, 7)} {item?.currency}
+                  {item.value.slice(0, 8)} {item?.currency}
                 </div>
               </div>
             </div>

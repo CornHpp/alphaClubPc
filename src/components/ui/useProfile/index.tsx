@@ -18,24 +18,30 @@ import LoginPopupView from "../loginPopup";
 import { useParams } from "next/navigation";
 import shortAudioTip from "@/assets/profile/shortAudioTip.svg";
 import TransferPopup from "../transferPopup";
+import backIcon from "@/assets/profile/backIcon.svg";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 interface Props {
   // Add your props here
 }
 
 const UseProfileView: React.FC<Props> = () => {
   // Add your component logic here
-
+  const router = useRouter();
   const [showPopupInviteCode, setShowPopupInviteCode] = React.useState(false);
   const [showPopupSetting, setShowPopupSetting] = React.useState(false);
   const [showPopupDeposit, setShowPopupDeposit] = React.useState(false);
   const [showPopupWithdraw, setShowPopupWithdraw] = React.useState(false);
   const [showPopupExportWallet, setShowPopupExportWallet] =
     React.useState(false);
+  const { userinfo } = useSelector((state: any) => state.user);
+  const urlParams = useParams();
+
+  const isSelf = userinfo.twitterUidStr === urlParams.id || !urlParams.id;
 
   const [showPopupTransfer, setShowPopupTransfer] = React.useState(false);
 
   const [showPopupLoginView, setShowPopupLoginView] = React.useState(false);
-  const urlParams = useParams();
 
   const [currentNameProfile, setCurrentNameProfile] = React.useState("");
 
@@ -44,7 +50,19 @@ const UseProfileView: React.FC<Props> = () => {
   return (
     <div className="pt-[24px] overflow-hidden w-full flex-1 flex flex-col relative">
       <div className=" flex w-full justify-between pr-[39px] items-center">
-        <div className="text-[32px] font-bold mr-[3px]">
+        <div className="text-[32px] font-bold mr-[3px] flex items-center">
+          {!isSelf && (
+            <Image
+              src={backIcon}
+              alt=""
+              width={20}
+              height={20}
+              className="mr-[6px]"
+              onClick={() => {
+                router.back();
+              }}
+            ></Image>
+          )}
           {currentNameProfile} Profile
         </div>
 
@@ -119,6 +137,9 @@ const UseProfileView: React.FC<Props> = () => {
       <div className="mt-[12px] flex w-full pr-[37px] flex-1 pb-[16px] overflow-hidden">
         <div className="mr-[24px]  h-full  flex flex-col flex-1">
           <UserInfoView
+            openTransferPopup={() => {
+              setShowPopupTransfer(true);
+            }}
             setIsHaveIntroAudio={(val) => {
               setIsShowVoiceIntro(val);
             }}
@@ -173,6 +194,7 @@ const UseProfileView: React.FC<Props> = () => {
         setShowPopup={setShowPopupDeposit}
         openTransferPopup={() => {
           setShowPopupTransfer(true);
+          setShowPopupDeposit(false);
         }}
       ></DepositPopup>
 

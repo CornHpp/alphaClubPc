@@ -18,6 +18,8 @@ export type UserInfoType = {
   twitterScreenName?: string;
   walletAddress?: string;
   twitterUidStr?: number;
+  earned?: number | string;
+  holdingValue?: number | string;
 };
 
 export interface UserStateType {
@@ -57,6 +59,12 @@ export const tokenSlice = createSlice({
     setEtherObject: (state, action) => {
       state.etherObject = action.payload;
     },
+    setEarned: (state, action) => {
+      state.userinfo.earned = action.payload;
+    },
+    setHoldingValue: (state, action) => {
+      state.userinfo.holdingValue = action.payload;
+    },
   },
 });
 
@@ -66,6 +74,8 @@ export const {
   setSASToken,
   setBalance,
   setEtherObject,
+  setEarned,
+  setHoldingValue,
 } = tokenSlice.actions;
 
 export default tokenSlice.reducer;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PopupView from "../popup";
 import Image from "next/image";
 import Button from "@/components/custom/button";
@@ -46,6 +46,8 @@ const BuyOrderPopup: React.FC<Props> = ({
     }
   };
 
+  const [buttonDisabled, setButtonDisabled] = React.useState(false);
+
   const buyKeyFunc = () => {
     const params = {
       houseId: orderMap?.holderId,
@@ -77,12 +79,21 @@ const BuyOrderPopup: React.FC<Props> = ({
     });
   };
 
+  useEffect(() => {
+    if (Number(orderMap?.orderPrice) > Number(orderMap?.walletFromBalance)) {
+      setButtonDisabled(true);
+    } else {
+      setButtonDisabled(false);
+    }
+  }, [orderMap?.orderPrice, orderMap?.walletFromBalance]);
+
   return (
     <PopupView
       width={400}
       showPopup={showPopup}
       handleCancel={() => {
         setShowPopup(false);
+        setButtonDisabled(false);
       }}
       titleText="Order Confirmation"
     >
@@ -200,6 +211,7 @@ const BuyOrderPopup: React.FC<Props> = ({
           }}
           buttonClick={() => {
             onClickOrderBack();
+            setButtonDisabled(false);
           }}
           onMouseLeave={() => {
             setHideButtonBg(false);
@@ -215,6 +227,7 @@ const BuyOrderPopup: React.FC<Props> = ({
           border="2px solid #0D0D0D"
           normalBackGround="#0D0D0D"
           color="#fff"
+          disabled={buttonDisabled}
           buttonClick={onClickOrderConfirm}
         ></Button>
       </div>

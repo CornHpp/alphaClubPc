@@ -8,6 +8,7 @@ import warningIcon from "@/assets/popup/warningIcon.svg";
 import { useSelector } from "react-redux";
 import { exportWallet } from "@/api/model/userService";
 import { copyTextToClipboardSafari } from "@/lib/util";
+import rightIcon from "@/assets/profile/rightIcon.svg";
 
 interface Props {
   // Define your component props here
@@ -30,11 +31,14 @@ const ExportWalletPopop: React.FC<Props> = ({
 
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
 
+  const [isCopied, setIsCopied] = React.useState(false);
+
   const handleClickCopy = () => {
     if (address) {
       exportWallet().then((res) => {
         copyTextToClipboardSafari(res);
-        setShowPopup(false);
+        // setShowPopup(false);
+        setIsCopied(true);
       });
     }
   };
@@ -46,6 +50,7 @@ const ExportWalletPopop: React.FC<Props> = ({
       handleCancel={() => {
         setShowPopup(false);
         setSelectedPrice(0);
+        setIsCopied(false);
       }}
       titleText="Export Wallet"
     >
@@ -100,12 +105,12 @@ const ExportWalletPopop: React.FC<Props> = ({
           <Button
             active={false}
             width="366px"
-            height={hideButtonBg ? "52px" : "50px"}
-            text={"Copy Key"}
-            background="#fff"
+            height={isCopied ? "52px" : hideButtonBg ? "52px" : "50px"}
+            text={isCopied ? "Copied" : "Copy Key"}
+            normalBackGround={isCopied ? "#E9E9E9" : "#fff"}
             borderRadius="28px"
             border="2px solid #0D0D0D"
-            hideBottomBackground={hideButtonBg}
+            hideBottomBackground={isCopied ? true : hideButtonBg}
             onMouseEnter={() => {
               setHideButtonBg(true);
             }}
@@ -115,7 +120,11 @@ const ExportWalletPopop: React.FC<Props> = ({
             onMouseLeave={() => {
               setHideButtonBg(false);
             }}
-          ></Button>
+          >
+            {isCopied && (
+              <Image src={rightIcon} alt="" width={16} height={16}></Image>
+            )}
+          </Button>
         </div>
 
         <div

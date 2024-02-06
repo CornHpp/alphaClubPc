@@ -9,6 +9,7 @@ import { getUserInfoByTwitterId } from "@/api/model/userService";
 import { useSelector } from "react-redux";
 import { sendEth } from "@/api/model/userService";
 import Toast from "@/components/custom/Toast";
+import Toaster from "@/components/custom/Toast";
 
 interface Props {
   // Define your component props here
@@ -24,6 +25,7 @@ const WithdrawPopup: React.FC<Props> = ({
   onCloseWithdrawPopup,
 }) => {
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
+  const [buttonDisabled, setButtonDisabled] = React.useState(false);
 
   const [walletBalance, setWalletBalance] = React.useState(0);
   const urlParams = useParams();
@@ -42,9 +44,15 @@ const WithdrawPopup: React.FC<Props> = ({
   const [amount, setAmount] = React.useState("");
 
   const handleTransferClick = () => {
-    if (!amount) {
+    if (!address) {
+      Toaster.error("Please enter the address to transfer.");
       return;
     }
+    if (!amount) {
+      Toaster.error("Please enter the amount to transfer.");
+      return;
+    }
+
     sendEth(address, Number(amount)).then((res) => {
       Toast.success("Transfer success");
       setAmount("");
@@ -55,6 +63,7 @@ const WithdrawPopup: React.FC<Props> = ({
 
   useEffect(() => {
     getUserInfoByTwitterIdFunc();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [houseId]);
 
   return (
@@ -63,6 +72,7 @@ const WithdrawPopup: React.FC<Props> = ({
       showPopup={showPopup}
       handleCancel={() => {
         setShowPopup(false);
+        setButtonDisabled(false);
       }}
       titleText="Withdraw ETH"
     >
@@ -90,6 +100,12 @@ const WithdrawPopup: React.FC<Props> = ({
             value={amount}
             onChange={(val) => {
               setAmount(val);
+              console.log(val, walletBalance);
+              if (Number(val) > walletBalance) {
+                setButtonDisabled(true);
+              } else {
+                setButtonDisabled(false);
+              }
             }}
             placeholder="Enter Amount"
             type="number"
@@ -133,6 +149,7 @@ const WithdrawPopup: React.FC<Props> = ({
             }}
             buttonClick={() => {
               onCloseWithdrawPopup();
+              setButtonDisabled(false);
             }}
             onMouseLeave={() => {
               setHideButtonBg(false);
@@ -149,6 +166,7 @@ const WithdrawPopup: React.FC<Props> = ({
               border="2px solid #0D0D0D"
               normalBackGround="#0D0D0D"
               color="#fff"
+              disabled={buttonDisabled}
               buttonClick={handleTransferClick}
             ></Button>
           </div>

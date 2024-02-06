@@ -8,6 +8,10 @@ interface getTradeListType {
   moneyCount: string;
   price: string;
   priceStr: string;
+  toImageUrl: string;
+  toTwitterName: string;
+  toTwitterUid: string;
+  moneyCountStr: string;
 }
 
 interface getTradeOrderList {

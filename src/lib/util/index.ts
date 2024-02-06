@@ -51,7 +51,7 @@ export function formatDateCheers(inputDateStr: string | number): string {
 
 // safari 兼容复制功能
 export function copyTextToClipboardSafari(text: string) {
-  if (navigator.clipboard && window?.isSecureContext) {
+  if (navigator.clipboard) {
     navigator.clipboard
       .writeText(text)
       .then(() => {
@@ -213,6 +213,39 @@ export const parseTimeValue = (
     minute: minutes.toString(),
   };
 };
+
+// 传入时间戳，返回天、时分秒
+export function formatDaysHoursMinutes(timestamp: number): {
+  days: number;
+  hours: number;
+  minutes: number;
+} {
+  const millisecondsPerSecond = 1000;
+  const secondsPerMinute = 60;
+  const minutesPerHour = 60;
+  const hoursPerDay = 24;
+
+  const currentTime = new Date().getTime();
+  const timePassed = Math.max(0, currentTime - timestamp); // 确保时间戳不超过当前时间
+
+  const millisecondsPassed = timePassed % millisecondsPerSecond;
+  const secondsPassed = Math.floor(
+    (timePassed / secondsPerMinute) % secondsPerMinute
+  );
+  const minutesPassed = Math.floor(
+    (timePassed / (secondsPerMinute * minutesPerHour)) % minutesPerHour
+  );
+  const hoursPassed = Math.floor(
+    (timePassed / (secondsPerMinute * minutesPerHour * hoursPerDay)) %
+      hoursPerDay
+  );
+  const daysPassed = Math.floor(
+    timePassed /
+      (millisecondsPerSecond * secondsPerMinute * minutesPerHour * hoursPerDay)
+  );
+
+  return { days: daysPassed, hours: hoursPassed, minutes: minutesPassed };
+}
 
 // 计算时间差值
 export function getTimeRemaining(targetDate: string) {

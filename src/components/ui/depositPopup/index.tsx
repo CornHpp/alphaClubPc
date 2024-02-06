@@ -37,14 +37,22 @@ const DepositPopup: React.FC<Props> = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address]);
 
-  const clickConnectWallet = () => {
+  useEffect(() => {
+    if (isConnected) {
+      dispatch(setWalletAddress(address));
+      openTransferPopup();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [address, isConnected]);
+
+  const clickConnectWallet = async () => {
     if (address && isConnected) {
       dispatch(setWalletAddress(address));
       openTransferPopup();
       return;
     }
 
-    open();
+    await open();
   };
 
   return (
@@ -116,4 +124,4 @@ const DepositPopup: React.FC<Props> = ({
   );
 };
 
-export default DepositPopup;
+export default React.memo(DepositPopup);

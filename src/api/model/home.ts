@@ -97,6 +97,7 @@ interface balanceInfoResonseType {
   holdingValue: string;
   score: string;
   totalBalance: string;
+  earned: string;
 }
 
 // 获取自己的钱包

@@ -15,7 +15,12 @@ import {
   getUserInfoByTwitterId,
 } from "@/api/model/userService";
 import firstThreePurchase from "@/assets/profile/firstThreePurchase.svg";
-import { filterString, formatBalanceNumber } from "@/lib/util";
+import {
+  filterString,
+  formatBalanceNumber,
+  formatDaysHoursMinutes,
+  parseTimeValue,
+} from "@/lib/util";
 import tipThreeDays from "@/assets/profile/tipThreeDays.svg";
 import closeHover from "@/assets/popup/closeHover.svg";
 import showOpenTreasure from "@/assets/home/showOpenTreasure.svg";
@@ -28,9 +33,12 @@ import BuyOrderPopup from "../../buyOrderPopup";
 import TradeSelfPopup from "../../tradeSelfPopup";
 import ChooseVoiceNotePopup from "../../createVoiceNotePopup";
 import Toast from "@/components/custom/Toast";
+import { useAccount } from "wagmi";
+import EventEmitter from "@/lib/emitter";
 
 interface Props {
   onOpenDepositPopup: () => void;
+  openTransferPopup: () => void;
   onOpenWithdrawPopup: () => void;
   onOpenExportWalletPopup: () => void;
   setCurrentNameProfile: (val: string) => void;
@@ -41,6 +49,7 @@ const UserInfoView: React.FC<Props> = (props) => {
   // Add your component logic here
   const {
     onOpenDepositPopup,
+    openTransferPopup,
     onOpenWithdrawPopup,
     onOpenExportWalletPopup,
     setCurrentNameProfile,
@@ -104,10 +113,18 @@ const UserInfoView: React.FC<Props> = (props) => {
     setClickCurrentHolderId(twitterId);
     setShowPopupBuy(true);
   };
+
+  const [timeMap, setTimeMap] = React.useState<any>({});
+
   const getUserInfoByTwitterIdFunc = async () => {
     const twitterId = houseId || userinfo.twitterUidStr;
     const res = await getUserInfoByTwitterId(twitterId);
     console.log(res);
+
+    // 根据传入的时间格式化时分秒
+    const formatime = formatDaysHoursMinutes(res.result.createTime);
+    setTimeMap(formatime);
+
     setCurrentClickItem(res.result);
     if (isSelf) {
       setIsHaveIntroAudio(res.result.selfIntrFlag ? false : true);
@@ -144,6 +161,11 @@ const UserInfoView: React.FC<Props> = (props) => {
 
   useEffect(() => {
     getUserInfoByTwitterIdFunc();
+
+    EventEmitter.on("updateUserInfo", () => {
+      getUserInfoByTwitterIdFunc();
+    });
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -169,6 +191,15 @@ const UserInfoView: React.FC<Props> = (props) => {
       Toast.success("Delete successfully");
       getUserInfoByTwitterIdFunc();
     });
+  };
+  const { isConnected } = useAccount();
+
+  const clickOpenDeposit = () => {
+    if (isConnected) {
+      openTransferPopup();
+    } else {
+      onOpenDepositPopup();
+    }
   };
 
   return (
@@ -317,7 +348,7 @@ const UserInfoView: React.FC<Props> = (props) => {
       )}
 
       {!houseId && isCanBuySelf && (
-        <div className="bg-[#fff] pl-[14px] cursor-pointer">
+        <div className="bg-[#fff] pl-[14px] cursor-pointer relative">
           <Image
             src={firstThreePurchase}
             className="pt-[6px]"
@@ -328,6 +359,12 @@ const UserInfoView: React.FC<Props> = (props) => {
               setShowTipThreeDays(true);
             }}
           ></Image>
+
+          <div className="absolute right-[189px] bottom-[7px] flex items-center font-semibold">
+            <div>{timeMap.days}Days</div>
+            <div>{timeMap.hours}Hours</div>
+            <div>{timeMap.minutes}Mins</div>
+          </div>
         </div>
       )}
 
@@ -348,7 +385,7 @@ const UserInfoView: React.FC<Props> = (props) => {
                   width={16}
                   height={16}
                 ></Image>
-                Basechain
+                BlastChain
               </div>
               <div className="mt-[3px] font-semibold text-[18px]">
                 {filterString(useProfileMap?.walletAddress, 4)}
@@ -374,7 +411,7 @@ const UserInfoView: React.FC<Props> = (props) => {
             borderRadius="27px"
             border="none"
             buttonClick={() => {
-              onOpenDepositPopup();
+              clickOpenDeposit();
             }}
           ></Button>
 
@@ -513,14 +550,12 @@ const UserInfoView: React.FC<Props> = (props) => {
       {!houseId && (
         <div className="px-[16px] py-[16px]">
           <div className="flex items-center font-semibold text-[16px]">
-            <div className="font-medium w-[129px]">Holding Value：</div>
-            {formatBalanceNumber(useProfileMap?.holdingValues)}ETH
+            <div className="font-medium ">Holding Value：</div>
+            {userinfo?.holdingValue?.slice(0, 8)} ETH
           </div>
           <div className="flex items-center font-semibold text-[16px]">
-            <div className="font-medium w-[129px]">
-              Fees Earned：{useProfileMap?.priceStr}
-            </div>{" "}
-            0.00ETH
+            <div className="font-medium ">Fees Earned：</div>{" "}
+            {userinfo?.earned?.slice(0, 8)} ETH
           </div>
         </div>
       )}
@@ -578,6 +613,7 @@ const UserInfoView: React.FC<Props> = (props) => {
         showPopup={showCreatVoiceNotePopup}
         setShowPopup={setShowCreatVoiceNotePopup}
         onSuccess={() => {
+          console.log("onSuccess");
           setShowCreatVoiceNotePopup(false);
           getUserInfoByTwitterIdFunc();
         }}

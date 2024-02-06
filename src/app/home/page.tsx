@@ -168,7 +168,7 @@ const Home: React.FC = () => {
   const cacheUserInfo = () => {
     getUserInfo().then((res) => {
       console.log(res);
-      // dispatch(setUserInfo(res.result));
+      dispatch(setUserInfo(res.result));
     });
   };
   return (

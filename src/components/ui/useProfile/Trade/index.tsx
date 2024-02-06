@@ -74,14 +74,40 @@ const TradeView: React.FC<Props> = () => {
                       height={32}
                       className="rounded-full border-[1px] border-solid border-[#0d0d0d]"
                     ></Image>
+
+                    <div className="ml-[-5px] rounded-full border-[2px] border-solid border-[#fff]">
+                      <Image
+                        src={item.toImageUrl || defaultHeaderIcon}
+                        alt=""
+                        width={32}
+                        height={32}
+                        className="rounded-full border-[1px] border-solid border-[#0d0d0d]"
+                      ></Image>
+                    </div>
+
                     <div className="ml-[4px] ">
-                      <div className="text-[#004D22] text-[12px]">
-                        <span className="mr-[2px]">{item.twitterName}</span>
-                        {item.tradeType == 1 ? "bought" : "sold"}{" "}
-                        <span className="font-semibold">{item.keys}</span> card
+                      <div
+                        className="text-[#004D22] text-[12px]"
+                        style={{
+                          color: item.tradeType == 1 ? "#004D22" : "#684949",
+                        }}
+                      >
+                        <span className="mr-[2px]">{item.twitterName}</span>{" "}
+                        <span className="mr-[2px]">
+                          {item.tradeType == 1 ? "bought" : "sold"}
+                        </span>
+                        <span className="font-semibold text-[#0d0d0d] mr-[2px]">
+                          {item.keys}
+                        </span>
+                        <span>{item.toTwitterName}</span> card
                       </div>
-                      <div className="text-[#005A0E] text-[16px] font-semibold">
-                        {item.moneyCount} ETH
+                      <div
+                        className="text-[#005A0E] text-[16px] font-semibold"
+                        style={{
+                          color: item.tradeType == 1 ? "#005A0E" : "#E42222",
+                        }}
+                      >
+                        {item.moneyCountStr?.slice(0, 8)} ETH
                       </div>
                     </div>
                   </div>
