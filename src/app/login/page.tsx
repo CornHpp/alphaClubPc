@@ -120,14 +120,14 @@ const Login: React.FC<LoginProps> = () => {
               className="mr-[4px]"
               src={firstAnimation}
               alt=""
-              width={2006}
+              width={1907}
               height={150}
             ></Image>
             <Image
               className="mr-[4px]"
               src={firstAnimation}
               alt=""
-              width={2006}
+              width={1907}
               height={150}
             ></Image>
           </div>
@@ -139,14 +139,14 @@ const Login: React.FC<LoginProps> = () => {
               className="mr-[4px]"
               src={secondAnimation}
               alt=""
-              width={1958}
+              width={1853}
               height={150}
             ></Image>
             <Image
               className="mr-[4px]"
               src={secondAnimation}
               alt=""
-              width={1958}
+              width={1853}
               height={150}
             ></Image>
           </div>
