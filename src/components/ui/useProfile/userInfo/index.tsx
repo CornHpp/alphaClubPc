@@ -360,7 +360,7 @@ const UserInfoView: React.FC<Props> = (props) => {
             }}
           ></Image>
 
-          <div className="absolute right-[189px] bottom-[7px] flex items-center font-semibold">
+          <div className="absolute right-[228px] bottom-[7px] flex items-center font-semibold">
             <div>{timeMap.days}Days</div>
             <div>{timeMap.hours}Hours</div>
             <div>{timeMap.minutes}Mins</div>
@@ -601,11 +601,12 @@ const UserInfoView: React.FC<Props> = (props) => {
         setShowPopup={setShowSelfTradePopup}
         sellSelfcard={() => {
           setShowSelfTradePopup(false);
-          onClickSell(useProfileMap?.roomPrice);
+          console.log(useProfileMap?.priceStr);
+          onClickSell(useProfileMap?.priceStr);
         }}
         buySelfcard={() => {
           setShowSelfTradePopup(false);
-          onClickBuy(useProfileMap?.roomPrice);
+          onClickBuy(useProfileMap?.priceStr);
         }}
       ></TradeSelfPopup>
 

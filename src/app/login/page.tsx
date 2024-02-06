@@ -20,6 +20,7 @@ import { getUserInfo } from "@/api/model/userService";
 import Loading from "@/components/custom/Loading";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "@/redux/features/userSlice";
+import Toaster from "@/components/custom/Toast";
 interface LoginProps {
   // Add any props you need for the Login component
 }
@@ -33,6 +34,10 @@ const Login: React.FC<LoginProps> = () => {
   const router = useRouter();
 
   const getTwitterLinkFunc = async () => {
+    if (!agree) {
+      Toaster.error("Please agree to the user agreement and privacy policy");
+      return;
+    }
     window.location.href =
       process.env.NEXT_PUBLIC_APP_URL + "/open/x/oauth/request_token";
   };
@@ -260,7 +265,25 @@ const Login: React.FC<LoginProps> = () => {
             ></Image>
           )}
 
-          {"<User agreement> & <Privacy Policy>"}
+          <span
+            className="mr-[2px]"
+            onClick={() => {
+              window.open(
+                "https://barrierbreakers-lab.gitbook.io/alpha-club-whitepaper/advanced-information/legals/term-of-use"
+              );
+            }}
+          >
+            {"<Term of Use> "}
+          </span>
+          <span
+            onClick={() => {
+              window.open(
+                "https://barrierbreakers-lab.gitbook.io/alpha-club-whitepaper/advanced-information/legals/privacy"
+              );
+            }}
+          >
+            {" & <Privacy Policy>"}
+          </span>
         </div>
       )}
 
