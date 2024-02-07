@@ -129,14 +129,14 @@ const Login: React.FC<LoginProps> = () => {
         <div className="absoulte h-[150px]">
           <div className="  flex">
             <Image
-              className="mr-[4px]"
+              className="scrollRightlogin"
               src={firstAnimation}
               alt=""
               width={1907}
               height={150}
             ></Image>
             <Image
-              className="mr-[4px]"
+              className="scrollRightlogin"
               src={firstAnimation}
               alt=""
               width={1907}
@@ -145,17 +145,17 @@ const Login: React.FC<LoginProps> = () => {
           </div>
         </div>
 
-        <div className="relative h-[150px]">
-          <div className=" scrollRightlogin flex">
+        <div className="absoulte h-[150px]">
+          <div className="  flex">
             <Image
-              className="mr-[4px]"
+              className="scrollRightlogin"
               src={secondAnimation}
               alt=""
               width={1853}
               height={150}
             ></Image>
             <Image
-              className="mr-[4px]"
+              className="scrollRightlogin"
               src={secondAnimation}
               alt=""
               width={1853}
