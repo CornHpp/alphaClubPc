@@ -88,11 +88,13 @@ const Login: React.FC<LoginProps> = () => {
       console.log("no token");
       getUserInfo().then((res) => {
         console.log(res);
-        dispatch(setUserInfo(res.result));
-        if (res?.result?.bindInviteCode) {
-          router.push("/home");
-        } else {
-          setIsShowInviteCode(true);
+        if (res.code == "200") {
+          dispatch(setUserInfo(res.result));
+          if (res?.result?.bindInviteCode) {
+            router.push("/home");
+          } else {
+            setIsShowInviteCode(true);
+          }
         }
       });
     }
