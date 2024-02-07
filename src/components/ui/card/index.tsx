@@ -11,6 +11,7 @@ import EventPopup from "../eventPopup";
 import nothingIcon from "@/assets/home/nothingIcon.svg";
 import OpenIngEvent from "../openIngEvent";
 import { formatBalanceNumber } from "@/lib/util/index";
+import Loading from "@/components/custom/Loading";
 
 interface CardProps {
   item: PartialGetAllHomeType;
@@ -27,6 +28,7 @@ const Card: React.FC<CardProps> = ({
 }) => {
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
   const [showEventPopup, setShowEventPopup] = React.useState(false);
+  const [showLoading, setShowLoading] = React.useState(false);
 
   const router = useRouter();
 
@@ -55,6 +57,7 @@ const Card: React.FC<CardProps> = ({
           height={16}
           className="mr-[16px]"
           onClick={() => {
+            setShowLoading(true);
             router.push(`/profile/${item.houseId}`);
           }}
         ></Image>
@@ -153,6 +156,8 @@ const Card: React.FC<CardProps> = ({
           console.log("back");
         }}
       ></EventPopup>
+
+      {showLoading && <Loading />}
     </div>
   );
 };

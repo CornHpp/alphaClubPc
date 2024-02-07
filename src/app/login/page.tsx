@@ -27,6 +27,7 @@ interface LoginProps {
 
 const Login: React.FC<LoginProps> = () => {
   const [isShowInviteCode, setIsShowInviteCode] = React.useState(false);
+  const [showLoading, setShowLoading] = React.useState(false);
 
   const [inviteCodeIsWrong, setInviteCodeIsWrong] = React.useState(false);
   const [value, setValue] = React.useState("");
@@ -83,6 +84,7 @@ const Login: React.FC<LoginProps> = () => {
 
   useEffect(() => {
     if (params?.oauth_token && params?.oauth_verifier) {
+      setShowLoading(true);
       validateTwitterToken();
     } else {
       console.log("no token");
@@ -302,6 +304,8 @@ const Login: React.FC<LoginProps> = () => {
       <div className="fixed right-[40px] bottom-[40px] custom-spin">
         <Image src={textAnimation} alt="" width={129} height={129}></Image>
       </div>
+
+      {showLoading && <Loading />}
     </div>
   );
 };

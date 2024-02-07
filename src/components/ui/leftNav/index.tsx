@@ -16,6 +16,7 @@ import { useSelector } from "react-redux";
 import closeHover from "@/assets/popup/closeHover.svg";
 import showOpenTreasure from "@/assets/home/showOpenTreasure.svg";
 import closeIcon from "@/assets/popup/close.svg";
+import Loading from "@/components/custom/Loading";
 
 interface LeftNavProps {
   // Add any props you need for your component here
@@ -41,6 +42,7 @@ const buttonLists = [
 
 const LeftNav: React.FC<LeftNavProps> = () => {
   const [buttonActive, setButtonActive] = React.useState(0);
+  const [showLoading, setShowLoading] = React.useState(false);
   const router = useRouter();
   const pathName = usePathname();
   const { userinfo } = useSelector((state: any) => state.user);
@@ -64,6 +66,7 @@ const LeftNav: React.FC<LeftNavProps> = () => {
       return item.router === pathName;
     });
     setButtonActive(index);
+    setShowLoading(false);
   }, [pathName]);
 
   const closeTreasureTip = () => {
@@ -136,7 +139,11 @@ const LeftNav: React.FC<LeftNavProps> = () => {
                     border="2px solid #0D0D0D"
                     buttonClick={() => {
                       setButtonActive(index);
+                      if (pathName === item.router) {
+                        return;
+                      }
                       router.push(item.router);
+                      setShowLoading(true);
                     }}
                   >
                     <Image
@@ -156,12 +163,16 @@ const LeftNav: React.FC<LeftNavProps> = () => {
             <div className="mb-[24px] relative">
               <Image
                 src={showOpenTreasure}
+                onClick={() => {
+                  router.push("/airdrop");
+                  if (pathName === "/airdrop") {
+                    return;
+                  }
+                  setShowLoading(true);
+                }}
                 alt=""
                 width={148}
                 height={201}
-                onClick={() => {
-                  router.push("/airdrop");
-                }}
                 className="cursor-pointer"
               ></Image>
 
@@ -204,6 +215,10 @@ const LeftNav: React.FC<LeftNavProps> = () => {
             className="h-[56px] flex items-center cursor-pointer"
             onClick={() => {
               router.push("/profile");
+              if (pathName === "/profile") {
+                return;
+              }
+              setShowLoading(true);
             }}
           >
             <Image
@@ -233,6 +248,8 @@ const LeftNav: React.FC<LeftNavProps> = () => {
           </div>
         </div>
       </div>
+
+      {showLoading && <Loading />}
     </div>
   );
 };

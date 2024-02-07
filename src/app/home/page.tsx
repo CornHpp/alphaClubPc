@@ -42,6 +42,7 @@ import BuyOrderPopup from "@/components/ui/buyOrderPopup";
 import HomeToast from "@/components/custom/homeToast";
 import { getUserInfo } from "@/api/model/userService";
 import { setUserInfo } from "@/redux/features/userSlice";
+import Loading from "@/components/custom/Loading";
 
 const tabsList = [
   {
