@@ -43,7 +43,7 @@ const TransferPopup: React.FC<Props> = ({ setShowPopup, showPopup }) => {
 
   const { data, isLoading, isSuccess, sendTransactionAsync, error, isError } =
     useSendTransaction({
-      to: userinfo.walletAddress,
+      to: userinfo?.walletAddress,
       value: parseEther(value ?? "0.01"),
       chainId: chain,
     });
@@ -115,7 +115,7 @@ const TransferPopup: React.FC<Props> = ({ setShowPopup, showPopup }) => {
           <div className="text-[14px] mt-[8px]">To:</div>
           <div className="flex justify-between">
             <div className="text-[24px] font-semibold">
-              {filterString(userinfo.walletAddress)}
+              {filterString(userinfo?.walletAddress)}
             </div>
           </div>
         </div>

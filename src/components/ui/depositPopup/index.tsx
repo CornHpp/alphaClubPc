@@ -25,7 +25,7 @@ const DepositPopup: React.FC<Props> = ({
   const dispatch = useDispatch();
   const { userinfo, balance } = useSelector((state: any) => state.user);
 
-  const [value, setValue] = React.useState(userinfo.walletAddress);
+  const [value, setValue] = React.useState(userinfo?.walletAddress);
   const { isConnected, address } = useAccount();
 
   const { open } = useWeb3Modal();
@@ -87,7 +87,7 @@ const DepositPopup: React.FC<Props> = ({
 
         <div className="mt-[12px] flex items-center">
           <Search
-            value={filterString(userinfo.walletAddress)}
+            value={filterString(userinfo?.walletAddress)}
             onChange={() => {}}
             width={364}
             height={50}
@@ -106,7 +106,7 @@ const DepositPopup: React.FC<Props> = ({
             rightNode={
               <div
                 onClick={() => {
-                  copyTextToClipboardSafari(userinfo.walletAddress);
+                  copyTextToClipboardSafari(userinfo?.walletAddress);
                 }}
                 className="mr-[-5px] ml-[6px] text-[14px]  font-semibold w-[76px] h-[40px] border-[2px] border-[#0D0D0D] cursor-pointer border-solid flex items-center justify-center rounded-[20px]"
               >

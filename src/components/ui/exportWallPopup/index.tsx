@@ -27,7 +27,7 @@ const ExportWalletPopop: React.FC<Props> = ({
   const [selectedPrice, setSelectedPrice] = React.useState(0);
 
   const { userinfo } = useSelector((state: any) => state.user);
-  const [address] = React.useState(userinfo.walletAddress || "");
+  const [address] = React.useState(userinfo?.walletAddress || "");
 
   const [hideButtonBg, setHideButtonBg] = React.useState(false);
 

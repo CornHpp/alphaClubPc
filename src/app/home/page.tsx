@@ -278,7 +278,7 @@ const Home: React.FC = () => {
         </div>
       )}
 
-      <div className="flex fixed bottom-[40px] right-[55px]">
+      <div className="flex fixed bottom-[40px] right-[55px] z-[2000]">
         <Button
           active={false}
           width="123px"

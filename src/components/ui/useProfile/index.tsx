@@ -37,7 +37,7 @@ const UseProfileView: React.FC<Props> = () => {
   const { userinfo } = useSelector((state: any) => state.user);
   const urlParams = useParams();
 
-  const isSelf = userinfo.twitterUidStr === urlParams.id || !urlParams.id;
+  const isSelf = userinfo?.twitterUidStr === urlParams.id || !urlParams.id;
 
   const [showPopupTransfer, setShowPopupTransfer] = React.useState(false);
 

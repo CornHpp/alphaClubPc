@@ -72,9 +72,9 @@ const CreationvView: React.FC<Props> = (props) => {
   };
 
   const urlParams = useParams();
-  const isSelf = userinfo.twitterUidStr === urlParams.id || !urlParams.id;
+  const isSelf = userinfo?.twitterUidStr === urlParams.id || !urlParams.id;
 
-  const houseId = urlParams.id ? urlParams.id : userinfo.twitterUidStr;
+  const houseId = urlParams.id ? urlParams.id : userinfo?.twitterUidStr;
 
   useEffect(() => {
     const windowUrl = getQueryParams();

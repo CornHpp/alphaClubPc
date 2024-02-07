@@ -25,7 +25,7 @@ const HoldingsView: React.FC<Props> = () => {
   const [orderHasMore, setOrderHasMore] = React.useState<boolean>(true);
   const urlParams = useParams();
 
-  const houseId = urlParams.id ? urlParams.id : userinfo.twitterUidStr;
+  const houseId = urlParams.id ? urlParams.id : userinfo?.twitterUidStr;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const queryParams = {
     pageNum: 1,

@@ -59,7 +59,7 @@ const UserInfoView: React.FC<Props> = (props) => {
 
   const urlParams = useParams();
 
-  const isSelf = userinfo.twitterUidStr === urlParams.id || !urlParams.id;
+  const isSelf = userinfo?.twitterUidStr === urlParams.id || !urlParams.id;
 
   const [houseId, setHouseId] = React.useState(isSelf ? "" : urlParams.id);
 

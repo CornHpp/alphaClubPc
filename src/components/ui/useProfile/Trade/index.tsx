@@ -20,7 +20,7 @@ const TradeView: React.FC<Props> = () => {
 
   const urlParams = useParams();
 
-  const houseId = urlParams.id ? urlParams.id : userinfo.twitterUidStr;
+  const houseId = urlParams.id ? urlParams.id : userinfo?.twitterUidStr;
 
   const queryParams = {
     pageNum: 1,

@@ -75,11 +75,16 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
         if (res.code == "200") {
           setAudioStatus(2);
           setPlayStatus(2);
+
           const newSrc = src + "?" + res.result;
-          createWaveSurfer(waveContentId.current, newSrc);
           setCacheAudioUrl(newSrc);
           setTimeout(() => {
-            wavesurfer.playPause();
+            createWaveSurfer(waveContentId.current, newSrc);
+          }, 0);
+          setTimeout(() => {
+            if (wavesurfer) {
+              // wavesurfer.playPause();
+            }
           }, 500);
         } else {
           Toaster.error("Cards not enough!");
