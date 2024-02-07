@@ -26,6 +26,7 @@ const DepositPopup: React.FC<Props> = ({
   const { userinfo, balance } = useSelector((state: any) => state.user);
 
   const [value, setValue] = React.useState(userinfo?.walletAddress);
+  const [isShowCurrentView, setIsShowCurrentView] = React.useState(false);
   const { isConnected, address } = useAccount();
 
   const { open } = useWeb3Modal();
@@ -38,9 +39,9 @@ const DepositPopup: React.FC<Props> = ({
   }, [address]);
 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && isShowCurrentView) {
       dispatch(setWalletAddress(address));
-      // openTransferPopup();
+      openTransferPopup();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, isConnected]);
@@ -51,7 +52,7 @@ const DepositPopup: React.FC<Props> = ({
       openTransferPopup();
       return;
     }
-
+    setIsShowCurrentView(true);
     await open();
   };
 
