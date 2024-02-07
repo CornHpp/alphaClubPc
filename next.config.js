@@ -4,7 +4,9 @@ const nextConfig = {
     domains: ["pbs.twimg.com", process.env.NEXT_PUBLIC_APP_URL],
     unoptimized: true,
   },
-
+  compiler: {
+    removeConsole: true,
+  },
   reactStrictMode: false,
   async rewrites() {
     return [
