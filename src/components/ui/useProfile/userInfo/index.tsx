@@ -9,6 +9,9 @@ import { useSelector } from "react-redux";
 import ethereum from "@/assets/home/ethereum.svg";
 import { useParams } from "next/navigation";
 import tradeIcon from "@/assets/profile/tradeIcon.svg";
+import threeCardTitter from "@/assets/profile/threeCardTitter.svg";
+import threeCardDetail from "@/assets/profile/threeCardDetail.svg";
+import "./index.css";
 import {
   creatSelfInfroAudio,
   getSelfcardMessage,
@@ -92,7 +95,7 @@ const UserInfoView: React.FC<Props> = (props) => {
   const [showSelfTradePopup, setShowSelfTradePopup] = React.useState(false);
 
   const [orderMap, setOrderMap] = React.useState<eventPriceBykeysTypeAndKeys>();
-  const [isCanBuySelf, setIsCanBuySelf] = React.useState(false);
+  const [isCanBuySelf, setIsCanBuySelf] = React.useState(true);
 
   const [showCreatVoiceNotePopup, setShowCreatVoiceNotePopup] =
     React.useState(false);
@@ -132,7 +135,7 @@ const UserInfoView: React.FC<Props> = (props) => {
       setIsHaveIntroAudio(false);
     }
     setIntroAudio(res.result.selfIntrFlag ? true : false);
-    setIsCanBuySelf(res.result.selfCardCanBuy);
+    // setIsCanBuySelf(res.result.selfCardCanBuy);
     setUseHeaderInforMap({
       username: res.result.twitterName,
       avatar: res.result.imageUrl,
@@ -348,23 +351,36 @@ const UserInfoView: React.FC<Props> = (props) => {
         </div>
       )}
 
-      {!houseId && isCanBuySelf && (
-        <div className="bg-[#fff] pl-[14px] cursor-pointer relative">
-          <Image
-            src={firstThreePurchase}
-            className="pt-[6px]"
-            alt=""
-            width={327}
-            height={58}
-            onClick={() => {
-              setShowTipThreeDays(true);
-            }}
-          ></Image>
+      {isSelf && isCanBuySelf && (
+        <div
+          className=" px-[14px] cursor-pointer relative  h-[58px] bg-[#fff] flex items-center justify-between "
+          onClick={() => {
+            setShowTipThreeDays(true);
+          }}
+        >
+          <div className="threeCardTip overflow-hidden rounded-[10px] border-[2px] border-solid border-[#0d0d0d] relative">
+            <Image
+              src={threeCardTitter}
+              className="pl-[6px] pt-[4px]"
+              alt=""
+              width={228}
+              height={24}
+            ></Image>
 
-          <div className="absolute right-[228px] bottom-[7px] flex items-center font-semibold">
-            <div>{timeMap.days}Days</div>
-            <div>{timeMap.hours}Hours</div>
-            <div>{timeMap.minutes}Mins</div>
+            <div className="flex items-center pl-[6px] pt-[2px]">
+              <Image
+                src={threeCardDetail}
+                alt=""
+                width={158}
+                height={16}
+              ></Image>
+
+              <div className=" flex items-center font-semibold mt-[2px] ml-[2px]">
+                <div className="mr-[2px]">{timeMap.days} Days</div>
+                <div className="mr-[2px]">{timeMap.hours} Hours</div>
+                <div className="mr-[2px]">{timeMap.minutes} Mins</div>
+              </div>
+            </div>
           </div>
         </div>
       )}
