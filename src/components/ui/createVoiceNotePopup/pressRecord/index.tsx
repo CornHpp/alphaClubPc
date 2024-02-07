@@ -62,7 +62,7 @@ const PressRecord: React.FC<PressRecordProps> = (props) => {
         let random = Math.random().toString(36).substring(2, 8); // 生成随机字符串
 
         let randomString = timestamp + "_" + random; // 组合时间戳和随机字
-        formData.append("file", blob, `${randomString}.webm`);
+        formData.append("file", blob, `${randomString}.mp4`);
         toFatherAudioFile(formData, audioDuration);
 
         const recordedUrl = URL.createObjectURL(blob);

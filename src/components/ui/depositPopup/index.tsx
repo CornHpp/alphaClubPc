@@ -40,7 +40,7 @@ const DepositPopup: React.FC<Props> = ({
   useEffect(() => {
     if (isConnected) {
       dispatch(setWalletAddress(address));
-      openTransferPopup();
+      // openTransferPopup();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [address, isConnected]);

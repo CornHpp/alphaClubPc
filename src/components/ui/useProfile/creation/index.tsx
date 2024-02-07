@@ -237,7 +237,7 @@ const CreationvView: React.FC<Props> = (props) => {
                     return (
                       <div
                         className="mt-[12px] border-solid border-[#0d0d0d] border-[1px] p-[10px] rounded-[10px]"
-                        key={index + "1"}
+                        key={index + "audioCard"}
                       >
                         <AudioCard
                           handleClickDelete={(id) => {

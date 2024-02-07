@@ -56,7 +56,7 @@ const Header: React.FC<Props> = (props) => {
     const res = await getSelfUsersBalanceinfo();
     console.log(res);
     dispatch(setBalance(res?.result?.balance));
-    dispatch(setEarned(res?.result?.earned));
+    dispatch(setEarned(res?.result?.earned) || "");
     dispatch(setHoldingValue(res?.result?.holdingValue));
     iconLists[0].value = res?.result?.totalBalance;
     iconLists[1].value = res?.result?.holdingValue;

@@ -84,7 +84,7 @@ const TransferPopup: React.FC<Props> = ({ setShowPopup, showPopup }) => {
           <div className="text-[14px]">Connected wallet:</div>
           <div className="flex justify-between items-center">
             <div className="text-[24px] font-semibold">
-              {filterString(otherWalletAddress)}
+              {filterString(otherWalletAddress, 6)}
             </div>
 
             <div>

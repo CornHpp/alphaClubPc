@@ -196,6 +196,7 @@ const UserInfoView: React.FC<Props> = (props) => {
 
   const clickOpenDeposit = () => {
     if (isConnected) {
+      console.log("openTransferPopup");
       openTransferPopup();
     } else {
       onOpenDepositPopup();

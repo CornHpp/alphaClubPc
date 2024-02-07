@@ -31,7 +31,9 @@ export interface UserStateType {
 }
 
 const initialState: UserStateType = {
-  userinfo: {},
+  userinfo: {
+    earned: 0,
+  },
   balance: 0,
   isMobile: true,
   SASToken: "",
@@ -60,7 +62,8 @@ export const tokenSlice = createSlice({
       state.etherObject = action.payload;
     },
     setEarned: (state, action) => {
-      state.userinfo.earned = action.payload;
+      console.log("action", action);
+      state.userinfo.earned = action?.payload;
     },
     setHoldingValue: (state, action) => {
       state.userinfo.holdingValue = action.payload;

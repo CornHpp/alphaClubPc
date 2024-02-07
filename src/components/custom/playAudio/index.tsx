@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import Image from "next/image";
 import playIcon from "@/assets/home/playIcon.svg";
@@ -11,9 +11,9 @@ import { audioQueryAccess } from "@/api/model/audio";
 
 interface PlayAudioProps {
   shortAudio?: boolean;
-  src: string;
   audioDuration?: number;
   id: number;
+  src: string;
 }
 
 let wavesurfer: any;
@@ -23,6 +23,9 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
   const [playStatus, setPlayStatus] = React.useState(1);
 
   const [audioStatus, setAudioStatus] = React.useState(1); // 1: 隐藏 2: 播放
+  let [wavesurfer, setWaveSurfer] = useState<any>();
+
+  const waveContentId = useRef<HTMLDivElement>(null);
 
   let [audioSrc, setAudioSrc] = React.useState("");
 
@@ -31,11 +34,14 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
     if (wavesurfer) {
       wavesurfer.destroy();
     }
+
+    if (!waveContentId.current || !audioSrc) return;
     wavesurfer = WaveSurfer.create({
-      container: "#container",
+      container: waveContentId.current,
       waveColor: "#949694",
       progressColor: "##FFFFB3",
-      url: "https://alphaclubstorage.blob.core.windows.net/aphaclub-media/recording.webm?sv=2023-11-03&se=2024-01-31T04%3A00%3A14Z&sr=b&sp=r&sig=hOh%2B7ERNXCeAyPCGaFvyDR59jPyjdbIiL%2BOVN5u6v4E%3D",
+      url: audioSrc,
+      // url: "/demo.wav",
       barGap: 2,
       barRadius: 4,
       barWidth: 2,
@@ -46,23 +52,15 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
       dragToSeek: true,
     });
 
-    wavesurfer.on("timeupdate", () => {
-      // const currentTime = wavesurfer.getCurrentTime();
-      // if (timer) return;
-      // timer = setTimeout(() => {
-      //   // console.log("currentTime", currentTime);
-      //   setCountTime((val) => {
-      //     const time = Number(val) - currentTime;
-      //     console.log("time", time);
-      //     clearTimeout(timer);
-      //     timer = null;
-      //     return time;
-      //   });
-      // }, 1000);
-    });
+    wavesurfer.on("timeupdate", () => {});
   };
 
-  useEffect(() => {}, [props.src, src]);
+  useEffect(() => {
+    if (audioSrc) {
+      createWaveSurfer();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audioSrc]);
 
   const clickPlayAudio = () => {
     audioQueryAccess(id).then((res) => {
@@ -73,7 +71,6 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
       console.log("newSrc", newSrc);
       audioSrc = newSrc;
       setAudioSrc(newSrc);
-      createWaveSurfer();
     });
     // wavesurfer.playPause();
   };
@@ -99,23 +96,23 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
       </div>
 
       <div className="w-full  mt-[11px] flex items-center justify-between">
-        <audio
-          id="song"
-          //src={this.props.audioURL}
-          src="https://reelcrafter-east.s3.amazonaws.com/aux/test.m4a"
-        />
         <div
           id="container"
+          ref={waveContentId}
           className="w-[85%] flex-shrink-0 h-[32px] rounded-[6px] border-[1px] border-solid border-[#0D0D0D] bg-[#E9E9E9] mr-[12px]"
-          style={{
-            display: audioStatus === 1 ? "none" : "block",
-          }}
+          style={
+            {
+              // display: audioStatus === 1 ? "none" : "block",
+            }
+          }
         ></div>
         <div
           className="flex-1 flex-shrink-0 h-[32px] rounded-[6px] border-[1px] border-solid border-[#0D0D0D] bg-[#E9E9E9] mr-[12px] flex items-center justify-center"
-          style={{
-            display: audioStatus === 2 ? "none" : "flex",
-          }}
+          style={
+            {
+              // display: audioStatus === 2 ? "none" : "flex",
+            }
+          }
         >
           <Image src={audioWaveSurfer} alt="" width={234} height={22}></Image>
         </div>

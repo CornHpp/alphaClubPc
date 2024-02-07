@@ -31,7 +31,7 @@ const DeletePopupView: React.FC<Props> = ({
         setShowPopup(false);
         setSelectedPrice(0);
       }}
-      titleText="Logout"
+      titleText="Delete"
     >
       <div className="w-full flex flex-col items-center">
         <div className="text-[16px] font-medium text-center">

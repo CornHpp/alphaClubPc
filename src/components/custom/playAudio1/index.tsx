@@ -1,10 +1,9 @@
-import React, { use, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import WaveSurfer from "wavesurfer.js";
 import Image from "next/image";
 import playIcon from "@/assets/home/playIcon.svg";
 import stopIcon from "@/assets/home/stopIcon.svg";
 import stopWatchIcon from "@/assets/home/stopWatchIcon.svg";
-import audioWaveSurfer from "@/assets/home/audioWaveSurfer.svg";
 
 import "./index.css";
 import { audioQueryAccess } from "@/api/model/audio";
@@ -28,19 +27,19 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
   const [audioStatus, setAudioStatus] = React.useState(1); // 1: 隐藏 2: 播放
 
   const waveContentId = useRef<HTMLDivElement>(null);
+  const [cacheAudioUrl, setCacheAudioUrl] = React.useState("");
 
-  const createWaveSurfer = (waveContentId: any, audioUrl: string) => {
+  const createWaveSurfer = () => {
     if (wavesurfer) {
       wavesurfer.destroy();
     }
-
-    if (!waveContentId) return;
+    if (!waveContentId.current || !cacheAudioUrl) return;
 
     let currentWaveSurfer = WaveSurfer.create({
-      container: waveContentId,
+      container: waveContentId.current,
       waveColor: "#949694",
       progressColor: "##FFFFB3",
-      url: audioUrl,
+      url: cacheAudioUrl,
       barGap: 2,
       barRadius: 4,
       barWidth: 2,
@@ -55,18 +54,29 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
     currentWaveSurfer.on("finish", () => {
       setPlayStatus(1);
     });
+
+    currentWaveSurfer.on("ready", () => {
+      currentWaveSurfer.play();
+    });
+
     wavesurfer = currentWaveSurfer;
     setWaveSurfer(currentWaveSurfer);
   };
 
-  const [cacheAudioUrl, setCacheAudioUrl] = React.useState("");
+  useEffect(() => {
+    if (cacheAudioUrl) {
+      createWaveSurfer();
+    }
+    return () => {
+      wavesurfer?.destroy();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cacheAudioUrl]);
 
   const clickPlayAudio = () => {
     if (cacheAudioUrl) {
-      setTimeout(() => {
-        wavesurfer.playPause();
-        setPlayStatus(2);
-      }, 500);
+      wavesurfer.playPause();
+      setPlayStatus(2);
       return;
     }
     audioQueryAccess(id)
@@ -75,17 +85,8 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
         if (res.code == "200") {
           setAudioStatus(2);
           setPlayStatus(2);
-
           const newSrc = src + "?" + res.result;
           setCacheAudioUrl(newSrc);
-          setTimeout(() => {
-            createWaveSurfer(waveContentId.current, newSrc);
-          }, 0);
-          setTimeout(() => {
-            if (wavesurfer) {
-              // wavesurfer.playPause();
-            }
-          }, 500);
         } else {
           Toaster.error("Cards not enough!");
         }
@@ -162,6 +163,7 @@ const PlayAudio: React.FC<PlayAudioProps> = (props) => {
         >
           {/* <Image src={audioWaveSurfer} alt="" width={234} height={22}></Image> */}
         </div>
+
         {playStatus === 1 ? (
           <Image
             src={playIcon}
