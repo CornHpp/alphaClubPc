@@ -13,12 +13,12 @@
 
 .scrollRightlogin {
   white-space: nowrap; /* 保持内容在一行 */
-  /* animation: scrollri 15s linear infinite; */
-  transform: translateX(calc(-100% - 8px)); /* 开始时位于原位置 */
+  animation: scrollri 15s linear infinite;
+  /* transform: translateX(calc(-100% - 8px));  */
 }
 @keyframes scrollri {
   0% {
-    transform: translateX(calc(-100% - 8px)); /* 开始时位于原位置 */
+    transform: translateX(calc(-100%)); /* 开始时位于原位置 */
   }
   100% {
     transform: translateX(0);
