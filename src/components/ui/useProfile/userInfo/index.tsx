@@ -95,7 +95,7 @@ const UserInfoView: React.FC<Props> = (props) => {
   const [showSelfTradePopup, setShowSelfTradePopup] = React.useState(false);
 
   const [orderMap, setOrderMap] = React.useState<eventPriceBykeysTypeAndKeys>();
-  const [isCanBuySelf, setIsCanBuySelf] = React.useState(true);
+  const [isCanBuySelf, setIsCanBuySelf] = React.useState(false);
 
   const [showCreatVoiceNotePopup, setShowCreatVoiceNotePopup] =
     React.useState(false);
@@ -135,7 +135,7 @@ const UserInfoView: React.FC<Props> = (props) => {
       setIsHaveIntroAudio(false);
     }
     setIntroAudio(res.result.selfIntrFlag ? true : false);
-    // setIsCanBuySelf(res.result.selfCardCanBuy);
+    setIsCanBuySelf(res.result.selfCardCanBuy);
     setUseHeaderInforMap({
       username: res.result.twitterName,
       avatar: res.result.imageUrl,

@@ -1,26 +1,26 @@
-import { useState, useEffect } from "react";
+//@ts-nocheck
+import { useCallback, useEffect, useRef } from "react";
 
-function useDebounce<T extends any[]>(
-  callback: (...args: T) => void,
-  delay: number
-): (...args: T) => void {
-  const [debouncedArgs, setDebouncedArgs] = useState<T | null>(null);
+function useDebounce(fn, delay, dep = []) {
+  const { current } = useRef({ fn, timer: null });
+  useEffect(
+    function () {
+      current.fn = fn;
+    },
+    [current, fn]
+  );
 
-  useEffect(() => {
-    const handler = setTimeout(() => {
-      if (debouncedArgs !== null) {
-        callback(...debouncedArgs);
+  return useCallback(
+    function f(...args) {
+      if (current.timer) {
+        clearTimeout(current.timer);
       }
-    }, delay);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [debouncedArgs, callback, delay]);
-
-  return (...args: T) => {
-    setDebouncedArgs(args);
-  };
+      current.timer = setTimeout(() => {
+        current.fn.call(this, ...args);
+      }, delay);
+    },
+    [current, delay]
+  );
 }
 
 export default useDebounce;

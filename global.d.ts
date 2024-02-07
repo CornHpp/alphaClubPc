@@ -6,3 +6,4 @@ declare module "node_modules/wavesurfer.js/dist/plugins/record.esm.js";
 declare module "*.less";
 declare module "*.png";
 declare module "vconsole";
+declare module ".js";

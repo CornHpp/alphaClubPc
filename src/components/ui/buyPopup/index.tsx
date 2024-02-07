@@ -54,8 +54,10 @@ const BuyPopupView: React.FC<Props> = ({
   const [getOrderMap, setGetOrderMap] = React.useState<eventPriceBykeysType>();
   let [value, setValue] = React.useState("");
   const [needPayPrice, setNeedPayPrice] = React.useState<string>("");
+
   const getCurrentEventPriceByKeyNumberFunc = React.useCallback(
     async (val: string) => {
+      console.log(val);
       const res = await getCurrentEventPriceByKeyNumber(holderId, val);
       setGetOrderMap(res.result);
       setNeedPayPrice(res.result.orderPrice);
@@ -88,6 +90,8 @@ const BuyPopupView: React.FC<Props> = ({
 
   const reInit = () => {
     setValue("");
+    value = "";
+
     setNeedPayPrice("");
     setSelectedPrice(-1);
     setShowPopupBuy(false);
@@ -95,6 +99,7 @@ const BuyPopupView: React.FC<Props> = ({
 
   const getBuyPrice = useCallback(
     (val: any) => {
+      console.log(val);
       setSelectedPrice(-1);
       buttonList.findIndex((item) => {
         if (val == item.price) {
