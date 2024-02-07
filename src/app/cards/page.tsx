@@ -345,6 +345,15 @@ const Page: React.FC<Props> = () => {
           </div>
         </div>
 
+        {searchMap?.twitterScreenName && (
+          <div
+            className="w-[100vw] h-[100vh] fixed bg-[#fff] z-[111111] opacity-0"
+            onClick={() => {
+              setSearchMap({});
+            }}
+          ></div>
+        )}
+
         <div className="mt-[24px] border-[2px] flex-1 border-[#0D0D0D] border-solid rounded-[12px] w-[563px] pl-[14px] pt-[14px] bg-[#fff] flex flex-col">
           <div className="flex w-full justify-between pr-[14px] relative">
             <div className="text-[20px] font-bold">Polls Ranking</div>

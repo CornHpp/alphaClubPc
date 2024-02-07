@@ -102,7 +102,8 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
       allNum: 1,
       titleImage: icon5,
       showPointNum: false,
-      message: "Purchase a card from any of the first clubs to open the box.",
+      message:
+        "Buy your first card from any of the clubs to open the treasure box.",
       bottomChild: (
         <div className=" rounded-[13px] bg-[#F4F4EC] w-[119px] h-[25px] flex items-center justify-center"></div>
       ),
@@ -118,7 +119,8 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
       showPointNum: false,
       unFinished: 0,
       allNum: 3,
-      message: "Third time buying a card from any of the clubs",
+      message:
+        "Buy cards three times from any of the clubs to open the treasure box.",
       bottomChild: (
         <div className=" rounded-[13px] bg-[#F4F4EC] w-[119px] h-[25px] flex items-center justify-center"></div>
       ),

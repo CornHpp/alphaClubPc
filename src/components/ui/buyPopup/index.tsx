@@ -90,6 +90,7 @@ const BuyPopupView: React.FC<Props> = ({
     setValue("");
     setNeedPayPrice("");
     setSelectedPrice(-1);
+    setShowPopupBuy(false);
   };
 
   const getBuyPrice = useCallback(
@@ -114,7 +115,6 @@ const BuyPopupView: React.FC<Props> = ({
     <PopupView
       showPopup={showPopupBuy}
       handleCancel={() => {
-        setShowPopupBuy(false);
         reInit();
       }}
       titleText={

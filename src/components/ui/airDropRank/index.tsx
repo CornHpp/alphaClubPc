@@ -117,6 +117,7 @@ const AirDropRank: React.FC<AirDropRankProps> = (props) => {
                   followers: item.followersCount,
                   twitterScreenName: item.twitterScreenName,
                 }}
+                isSelf={index == 0 ? true : false}
               ></UserHeader>
             </div>
             <div className="w-[35%]">
