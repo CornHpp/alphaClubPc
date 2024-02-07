@@ -93,6 +93,7 @@ const Login: React.FC<LoginProps> = () => {
         if (res.code == "200") {
           dispatch(setUserInfo(res.result));
           if (res?.result?.bindInviteCode) {
+            setShowLoading(true);
             router.push("/home");
           } else {
             setIsShowInviteCode(true);

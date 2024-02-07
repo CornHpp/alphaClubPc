@@ -5,7 +5,7 @@ const nextConfig = {
     unoptimized: true,
   },
   compiler: {
-    removeConsole: true,
+    // removeConsole: true,
   },
   reactStrictMode: false,
   async rewrites() {
