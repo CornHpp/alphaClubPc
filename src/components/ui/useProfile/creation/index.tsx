@@ -271,7 +271,7 @@ const CreationvView: React.FC<Props> = (props) => {
                 height={120}
                 className="w-[120px] h-[120px]"
               ></Image>
-              Un，there is nothing here
+              {"It's time to record something!"}
             </div>
           )}
 

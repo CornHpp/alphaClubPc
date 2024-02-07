@@ -18,11 +18,17 @@
 
 body {
   background: #fbf5f2;
-  min-width: 1440px;
   color: #0d0d0d;
   font-size: 16px;
   font-weight: 500;
 }
+
+@media screen and (min-width: 431px) {
+  body {
+    min-width: 1440px;
+  }
+}
+
 ::-webkit-scrollbar {
   display: none;
 }

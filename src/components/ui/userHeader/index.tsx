@@ -29,6 +29,7 @@ interface UserHeaderProps {
   onClickNewIntro?: () => void;
   onClickDeleteIntroAudio?: () => void;
   isAcceptShowDelteButton?: boolean;
+  isSelf?: boolean;
 }
 
 const UserHeader: React.FC<UserHeaderProps> = ({
@@ -40,6 +41,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({
   onClickNewIntro,
   onClickDeleteIntroAudio,
   isAcceptShowDelteButton = false,
+  isSelf = false,
 }) => {
   const [headerHover, setHeaderHover] = React.useState(false);
   const [showAudioTrumper, setShowAudioTrumper] = React.useState(true);
@@ -221,19 +223,30 @@ const UserHeader: React.FC<UserHeaderProps> = ({
       </div>
 
       <div
-        className="ml-[6px]"
+        className="ml-[6px] "
         style={{
           marginLeft: nameMarginLeft ? nameMarginLeft : "6px",
         }}
       >
-        <div
-          className=" font-semibold text-[20px] text-ellipsis overflow-hidden whitespace-nowrap w-[200px]"
-          style={{
-            fontSize: titleSize,
-          }}
-        >
-          {userInfo?.username} Club
+        <div className="relative flex items-center">
+          <div
+            className=" font-semibold text-[20px] text-ellipsis overflow-hidden whitespace-nowrap max-w-[200px] mr-[4px]"
+            style={{
+              fontSize: titleSize,
+            }}
+          >
+            {userInfo?.username} Club
+          </div>
+          {isSelf && (
+            <div
+              className=" w-[39px] h-[16px] border-[1px] border-solid border-[#0D0D0D] bg-[#00FC6E]
+          rounded-[8px] flex items-center justify-center text-[12px] text-[#0D0D0D]"
+            >
+              You
+            </div>
+          )}
         </div>
+
         <div className="flex items-center text-[12px] text-[#404140]">
           <Image
             src={twitterIcon}

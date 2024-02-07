@@ -164,9 +164,7 @@ const BuyOrderPopup: React.FC<Props> = ({
         </div>
       </div>
 
-      <div className="mt-[7px] text-[#949694]">
-        5% fee goes to the content creator.
-      </div>
+      <div className="mt-[7px] text-[#949694]">Pay 5% fee to creator.</div>
 
       <div
         style={{
