@@ -258,7 +258,7 @@ const UserInfoView: React.FC<Props> = (props) => {
               <div className="flex items-center mt-[6px]">
                 <Image src={ethereum} alt="" width={18} height={18}></Image>
                 <div className="text-[#0D0D0D] font-semibold ml-[2px] text-[18px]">
-                  {useProfileMap?.roomPrice?.slice(0, 7)} ETH
+                  {useProfileMap?.priceStr?.slice(0, 7)} ETH
                 </div>
               </div>
             </div>
@@ -278,7 +278,7 @@ const UserInfoView: React.FC<Props> = (props) => {
                 setHideButtonBg(true);
               }}
               buttonClick={() => {
-                onClickSell(useProfileMap?.roomPrice);
+                onClickSell(useProfileMap?.priceStr);
               }}
               onMouseLeave={() => {
                 setHideButtonBg(false);
@@ -295,7 +295,7 @@ const UserInfoView: React.FC<Props> = (props) => {
               normalBackGround="#0D0D0D"
               color="#fff"
               buttonClick={() => {
-                onClickBuy(useProfileMap?.roomPrice);
+                onClickBuy(useProfileMap?.priceStr);
               }}
             ></Button>
           </div>

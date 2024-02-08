@@ -178,7 +178,7 @@ const UserHeader: React.FC<UserHeaderProps> = ({
 
         {isAcceptShowDelteButton && showDelteButton && (
           <div
-            className="w-[145px] h-[154px] border-solid border-[#0D0D0D] border-[2px] rounded-[12px] bg-[#fff] absolute top-[50px] left-[30px]"
+            className="z-[10000] w-[145px] h-[154px] border-solid border-[#0D0D0D] border-[2px] rounded-[12px] bg-[#fff] absolute top-[50px] left-[30px]"
             onMouseLeave={() => {
               setShowDelteButton(false);
             }}
