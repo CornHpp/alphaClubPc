@@ -143,7 +143,6 @@ const Header: React.FC<Props> = (props) => {
                   {item.text}
                 </div>
                 <div className="text-[20px] text-[#0D0D0D] font-semibold">
-                  {index != 4 ? "$" : ""}
                   {item.value.slice(0, 8)} {item?.currency}
                 </div>
               </div>

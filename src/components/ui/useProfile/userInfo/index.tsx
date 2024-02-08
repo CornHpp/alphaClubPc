@@ -304,7 +304,7 @@ const UserInfoView: React.FC<Props> = (props) => {
 
       {!houseId && (
         <div className="pt-[12px] pl-[14px] flex items-center bg-white w-full">
-          <div className="w-[30%]">
+          <div className="max-w-[30%] min-w-[126px]">
             <div className="text-[14px] text-[#404140] font-medium">
               Holders
             </div>
@@ -393,16 +393,16 @@ const UserInfoView: React.FC<Props> = (props) => {
           }}
         >
           <div className="flex items-center mb-[16px]">
-            <div className="w-[30%]">
+            <div className="max-w-[30%] min-w-[126px]">
               <div className="flex font-medium">
                 <Image
                   src={baseChainIcon}
                   className="mr-[3px]"
                   alt=""
                   width={16}
-                  height={16}
+                  height={10}
                 ></Image>
-                BlastChain
+                Blast（Sepolia）
               </div>
               <div className="mt-[3px] font-semibold text-[18px]">
                 {filterString(useProfileMap?.walletAddress, 4)}
