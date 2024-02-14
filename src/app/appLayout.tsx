@@ -9,6 +9,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
 import isMobileIcon from "@/assets/home/isMobileIcon.svg";
+import { leaveAppInsights } from "@/lib/log/appInsights";
 
 function AppLayout({ children }: { children: React.ReactNode }) {
   const [isLogin, setIsLogin] = React.useState(0);
@@ -31,6 +32,7 @@ function AppLayout({ children }: { children: React.ReactNode }) {
 
     return () => {
       window.removeEventListener("resize", setRem);
+      leaveAppInsights();
     };
   }, []);
   return (
