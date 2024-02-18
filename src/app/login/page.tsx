@@ -74,6 +74,7 @@ const Login: React.FC<LoginProps> = () => {
               router.push("/home");
             } else {
               setIsShowInviteCode(true);
+              setShowLoading(false);
             }
           });
         } else {
@@ -97,6 +98,7 @@ const Login: React.FC<LoginProps> = () => {
             router.push("/home");
           } else {
             setIsShowInviteCode(true);
+            setShowLoading(false);
           }
         }
       });

@@ -29,7 +29,7 @@ export const getUserInfoByTwitterId = (
   twitterId: string
 ): Promise<ResponseBaseType<any>> => {
   const url = "/secret/users/info?twitterUid=" + twitterId;
-  return request.get<ResponseBaseType<any>>(url, { twitterId });
+  return request.get<ResponseBaseType<any>>(url);
 };
 
 export const sendEth = (wallet: string, amount: number): Promise<string> => {
