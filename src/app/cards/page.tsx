@@ -79,7 +79,13 @@ const Page: React.FC<Props> = () => {
       let { pageList = [], count = 0 } = res.result;
       if (!pageList) pageList = [];
 
-      setPaimingList(pageList.slice(0, 3));
+      const topThreeOrderlist = pageList.slice(0, 3);
+
+      const temporaryMap = topThreeOrderlist[1];
+      topThreeOrderlist[1] = topThreeOrderlist[0];
+      topThreeOrderlist[0] = temporaryMap;
+
+      setPaimingList(topThreeOrderlist);
 
       const newCardList = [
         ...greaerThenFourOrderlist,

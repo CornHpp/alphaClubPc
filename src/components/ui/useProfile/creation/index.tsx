@@ -196,6 +196,7 @@ const CreationvView: React.FC<Props> = (props) => {
               onClick={() => {
                 if (currentTab == 0) {
                   setShowCreatVoiceNotePopup(true);
+                  setIsIntroSelf(false);
                 } else {
                   setShowUploadAudioPopup(true);
                 }

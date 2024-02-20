@@ -90,6 +90,7 @@ const Home: React.FC = () => {
 
   const [cardList, setCardList] = React.useState<PartialGetAllHomeType[]>([]);
   const [isLoading, setIsLoading] = React.useState(true);
+  console.log(paramsData.pageNum, "paramsData.pageNum");
 
   const loadMore = useCallback(
     (refresh?: boolean, currentIndex?: number) => {
@@ -100,8 +101,14 @@ const Home: React.FC = () => {
       };
       if (refresh) {
         parmas.pageNum = 1;
+        paramsData.pageNum = 1;
         setIsLoading(true);
         setCardList([]);
+        // setParamsData({
+        //   pageNum: paramsData.pageNum,
+        //   pageSize: 50,
+        //   queryKey: "",
+        // });
       }
 
       const getHomeList = currentIndex == 1 ? getHouseAll : getHolderAll;
@@ -119,25 +126,23 @@ const Home: React.FC = () => {
           ...(pageList ? pageList : []),
         ];
         setCardList(newCardList);
-        if (newCardList.length >= count) {
+        if (pageList.length == 0) {
           setHasMore(false);
+        } else {
+          setHasMore(newCardList.length >= count ? false : true);
         }
-        paramsData.pageNum = paramsData.pageNum + 1;
+        paramsData.pageNum++;
       });
     },
     [cardList, paramsData, tabsActive]
   );
 
   useEffect(() => {
-    loadMore(true, 1);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  useEffect(() => {
     Emitter.on("clickSearchIcon", (value: string) => {
       console.log(value);
       paramsData.queryKey = value;
-      loadMore(true);
+      setHasMore(false);
+      loadMore(true, tabsActive);
     });
 
     return () => {
@@ -145,7 +150,9 @@ const Home: React.FC = () => {
         console.log("off");
       });
     };
-  }, [loadMore, paramsData]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const [eventSinglePrice, setEventSinglePrice] = React.useState("");
   const [clickCurrentHolderId, setClickCurrentHolderId] = React.useState("");
@@ -208,6 +215,7 @@ const Home: React.FC = () => {
           activeIndex={tabsActive}
           tabClick={(val) => {
             setTabsActive(val);
+            setHasMore(false);
             if (val == 1) {
               loadMore(true, 1);
             } else {
@@ -231,40 +239,46 @@ const Home: React.FC = () => {
         </div>
       )} */}
 
-      {!isLoading && cardList.length > 0 && (
-        <div className="flex-1 overflow-hidden">
-          <div className="flex flex-wrap h-full overflow-y-scroll">
-            {cardList.map((item, index) => {
-              return (
-                <div
-                  key={index + "r"}
-                  onClick={() => {
-                    console.log(item);
+      <div className="flex-1 overflow-hidden flex flex-col  overflow-y-scroll">
+        <div className="flex flex-1 flex-wrap ">
+          {cardList.map((item, index) => {
+            return (
+              <div
+                key={index + "r"}
+                onClick={() => {
+                  console.log(item);
+                }}
+              >
+                <Card
+                  onOpeningEvent={() => {
+                    setShowOpenIngEvent(true);
                   }}
-                >
-                  <Card
-                    onOpeningEvent={() => {
-                      setShowOpenIngEvent(true);
-                    }}
-                    onClickBuy={(price, holderId) => {
-                      clickBuy(price, holderId);
-                      setCurrentClickItem(item);
-                    }}
-                    onClickSell={(price, holderId) => {
-                      clickSell(price, holderId);
-                      setCurrentClickItem(item);
-                    }}
-                    item={item}
-                  ></Card>
-                </div>
-              );
-            })}
-          </div>
-          <InfiniteScroll loadMore={loadMore} hasMore={hasMore}>
+                  onClickBuy={(price, holderId) => {
+                    clickBuy(price, holderId);
+                    setCurrentClickItem(item);
+                  }}
+                  onClickSell={(price, holderId) => {
+                    clickSell(price, holderId);
+                    setCurrentClickItem(item);
+                  }}
+                  item={item}
+                ></Card>
+              </div>
+            );
+          })}
+        </div>
+        <div className=" flex-shrink-0">
+          <InfiniteScroll
+            className="pb-[40px]"
+            loadMore={() => {
+              return loadMore(false, tabsActive);
+            }}
+            hasMore={hasMore}
+          >
             <InfiniteScrollContent></InfiniteScrollContent>
           </InfiniteScroll>
         </div>
-      )}
+      </div>
       {!isLoading && cardList.length == 0 && (
         <div className="flex flex-col items-center font-semibold  fixed top-[45%] left-[50%] transform [-translate-x-1/2] [-translate-y-1/2]">
           <Image

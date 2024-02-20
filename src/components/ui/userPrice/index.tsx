@@ -39,7 +39,7 @@ const UserPrice: React.FC<Props> = (props) => {
             {item?.price?.toString()?.slice(0, 6)} ETH
           </div>
           <div className="flex text-[#404140] text-[12px] font-medium ">
-            Holder：{item?.followersCount ?? 0}
+            Holder：{item?.holdcount ?? 0}
           </div>
         </div>
       )}

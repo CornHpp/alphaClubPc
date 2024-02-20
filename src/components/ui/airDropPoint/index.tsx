@@ -239,9 +239,9 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div className="flex w-full flex-1">
+    <div className="flex w-full flex-1 overflow-hidden">
       <div className="flex-1 flex flex-col">
-        <div className=" h-[464px] bg-[#fff] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] relative">
+        <div className=" flex-shrink-0 min-h-[72%] bg-[#fff] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] relative">
           <div className="text-[20px] font-bold">Personal Points Info</div>
           <div className="mt-[12px] flex items-center">
             <Image
@@ -287,7 +287,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
           ></Image>
         </div>
 
-        <div className="flex-1 bg-[#00FC6E] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] mt-[24px]">
+        <div className="flex-1 overflow-y-scroll bg-[#00FC6E] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] mt-[24px]">
           <div className="font-bold text-[20px] mb-[20px]">My Invite Code</div>
           {inviteCodeList.map((item, index) => {
             return (
@@ -327,7 +327,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
         </div>
       </div>
 
-      <div className="mx-[24px] bg-[#D8FCD1] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] flex-1 flex flex-col">
+      <div className=" overflow-y-scroll mx-[24px] bg-[#D8FCD1] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] flex-1 flex flex-col">
         <div className="text-[20px] font-bold mb-[12px]">Points Hunt</div>
         {pointsHuntList.map((item, index) => {
           return (
@@ -359,7 +359,7 @@ const AirDropPoint: React.FC<AirDropPointProps> = () => {
         })}
       </div>
 
-      <div className=" bg-[#FFFFB3] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] flex-1 mr-[37px] flex flex-col">
+      <div className=" overflow-y-scroll bg-[#FFFFB3] border-[#0D0D0D] border-solid border-[2px] rounded-[10px] p-[14px] flex-1 mr-[37px] flex flex-col">
         <div className="text-[20px] font-bold mb-[12px]">Treasure Box</div>
         {treasureBoxLists.map((item, index) => {
           return (

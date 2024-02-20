@@ -121,14 +121,19 @@ const AirDropRank: React.FC<AirDropRankProps> = (props) => {
               ></UserHeader>
             </div>
             <div className="w-[35%]">
-              <UserHeader
-                userInfo={{
-                  username: item.parentTwitterName,
-                  avatar: item.parentImageUrl,
-                  followers: item.parentFollowersCount,
-                  twitterScreenName: item.parentTwitterScreenName,
-                }}
-              ></UserHeader>
+              {item.parentTwitterName ? (
+                <UserHeader
+                  userInfo={{
+                    username: item.parentTwitterName,
+                    avatar: item.parentImageUrl,
+                    followers: item.parentFollowersCount,
+                    twitterScreenName: item.parentTwitterScreenName,
+                  }}
+                  isSelf={false}
+                ></UserHeader>
+              ) : (
+                <div className="text-[12px]">-</div>
+              )}
             </div>
 
             <div className="w-[15%] flex items-center">
